@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SCMD DEX-401 Practice Exam Answer Sheet</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f1923; color: #e8edf2; min-height: 100vh; }
+
+  .header { background: linear-gradient(135deg, #1a3a5c 0%, #0d2137 100%); padding: 20px 24px 16px; border-bottom: 2px solid #2e6da4; position: sticky; top: 0; z-index: 100; }
+  .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .title { font-size: 15px; font-weight: 700; color: #7eb8e8; letter-spacing: 0.5px; text-transform: uppercase; }
+  .subtitle { font-size: 11px; color: #5a8ab0; margin-top: 2px; }
+
+  .timer-block { display: flex; align-items: center; gap: 10px; }
+  .timer { font-size: 32px; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; letter-spacing: 2px; min-width: 100px; text-align: center; }
+  .timer.warning { color: #f5a623; }
+  .timer.danger { color: #e74c3c; animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+
+  .btn { padding: 7px 14px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.15s; }
+  .btn-start { background: #27ae60; color: #fff; }
+  .btn-start:hover { background: #2ecc71; }
+  .btn-pause { background: #e67e22; color: #fff; }
+  .btn-pause:hover { background: #f39c12; }
+  .btn-reset { background: #2c3e50; color: #95a5a6; border: 1px solid #34495e; }
+  .btn-reset:hover { background: #34495e; color: #ecf0f1; }
+
+  .progress-bar { height: 4px; background: #0d2137; border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #2e6da4, #7eb8e8); transition: width 0.3s; border-radius: 2px; }
+
+  .stats-bar { display: flex; gap: 20px; align-items: center; padding: 10px 24px; background: #0d2137; border-bottom: 1px solid #1a2f45; font-size: 12px; }
+  .stat { display: flex; align-items: center; gap: 6px; }
+  .stat-num { font-weight: 700; font-size: 16px; }
+  .stat-answered { color: #27ae60; }
+  .stat-remaining { color: #95a5a6; }
+  .stat-flagged { color: #f5a623; }
+
+  .content { padding: 20px 24px; max-width: 900px; margin: 0 auto; }
+
+  .section-block { margin-bottom: 24px; border-radius: 10px; overflow: hidden; border: 1px solid #1e3a55; }
+  .section-header { background: linear-gradient(135deg, #1a3a5c, #0d2a45); padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .section-title { font-size: 13px; font-weight: 700; color: #7eb8e8; }
+  .section-badge { background: #2e6da4; color: #fff; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 10px; }
+
+  .question-row { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-bottom: 1px solid #1a2f45; transition: background 0.1s; }
+  .question-row:last-child { border-bottom: none; }
+  .question-row:hover { background: #13243a; }
+  .question-row.answered { background: #0f2035; }
+  .question-row.correct { background: #0a1f0f; }
+  .question-row.wrong { background: #1f0a0a; }
+
+  .q-num { font-size: 12px; color: #5a8ab0; font-weight: 700; width: 28px; flex-shrink: 0; }
+  .q-choices { display: flex; gap: 6px; flex-shrink: 0; }
+
+  .choice-btn { width: 36px; height: 32px; border: 1.5px solid #2a4a6a; border-radius: 6px; background: transparent; color: #5a8ab0; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.12s; }
+  .choice-btn:hover { border-color: #2e6da4; color: #7eb8e8; background: #13243a; }
+  .choice-btn.selected { background: #2e6da4; border-color: #4a9fd4; color: #fff; }
+  .choice-btn.wrong-ans { background: #c0392b; border-color: #e74c3c; color: #fff; }
+  .choice-btn.show-correct { background: #27ae60 !important; border-color: #2ecc71 !important; color: #fff !important; }
+
+  .flag-btn { width: 28px; height: 28px; border: 1.5px solid transparent; border-radius: 5px; background: transparent; color: #3a5a7a; cursor: pointer; font-size: 14px; transition: all 0.12s; flex-shrink: 0; }
+  .flag-btn:hover { color: #f5a623; }
+  .flag-btn.flagged { color: #f5a623; }
+
+  .result-icon { width: 24px; font-size: 16px; text-align: center; flex-shrink: 0; }
+
+  .score-section { position: sticky; bottom: 0; padding: 14px 24px; background: linear-gradient(0deg, #0a1520 0%, #0f1923 100%); border-top: 2px solid #1a3a5c; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .score-btn { padding: 12px 28px; background: linear-gradient(135deg, #1a6fb5, #2980b9); color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; letter-spacing: 0.3px; }
+  .score-btn:hover { background: linear-gradient(135deg, #2980b9, #3498db); transform: translateY(-1px); }
+
+  .results-panel { display: none; background: #0d2137; border: 1px solid #2e6da4; border-radius: 12px; margin: 20px 0; padding: 20px; }
+  .results-panel.show { display: block; }
+  .result-headline { font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 4px; }
+  .result-sub { text-align: center; color: #7eb8e8; font-size: 13px; margin-bottom: 20px; }
+  .pass { color: #27ae60; }
+  .fail { color: #e74c3c; }
+  .section-results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .sec-result { background: #13243a; border-radius: 8px; padding: 12px; text-align: center; }
+  .sec-result-name { font-size: 10px; color: #5a8ab0; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .sec-result-score { font-size: 22px; font-weight: 800; }
+  .sec-result-pct { font-size: 11px; color: #7eb8e8; }
+  .good { color: #27ae60; }
+  .ok { color: #f5a623; }
+  .bad { color: #e74c3c; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="title">Salesforce Certified MuleSoft Developer — DEX-401</div>
+      <div class="subtitle">60 Questions · 120 Minutes · Passing Score: 70% (42/60)</div>
+    </div>
+    <div class="timer-block">
+      <button class="btn btn-reset" id="resetBtn" onclick="resetTimer()">↺ Reset</button>
+      <div class="timer" id="timer">2:00:00</div>
+      <button class="btn btn-start" id="startBtn" onclick="toggleTimer()">▶ Start</button>
+    </div>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><span class="stat-num stat-answered" id="answeredCount">0</span> <span style="color:#5a8ab0">answered</span></div>
+  <div class="stat"><span class="stat-num stat-remaining" id="remainingCount">60</span> <span style="color:#5a8ab0">remaining</span></div>
+  <div class="stat"><span class="stat-num stat-flagged" id="flaggedCount">0</span> <span style="color:#5a8ab0">flagged ⚑</span></div>
+  <div style="margin-left:auto; font-size:11px; color:#3a5a7a">Click ⚑ to flag a question for review</div>
+</div>
+
+<div class="content" id="mainContent">
+  <div class="results-panel" id="resultsPanel"></div>
+  <div id="questionsArea"></div>
+</div>
+
+<div class="score-section">
+  <div style="font-size:12px; color:#5a8ab0">Answer all questions, then click Score to see results with section breakdown.</div>
+  <button class="score-btn" id="scoreBtn" onclick="scoreExam()">Score My Exam →</button>
+</div>
+
+<script>
+const ANSWER_KEY = {
+  1:'D',2:'A',3:'D',4:'A',
+  5:'B',6:'A',7:'C',8:'A',9:'A',
+  10:'C',11:'A',12:'D',13:'A',14:'C',15:'A',
+  16:'A',17:'B',18:'C',19:'A',20:'C',21:'C',
+  22:'B',23:'D',24:'B',25:'C',
+  26:'A',27:'C',28:'A',29:'B',30:'C',31:'B',
+  32:'B',33:'C',34:'B',35:'C',36:'D',37:'D',
+  38:'C',39:'D',40:'B',41:'C',42:'B',43:'B',
+  44:'D',45:'C',46:'B',47:'A',48:'B',
+  49:'D',50:'B',51:'D',52:'B',53:'C',
+  54:'A',55:'C',56:'C',
+  57:'D',58:'D',59:'B',60:'A'
+};
+
+const SECTIONS = [
+  { name:'Section 1: Creating Application Networks', pct:'5%', qs:[1,2,3,4] },
+  { name:'Section 2: Designing APIs', pct:'10%', qs:[5,6,7,8,9] },
+  { name:'Section 3: Accessing & Modifying Mule Events', pct:'10%', qs:[10,11,12,13,14,15] },
+  { name:'Section 4: Structuring Mule Applications', pct:'10%', qs:[16,17,18,19,20,21] },
+  { name:'Section 5: Building API Implementation Flows', pct:'5%', qs:[22,23,24,25] },
+  { name:'Section 6: Using Connectors', pct:'10%', qs:[26,27,28,29,30,31] },
+  { name:'Section 7: Processing Records', pct:'10%', qs:[32,33,34,35,36,37] },
+  { name:'Section 8: Transforming Data with DataWeave', pct:'15%', qs:[38,39,40,41,42,43] },
+  { name:'Section 9: Routing Events', pct:'10%', qs:[44,45,46,47,48] },
+  { name:'Section 10: Handling Errors', pct:'10%', qs:[49,50,51,52,53] },
+  { name:'Section 11: Debugging & Troubleshooting', pct:'5%', qs:[54,55,56] },
+  { name:'Section 12: Deploying & Managing APIs', pct:'10%', qs:[57,58,59,60] },
+];
+
+const answers = {};
+const flagged = {};
+let scored = false;
+
+function buildUI() {
+  const area = document.getElementById('questionsArea');
+  area.innerHTML = '';
+  SECTIONS.forEach(sec => {
+    const block = document.createElement('div');
+    block.className = 'section-block';
+    block.id = 'sec-' + sec.qs[0];
+    let rows = sec.qs.map(q => `
+      <div class="question-row" id="qrow-${q}">
+        <div class="q-num">Q${q}</div>
+        <div class="q-choices">
+          ${['A','B','C','D'].map(c => `<button class="choice-btn" id="q${q}-${c}" onclick="selectAnswer(${q},'${c}')">${c}</button>`).join('')}
+        </div>
+        <button class="flag-btn" id="flag-${q}" onclick="toggleFlag(${q})" title="Flag for review">⚑</button>
+        <div class="result-icon" id="res-${q}"></div>
+      </div>`).join('');
+    block.innerHTML = `
+      <div class="section-header">
+        <div class="section-title">${sec.name}</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div class="section-score" id="sec-score-${sec.qs[0]}"></div>
+          <div class="section-badge">${sec.pct}</div>
+        </div>
+      </div>
+      ${rows}`;
+    area.appendChild(block);
+  });
+}
+
+function selectAnswer(q, choice) {
+  if (scored) return;
+  answers[q] = choice;
+  ['A','B','C','D'].forEach(c => {
+    document.getElementById(`q${q}-${c}`).classList.toggle('selected', c === choice);
+  });
+  document.getElementById('qrow-' + q).classList.add('answered');
+  updateStats();
+}
+
+function toggleFlag(q) {
+  flagged[q] = !flagged[q];
+  document.getElementById('flag-' + q).classList.toggle('flagged', flagged[q]);
+  updateStats();
+}
+
+function updateStats() {
+  const ans = Object.keys(answers).length;
+  document.getElementById('answeredCount').textContent = ans;
+  document.getElementById('remainingCount').textContent = 60 - ans;
+  document.getElementById('flaggedCount').textContent = Object.values(flagged).filter(Boolean).length;
+  document.getElementById('progressFill').style.width = (ans / 60 * 100) + '%';
+}
+
+function scoreExam() {
+  scored = true;
+  let total = 0;
+  const secScores = {};
+  SECTIONS.forEach(s => secScores[s.qs[0]] = {correct:0, total:s.qs.length, name: s.name.split(': ')[1] || s.name});
+
+  SECTIONS.forEach(sec => {
+    sec.qs.forEach(q => {
+      const userAns = answers[q];
+      const correct = ANSWER_KEY[q];
+      const row = document.getElementById('qrow-' + q);
+      const resIcon = document.getElementById('res-' + q);
+      row.classList.remove('answered');
+      ['A','B','C','D'].forEach(c => {
+        const btn = document.getElementById(`q${q}-${c}`);
+        btn.classList.remove('selected');
+        if (c === correct) btn.classList.add('show-correct');
+        if (userAns && c === userAns && userAns !== correct) btn.classList.add('wrong-ans');
+      });
+      if (userAns === correct) {
+        total++;
+        secScores[sec.qs[0]].correct++;
+        row.classList.add('correct');
+        resIcon.textContent = '✓';
+        resIcon.style.color = '#27ae60';
+      } else if (userAns) {
+        row.classList.add('wrong');
+        resIcon.textContent = '✗';
+        resIcon.style.color = '#e74c3c';
+      } else {
+        resIcon.textContent = '–';
+        resIcon.style.color = '#5a8ab0';
+      }
+    });
+    const ss = secScores[sec.qs[0]];
+    const pct = Math.round(ss.correct / ss.total * 100);
+    const cls = pct >= 70 ? 'good' : pct >= 50 ? 'ok' : 'bad';
+    document.getElementById('sec-score-' + sec.qs[0]).innerHTML =
+      `<span class="${cls}" style="font-weight:700">${ss.correct}/${ss.total}</span>`;
+  });
+
+  const pct = Math.round(total / 60 * 100);
+  const pass = total >= 42;
+  const panel = document.getElementById('resultsPanel');
+  panel.className = 'results-panel show';
+
+  const secHtml = SECTIONS.map(sec => {
+    const ss = secScores[sec.qs[0]];
+    const p = Math.round(ss.correct / ss.total * 100);
+    const cls = p >= 70 ? 'good' : p >= 50 ? 'ok' : 'bad';
+    return `<div class="sec-result">
+      <div class="sec-result-name">${ss.name}</div>
+      <div class="sec-result-score ${cls}">${ss.correct}/${ss.total}</div>
+      <div class="sec-result-pct ${cls}">${p}%</div>
+    </div>`;
+  }).join('');
+
+  panel.innerHTML = `
+    <div class="result-headline ${pass ? 'pass' : 'fail'}">${total}/60 — ${pct}%</div>
+    <div class="result-sub">${pass ? '✓ PASS — You did it!' : `✗ Need ${42 - total} more correct to pass (42/60 = 70%)`}</div>
+    <div class="section-results">${secHtml}</div>`;
+
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  stopTimer();
+}
+
+// ── Timer ─────────────────────────────────────────────────────────────────
+let elapsed = 0, running = false, interval = null;
+const TOTAL = 7200;
+
+function toggleTimer() {
+  running ? stopTimer() : startTimer();
+}
+function startTimer() {
+  running = true;
+  document.getElementById('startBtn').textContent = '⏸ Pause';
+  document.getElementById('startBtn').className = 'btn btn-pause';
+  interval = setInterval(() => {
+    elapsed++;
+    const rem = Math.max(0, TOTAL - elapsed);
+    updateTimerDisplay(rem);
+    if (rem === 0) stopTimer();
+  }, 1000);
+}
+function stopTimer() {
+  running = false;
+  clearInterval(interval);
+  document.getElementById('startBtn').textContent = '▶ Resume';
+  document.getElementById('startBtn').className = 'btn btn-start';
+}
+function resetTimer() {
+  stopTimer();
+  elapsed = 0;
+  updateTimerDisplay(TOTAL);
+  document.getElementById('startBtn').textContent = '▶ Start';
+}
+function updateTimerDisplay(secs) {
+  const h = Math.floor(secs / 3600);
+  const m = Math.floor((secs % 3600) / 60);
+  const s = secs % 60;
+  const el = document.getElementById('timer');
+  el.textContent = `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  el.className = 'timer' + (secs < 600 ? ' danger' : secs < 1200 ? ' warning' : '');
+}
+
+buildUI();
+updateStats();
+</script>
+</body>
+</html>

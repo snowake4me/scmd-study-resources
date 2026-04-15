@@ -1,0 +1,289 @@
+{
+	"info": {
+		"_postman_id": "exam-lab-accounts-2026",
+		"name": "Exam Lab Accounts API — SCMD Study Exercises",
+		"description": "# SCMD DEX-401 Hands-On Lab Collection\n\nThis collection exercises every pattern built in the `exam-lab-accounts` Anypoint Studio project during Billy's SCMD exam prep sessions (April 13-15, 2026).\n\n## Prerequisites\n- exam-lab-accounts project running in Anypoint Studio on localhost:8081\n- MySQL training DB accessible at mudb.mule-training.com:3306\n\n## Exam Concepts Covered\n| # | Concept | Endpoint |\n|---|---------|----------|\n| 1 | For Each scope (payload restoration, variable survival) | GET /api/accounts |\n| 2 | Choice Router (When expressions, Default) | POST /api/accounts |\n| 3 | Error Handling: Child Propagate → Parent Continue | GET /api/accounts/{id} |\n| 4 | Batch Job (async, On Complete, BatchJobResult) | POST /api/accounts/sync |\n| 5 | Object Store (Store/Retrieve, OS:KEY_NOT_FOUND) | GET /api/accounts/sync/{jobId} |\n| 6 | DB Input Parameters ({} Map, :placeholder matching) | GET /db-test |\n| 7 | APIKit path matching (trailing slash trap) | GET /api/accounts/ |\n\n## Key Rules to Observe\n- **For Each**: payload restored after scope; variables survive; counter removed\n- **Batch Job**: async; On Complete payload = ImmutableBatchJobResult; inner variables don't propagate\n- **On Error Continue (main flow)**: short-circuits flow; handler's payload = response; uses SUCCESS status path\n- **On Error Propagate (child)**: handler runs, then re-throws error to parent\n- **DB Input Parameters**: always {} Map; key matches :placeholder by name (no colon); NOT []\n- **DB Select**: returns Java (Array of Maps); needs Transform for HTTP response\n- **Trailing slash**: breaks APIKit path matching",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1 — For Each & Payload Lifecycle",
+			"item": [
+				{
+					"name": "GET /accounts — List all (triggers For Each)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/accounts",
+							"host": ["localhost"],
+							"port": "8081",
+							"path": ["api", "accounts"]
+						},
+						"description": "## Exam Concepts\n- **For Each scope**: iterates over `payload.accounts` (Array)\n- **Payload restoration**: after For Each, payload reverts to original Object (all 5 accounts)\n- **Variable survival**: `lastAccountName` set inside For Each IS accessible outside (value = last iteration)\n- **Counter variable**: auto-created by For Each, does NOT survive outside scope\n- **typeOf(payload)**: Binary before Transform → Object after Transform\n\n## What to observe in debugger\n1. Before Transform: payload type = Binary (HTTP Listener always wraps body as stream)\n2. After Transform: payload type = Object (the JSON structure)\n3. Inside For Each: payload = single account Object; `counter` variable present\n4. After For Each: payload = original Object with all 5 accounts; `lastAccountName` = 'Corner Bakery'; `counter` gone\n\n## Expected Response\n200 OK with JSON object containing `accounts` array (5 accounts)"
+					},
+					"response": []
+				}
+			],
+			"description": "Exercises the For Each scope behavior: payload restoration, variable survival, counter variable lifecycle."
+		},
+		{
+			"name": "2 — Choice Router (Routing Events)",
+			"item": [
+				{
+					"name": "POST /accounts — Enterprise (When #1)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"ACCT-006\",\n  \"name\": \"Test Corp\",\n  \"type\": \"enterprise\",\n  \"balance\": 75000\n}"
+						},
+						"url": {
+							"raw": "localhost:8081/api/accounts",
+							"host": ["localhost"],
+							"port": "8081",
+							"path": ["api", "accounts"]
+						},
+						"description": "## Exam Concepts\n- **Choice Router**: evaluates `payload.\"type\"` against When expressions\n- **When expression**: `#[payload.\"type\" == \"enterprise\"]`\n- **DataWeave `++` operator**: appends `status` and `creditLimit` fields to existing payload\n\n## Expected Response\n201 or 200 with enterprise account + `status: \"approved\"`, `creditLimit: 100000`"
+					},
+					"response": []
+				},
+				{
+					"name": "POST /accounts — Small Business (When #2)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"ACCT-007\",\n  \"name\": \"Corner Store\",\n  \"type\": \"small-business\",\n  \"balance\": 3500\n}"
+						},
+						"url": {
+							"raw": "localhost:8081/api/accounts",
+							"host": ["localhost"],
+							"port": "8081",
+							"path": ["api", "accounts"]
+						},
+						"description": "## Exam Concepts\n- **Second When branch**: `#[payload.\"type\" == \"small-business\"]`\n- Choice evaluates When expressions top-to-bottom, takes first match\n\n## Expected Response\n200 with small-business account + `status: \"approved\"`, `creditLimit: 25000`"
+					},
+					"response": []
+				},
+				{
+					"name": "POST /accounts — Personal (Default route)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"ACCT-008\",\n  \"name\": \"Jane Smith\",\n  \"type\": \"personal\",\n  \"balance\": 500\n}"
+						},
+						"url": {
+							"raw": "localhost:8081/api/accounts",
+							"host": ["localhost"],
+							"port": "8081",
+							"path": ["api", "accounts"]
+						},
+						"description": "## Exam Concepts\n- **Default route**: no When expression matched → falls through to Otherwise/Default\n- Default is like the 'else' branch — catches everything not explicitly matched\n\n## Expected Response\n200 with personal account + `status: \"pending-review\"`, `creditLimit: 0`"
+					},
+					"response": []
+				}
+			],
+			"description": "Exercises Choice Router with When expressions and Default fallback. Tests routing based on account type field."
+		},
+		{
+			"name": "3 — Error Handling Chain",
+			"item": [
+				{
+					"name": "GET /accounts/{id} — Child Propagate → Parent Continue",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/accounts/123",
+							"host": ["localhost"],
+							"port": "8081",
+							"path": ["api", "accounts", "123"]
+						},
+						"description": "## Exam Concepts (Q56 KILLER — repeat miss)\n- **lookupAccount** (child flow) raises APP:NOT_FOUND\n- Child's **On Error Propagate** fires → sets payload to 'Error from child - Propagate' → re-throws error\n- Parent's **On Error Continue** catches propagated error → sets httpStatus=404 → sets payload to 'Handled gracefully'\n- Parent's Continue handler **overwrites** child's payload\n- **'This should never execute'** (Set Payload after Flow Reference) NEVER fires\n- **'end of flow'** Logger NEVER fires\n\n## Chain of events (debugger-verified April 15, 2026)\n1. Raise Error → APP:NOT_FOUND in lookupAccount\n2. Child On Error Propagate → Set Payload runs ('Error from child') → error re-thrown\n3. Parent On Error Continue → Set Variable httpStatus=404 → Transform overwrites payload\n4. Continue = flow is 'done successfully' → Listener uses SUCCESS response path\n5. vars.httpStatus = 404 → overrides default 200\n\n## CRITICAL RULE\n- On Error Continue does NOT mean 'resume after error point'\n- It means: the error handler's output IS the flow's final output\n- Processors after the error point NEVER execute\n- EXCEPTION: if Continue is in a CHILD flow or Try scope, the PARENT resumes\n\n## Expected Response\n404 Not Found with `{\"message\": \"Handled gracefully by parent Continue\"}`"
+					},
+					"response": []
+				}
+			],
+			"description": "Exercises the most-tested error handling pattern: child On Error Propagate → parent On Error Continue. This is the Q56 pattern from practice exams."
+		},
+		{
+			"name": "4 — Batch Job (Async Processing)",
+			"item": [
+				{
+					"name": "POST /accounts/sync — Trigger batch (async)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/accounts/sync",
+							"host": ["localhost"],
+							"port": "8081",
+							"path": ["api", "accounts", "sync"]
+						},
+						"description": "## Exam Concepts\n- **Batch Job is ASYNC**: flow continues immediately past the Batch Job scope\n- Client gets the response BEFORE batch processing completes\n- **On Complete** is for cleanup/logging/notification — NOT for building the client response\n- Response includes `jobId` (from `vars.batchJobInstanceId` — auto-injected by batch runtime)\n\n## What to observe in debugger\n1. Set Variable `recordCount = 5` before batch\n2. Inside Batch Step: `recordCount` incremented per record, but resets to 5 for each new record (isolated scope)\n3. On Complete: `payload` = ImmutableBatchJobResult (totalRecords, successfulRecords, failedRecords, elapsedTimeMs)\n4. On Complete: `vars.recordCount` = 5 (original value — inner modifications don't propagate)\n5. On Complete: `vars.currentName` = NOT visible (only existed in batch record scope)\n\n## Batch vs For Each variable scoping\n| Behavior | For Each | Batch Job |\n|----------|----------|-----------|\n| Variables set inside | SURVIVE outside | Do NOT propagate to On Complete |\n| Payload after scope | RESTORED to original | REPLACED with BatchJobResult |\n\n## Expected Response\n200 OK with `{\"status\": \"accepted\", \"message\": \"Batch sync initiated\", \"jobId\": \"<uuid>\", \"recordCount\": 5}`\n\n## IMPORTANT\nCopy the `jobId` value — you'll need it for the next request!"
+					},
+					"response": []
+				},
+				{
+					"name": "GET /accounts/sync/{jobId} — Check batch status (happy path)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/accounts/sync/PASTE-JOB-ID-HERE",
+							"host": ["localhost"],
+							"port": "8081",
+							"path": ["api", "accounts", "sync", "PASTE-JOB-ID-HERE"]
+						},
+						"description": "## Exam Concepts\n- **Object Store Retrieve**: uses `vars.jobId` (extracted from URI params) as key\n- On Complete stored the BatchJobResult to Object Store keyed by `batchJobInstanceId`\n- Retrieve pulls the stored JSON result\n\n## IMPORTANT\n- Replace `PASTE-JOB-ID-HERE` in the URL with the actual jobId from the POST response\n- **Wait a few seconds** after the POST before sending this — the batch runs async and On Complete needs time to fire and Store the result\n- If you get 404, check the console for the On Complete Logger message\n\n## Expected Response\n200 OK with `{\"status\": \"complete\", \"totalRecords\": 5, \"successfulRecords\": 5, \"failedRecords\": 0, \"elapsedTimeMs\": <number>}`"
+					},
+					"response": []
+				},
+				{
+					"name": "GET /accounts/sync/fake-id — Check batch status (not found)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/accounts/sync/fake-id-does-not-exist",
+							"host": ["localhost"],
+							"port": "8081",
+							"path": ["api", "accounts", "sync", "fake-id-does-not-exist"]
+						},
+						"description": "## Exam Concepts\n- **OS:KEY_NOT_FOUND** error thrown by Object Store Retrieve\n- **On Error Propagate** catches it → sets `httpStatus = 404` → returns friendly JSON\n- HTTP Listener Error Response tab reads `vars.httpStatus default 500` — our 404 overrides it\n\n## Object Store error handling patterns\n- `Fail if present: True` → OS:KEY_ALREADY_EXISTS (guard against duplicate keys)\n- `Fail on null value: True` → OS:INVALID_KEY (guard against null values)\n- Key not found → OS:KEY_NOT_FOUND\n\n## Expected Response\n404 Not Found with `{\"message\": \"Job not found\"}`"
+					},
+					"response": []
+				}
+			],
+			"description": "Exercises async Batch Job processing, Object Store persistence, and Object Store error handling."
+		},
+		{
+			"name": "5 — DB Input Parameters",
+			"item": [
+				{
+					"name": "GET /db-test — Parameterized query (match)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/db-test?postalCode=90545",
+							"host": ["localhost"],
+							"port": "8081",
+							"path": ["db-test"],
+							"query": [
+								{
+									"key": "postalCode",
+									"value": "90545"
+								}
+							]
+						},
+						"description": "## Exam Concepts (Q27/Q57 KILLER — repeat miss)\n- **DB Input Parameters = {} Map, ALWAYS** — never []\n- SQL: `SELECT * FROM accounts WHERE postal = :postalCode`\n- Input Parameters: `{'postalCode': attributes.queryParams.postalCode}`\n- Key `'postalCode'` matches `:postalCode` placeholder **by name** (no colon in key)\n- Key does NOT need to match column name (`postal` ≠ `postalCode`)\n- **DB Select returns Java** (ArrayList of LinkedHashMaps) — needs Transform to JSON\n\n## The full chain\nHTTP query param `?postalCode=90545`\n→ `attributes.queryParams.postalCode` = \"90545\"\n→ Input Parameters Map `{'postalCode': '90545'}`\n→ SQL `:postalCode` replaced with '90545'\n→ `SELECT * FROM accounts WHERE postal = '90545'`\n→ Java ArrayList result\n→ Transform to application/json\n→ JSON array response\n\n## Config Properties pattern (Q21)\n- DB credentials stored in `config.yaml` under `src/main/resources`\n- Referenced via `${db.host}`, `${db.port}`, etc. in Database Config global element\n- Config file location specified in a **Configuration Properties global element** (NOT pom.xml)\n\n## Expected Response\n200 OK with JSON array containing account(s) matching postal code 90545"
+					},
+					"response": []
+				},
+				{
+					"name": "GET /db-test — Parameterized query (no match)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/db-test?postalCode=99999",
+							"host": ["localhost"],
+							"port": "8081",
+							"path": ["db-test"],
+							"query": [
+								{
+									"key": "postalCode",
+									"value": "99999"
+								}
+							]
+						},
+						"description": "## Exam Concepts\n- Same parameterized query, no matching records\n- DB Select returns an **empty Array** — NOT null, NOT an error\n- The flow continues normally with an empty collection\n\n## Expected Response\n200 OK with `[]` (empty JSON array)"
+					},
+					"response": []
+				}
+			],
+			"description": "Exercises DB Select with parameterized queries using Input Parameters Map. Directly targets Q27/Q57 repeat misses."
+		},
+		{
+			"name": "6 — APIKit Gotchas",
+			"item": [
+				{
+					"name": "GET /accounts/ — TRAILING SLASH (breaks APIKit)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/accounts/",
+							"host": ["localhost"],
+							"port": "8081",
+							"path": ["api", "accounts", ""]
+						},
+						"description": "## Exam Concepts\n- **APIKit does exact path matching** based on RAML resource definitions\n- RAML defines `/accounts` — NOT `/accounts/`\n- Trailing slash causes APIKit to try matching `/{id}` with an empty id → BAD_REQUEST\n- Error: `Unable to resolve valid URI parameter values for the requested URL`\n- Error type: `APIKIT:BAD_REQUEST`\n\n## Expected Response\n400 Bad Request with `{\"message\": \"Bad request\"}`"
+					},
+					"response": []
+				},
+				{
+					"name": "POST /accounts/sync/ — TRAILING SLASH on sync",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/accounts/sync/",
+							"host": ["localhost"],
+							"port": "8081",
+							"path": ["api", "accounts", "sync", ""]
+						},
+						"description": "## Exam Concepts\n- Same trailing slash issue on the sync endpoint\n- APIKit tries to match `/sync/{jobId}` with empty jobId → BAD_REQUEST\n- Consistent behavior: trailing slashes break APIKit path matching everywhere\n\n## Expected Response\n400 Bad Request with `{\"message\": \"Bad request\"}`"
+					},
+					"response": []
+				},
+				{
+					"name": "PUT /accounts — Method not allowed",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"ACCT-001\",\n  \"name\": \"Updated\",\n  \"type\": \"enterprise\",\n  \"balance\": 99999\n}"
+						},
+						"url": {
+							"raw": "localhost:8081/api/accounts",
+							"host": ["localhost"],
+							"port": "8081",
+							"path": ["api", "accounts"]
+						},
+						"description": "## Exam Concepts\n- RAML only defines GET and POST for `/accounts`\n- PUT is not defined → APIKit throws APIKIT:METHOD_NOT_ALLOWED\n- Main flow error handler has On Error Propagate for this type → returns 405\n\n## Expected Response\n405 Method Not Allowed with `{\"message\": \"Method not allowed\"}`"
+					},
+					"response": []
+				}
+			],
+			"description": "Exercises APIKit error handling: trailing slash path matching, unsupported HTTP methods, and the auto-generated error handlers."
+		}
+	]
+}
