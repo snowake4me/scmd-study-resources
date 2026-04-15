@@ -6,6 +6,15 @@ A bespoke collection of study materials built around my own exam journey — not
 
 ## The Arc
 
+First things first - I thought I'd see where I was at fresh from a week in DEX-401, prior to any additional study.
+
+To take the practice exam I used a custom HTML answer sheet rather than pen and paper — it handles timing, flagging, and automatic scoring with a per-section breakdown:
+
+**[scmd_practice_exam_answer_sheet.html](scmd_practice_exam_answer_sheet.html)**
+Open in any browser. Enter answers as you go, flag questions for review, then hit Score to see your result and where you lost points by section. The answer key and section mappings are baked in — no exam question text is included.
+
+Results: EPIC fail (60%)
+
 ### Round 1 — Building from Missed Questions
 
 The first generation of materials came directly from practice exam analysis. Rather than re-reading course content wholesale, I identified every question I missed, diagnosed the underlying gap, and had Claude synthesize targeted study content from those specific failure modes.
@@ -23,14 +32,9 @@ The pre-exam drill guide, updated the evening before the test with empirically v
 **[SCMD_Persistent_Failures_CheatSheet.md](SCMD_Persistent_Failures_CheatSheet.md)**
 The exam-morning cheat sheet. Every concept that tripped me up across multiple practice sessions, with hit counts, the exact trap, and the rule to overwrite it.
 
-To take the practice exam I used a custom HTML answer sheet rather than pen and paper — it handles timing, flagging, and automatic scoring with a per-section breakdown:
-
-**[scmd_practice_exam_answer_sheet.html](scmd_practice_exam_answer_sheet.html)**
-Open in any browser. Enter answers as you go, flag questions for review, then hit Score to see your result and where you lost points by section. The answer key and section mappings are baked in — no exam question text is included.
-
 ### The Exam
 
-April 9, 2026. Did not pass.
+April 9, 2026. Did not pass.  Had to wait several agonizing hours for results via email - and didn't actually get a final score - just a breakdown of my performance by topic.  I was strong, in a couple (80%) - but weak (50-60%) in a lot more - and actually had one 0%.  Hope that was a small topic!  Lots of work to do - and yet, I STILL want to strike while the iron is hot and retake this **soon**.
 
 ---
 
