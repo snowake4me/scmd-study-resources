@@ -11,9 +11,9 @@ Let me preface this by saying ALL of this study was done on a personal machine, 
 
 First things first - I thought I'd see where I was at fresh from a week in DEX-401, prior to any additional study.
 
-To take the practice exam I used a custom HTML answer sheet rather than pen and paper — it handles timing, flagging, and automatic scoring with a per-section breakdown:
+To take the practice exam I used a custom HTML scoring sheet rather than pen and paper — it handles timing, flagging, and automatic scoring with a per-section breakdown:
 
-**[scmd_practice_exam_answer_sheet.html](scmd_practice_exam_answer_sheet.html)**
+**[scmd_practice_exam_scoring_sheet.html](scmd_practice_exam_scoring_sheet.html)**
 Open in any browser. Enter answers as you go, flag questions for review, then hit Score to see your result and where you lost points by section. The answer key and section mappings are baked in — no exam question text is included. My first result: 60%. Ouch.
 
 ### Round 1 — Building from Missed Questions
@@ -108,4 +108,4 @@ Five items still being missed on 93% practice exams the day before the retake. I
 
 ## A Note on Content
 
-This repository contains no Salesforce or MuleSoft proprietary or trademarked content. No course materials, no practice exam questions, no student project files, no official configurations. It also contains no corporate information of any kind — no company assets were used in the creation of this content. Everything here — the study guides, cheat sheets, drill documents, HTML answer sheet, and lab project — was created entirely by me, in collaboration with AI assistants, on personal equipment and personal time, based on my own learning and experience. Concepts, vocabulary, and mental models are fair game; someone else's IP is not.
+This repository contains no Salesforce or MuleSoft proprietary or trademarked content. No course materials, no practice exam questions, no student project files, no official configurations. It also contains no corporate information of any kind — no company assets were used in the creation of this content. Everything here — the study guides, cheat sheets, drill documents, HTML scoring sheet, and lab project — was created entirely by me, in collaboration with AI assistants, on personal equipment and personal time, based on my own learning and experience. Concepts, vocabulary, and mental models are fair game; someone else's IP is not.
