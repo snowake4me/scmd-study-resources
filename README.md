@@ -105,3 +105,7 @@ The final morning review — the stickiest patterns, one last time, before walki
 
 **[Last_Minute_Final_Crib.md](Last_Minute_Final_Crib.md)**
 Five items still being missed on 93% practice exams the day before the retake. If you're down to this level, you're close. Trust the rules, slow-read the question stems, and go.
+
+## A Note on Content
+
+This repository contains no Salesforce or MuleSoft proprietary or trademarked content. No course materials, no practice exam questions, no student project files, no official configurations. It also contains no corporate information of any kind — no company assets were used in the creation of this content. Everything here — the study guides, cheat sheets, drill documents, HTML answer sheet, and lab project — was created entirely by me, in collaboration with AI assistants, on personal equipment and personal time, based on my own learning and experience. Concepts, vocabulary, and mental models are fair game; someone else's IP is not.

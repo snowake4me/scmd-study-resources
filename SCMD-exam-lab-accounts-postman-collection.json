@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "exam-lab-accounts-2026",
 		"name": "Exam Lab Accounts API — SCMD Study Exercises",
-		"description": "# SCMD DEX-401 Hands-On Lab Collection\n\nThis collection exercises every pattern built in the `exam-lab-accounts` Anypoint Studio project during Billy's SCMD exam prep sessions (April 13-15, 2026).\n\n## Prerequisites\n- exam-lab-accounts project running in Anypoint Studio on localhost:8081\n- MySQL training DB accessible at mudb.mule-training.com:3306\n\n## Exam Concepts Covered\n| # | Concept | Endpoint |\n|---|---------|----------|\n| 1 | For Each scope (payload restoration, variable survival) | GET /api/accounts |\n| 2 | Choice Router (When expressions, Default) | POST /api/accounts |\n| 3 | Error Handling: Child Propagate → Parent Continue | GET /api/accounts/{id} |\n| 4 | Batch Job (async, On Complete, BatchJobResult) | POST /api/accounts/sync |\n| 5 | Object Store (Store/Retrieve, OS:KEY_NOT_FOUND) | GET /api/accounts/sync/{jobId} |\n| 6 | DB Input Parameters ({} Map, :placeholder matching) | GET /db-test |\n| 7 | APIKit path matching (trailing slash trap) | GET /api/accounts/ |\n\n## Key Rules to Observe\n- **For Each**: payload restored after scope; variables survive; counter removed\n- **Batch Job**: async; On Complete payload = ImmutableBatchJobResult; inner variables don't propagate\n- **On Error Continue (main flow)**: short-circuits flow; handler's payload = response; uses SUCCESS status path\n- **On Error Propagate (child)**: handler runs, then re-throws error to parent\n- **DB Input Parameters**: always {} Map; key matches :placeholder by name (no colon); NOT []\n- **DB Select**: returns Java (Array of Maps); needs Transform for HTTP response\n- **Trailing slash**: breaks APIKit path matching",
+		"description": "# SCMD DEX-401 Hands-On Lab Collection\n\nThis collection exercises every pattern built in the `exam-lab-accounts` Anypoint Studio project during Billy's SCMD exam prep sessions (April 13-15, 2026).\n\n## Prerequisites\n- exam-lab-accounts project running in Anypoint Studio on localhost:8081\n- MySQL DB accessible at {{db.host}}:{{db.port}} (configure in Postman environment or collection variables to match your config.yaml)\n\n## Exam Concepts Covered\n| # | Concept | Endpoint |\n|---|---------|----------|\n| 1 | For Each scope (payload restoration, variable survival) | GET /api/accounts |\n| 2 | Choice Router (When expressions, Default) | POST /api/accounts |\n| 3 | Error Handling: Child Propagate → Parent Continue | GET /api/accounts/{id} |\n| 4 | Batch Job (async, On Complete, BatchJobResult) | POST /api/accounts/sync |\n| 5 | Object Store (Store/Retrieve, OS:KEY_NOT_FOUND) | GET /api/accounts/sync/{jobId} |\n| 6 | DB Input Parameters ({} Map, :placeholder matching) | GET /db-test |\n| 7 | APIKit path matching (trailing slash trap) | GET /api/accounts/ |\n\n## Key Rules to Observe\n- **For Each**: payload restored after scope; variables survive; counter removed\n- **Batch Job**: async; On Complete payload = ImmutableBatchJobResult; inner variables don't propagate\n- **On Error Continue (main flow)**: short-circuits flow; handler's payload = response; uses SUCCESS status path\n- **On Error Propagate (child)**: handler runs, then re-throws error to parent\n- **DB Input Parameters**: always {} Map; key matches :placeholder by name (no colon); NOT []\n- **DB Select**: returns Java (Array of Maps); needs Transform for HTTP response\n- **Trailing slash**: breaks APIKit path matching",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -284,6 +284,34 @@
 				}
 			],
 			"description": "Exercises APIKit error handling: trailing slash path matching, unsupported HTTP methods, and the auto-generated error handlers."
+		}
+	],
+	"variable": [
+		{
+			"key": "db.host",
+			"value": "localhost",
+			"type": "string"
+		},
+		{
+			"key": "db.port",
+			"value": "3306",
+			"type": "string"
+		},
+		{
+			"key": "db.user",
+			"value": "YOUR_DB_USER",
+			"type": "string"
+		},
+		{
+			"key": "db.password",
+			"value": "YOUR_DB_PASSWORD",
+			"type": "string",
+			"disabled": false
+		},
+		{
+			"key": "db.database",
+			"value": "YOUR_DB_NAME",
+			"type": "string"
 		}
 	]
 }
