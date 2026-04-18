@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MuleSoft Integration Foundations — Practice Exam 01</title>
+<style>
+  :root {
+    --bg: #f5f2ec;
+    --surface: #ffffff;
+    --ink: #1a1a1a;
+    --ink-soft: #4a4a4a;
+    --ink-faint: #8a8a8a;
+    --rule: #d8d4cc;
+    --accent: #0b4a8f;
+    --accent-soft: #e8eef7;
+    --correct: #1e7a3d;
+    --correct-soft: #e4f2e8;
+    --wrong: #b32525;
+    --wrong-soft: #f6e4e4;
+    --warn: #b35900;
+    --warn-soft: #faeede;
+    --flag: #7a5a00;
+    --flag-soft: #faf1d4;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 17px;
+    line-height: 1.55;
+  }
+
+  .page {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 28px 120px;
+  }
+
+  /* --- Header / Timer --- */
+  header.masthead {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 18px;
+    margin-bottom: 32px;
+  }
+
+  .eyebrow {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-size: 32px;
+    line-height: 1.15;
+    margin: 0 0 6px;
+    font-weight: normal;
+    letter-spacing: -0.01em;
+  }
+
+  .sub {
+    font-style: italic;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  /* --- Sticky status bar (timer + progress + submit) --- */
+  .statusbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
+    padding: 12px 0;
+    margin: 0 0 28px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .timer {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    padding: 6px 14px;
+    background: var(--surface);
+    border: 1.5px solid var(--ink);
+    border-radius: 2px;
+    min-width: 120px;
+    text-align: center;
+  }
+
+  .timer.warning { color: var(--warn); border-color: var(--warn); background: var(--warn-soft); }
+  .timer.danger { color: var(--wrong); border-color: var(--wrong); background: var(--wrong-soft); }
+  .timer.expired {
+    color: var(--wrong);
+    border-color: var(--wrong);
+    background: var(--wrong-soft);
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+  @keyframes pulse { 50% { opacity: 0.55; } }
+
+  .progress {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .progress strong { color: var(--ink); font-size: 15px; }
+
+  button.submit-btn {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 10px 22px;
+    background: var(--ink);
+    color: var(--bg);
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  button.submit-btn:hover { background: var(--accent); }
+  button.submit-btn:disabled { background: var(--ink-faint); cursor: not-allowed; }
+
+  /* --- Domain sections --- */
+  .domain {
+    margin-top: 44px;
+  }
+  .domain-header {
+    border-left: 4px solid var(--accent);
+    padding: 4px 0 4px 14px;
+    margin-bottom: 24px;
+  }
+  .domain-label {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .domain-title {
+    font-size: 19px;
+    font-weight: normal;
+    margin: 2px 0 0;
+    letter-spacing: -0.005em;
+  }
+  .domain-weight {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin-top: 2px;
+  }
+
+  /* --- Question cards --- */
+  .question {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 22px 26px;
+    margin-bottom: 18px;
+    scroll-margin-top: 100px;
+  }
+
+  .q-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .q-num {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+  }
+  .q-flag {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    background: none;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 3px 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .q-flag:hover { color: var(--flag); border-color: var(--flag); }
+  .q-flag.flagged { color: var(--flag); border-color: var(--flag); background: var(--flag-soft); }
+
+  .q-text {
+    font-size: 17px;
+    line-height: 1.55;
+    margin: 0 0 16px;
+  }
+
+  .options { list-style: none; padding: 0; margin: 0; }
+  .options li { margin: 0; padding: 0; }
+
+  .options label {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px 14px;
+    margin: 6px 0;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s;
+    background: var(--surface);
+  }
+  .options label:hover { background: var(--accent-soft); border-color: var(--accent); }
+  .options input[type="radio"] { margin-top: 4px; accent-color: var(--accent); }
+  .options input[type="radio"]:checked + .opt-letter { color: var(--accent); font-weight: 700; }
+  .options label:has(input:checked) { background: var(--accent-soft); border-color: var(--accent); }
+
+  .opt-letter {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    color: var(--ink-soft);
+    min-width: 18px;
+  }
+  .opt-text { flex: 1; }
+
+  /* --- Review mode (post-submit) --- */
+  .question.review label { cursor: default; pointer-events: none; }
+  .question.review.correct { border-left: 4px solid var(--correct); }
+  .question.review.wrong { border-left: 4px solid var(--wrong); }
+  .question.review.unanswered { border-left: 4px solid var(--ink-faint); }
+
+  .question.review label.marked-correct {
+    background: var(--correct-soft);
+    border-color: var(--correct);
+  }
+  .question.review label.marked-correct .opt-letter { color: var(--correct); font-weight: 700; }
+
+  .question.review label.marked-wrong {
+    background: var(--wrong-soft);
+    border-color: var(--wrong);
+    text-decoration: line-through;
+    text-decoration-color: var(--wrong);
+  }
+  .question.review label.marked-wrong .opt-letter { color: var(--wrong); font-weight: 700; }
+
+  .review-badge {
+    display: inline-block;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-weight: 700;
+    margin-left: 10px;
+  }
+  .review-badge.correct { background: var(--correct); color: #fff; }
+  .review-badge.wrong { background: var(--wrong); color: #fff; }
+  .review-badge.unanswered { background: var(--ink-faint); color: #fff; }
+
+  /* --- Results panel --- */
+  .results {
+    background: var(--surface);
+    border: 2px solid var(--ink);
+    border-radius: 3px;
+    padding: 32px;
+    margin-bottom: 40px;
+    scroll-margin-top: 20px;
+  }
+  .results-eyebrow {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .results h2 {
+    font-size: 28px;
+    font-weight: normal;
+    margin: 6px 0 20px;
+    letter-spacing: -0.01em;
+  }
+  .score-line {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 16px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 24px;
+  }
+  .score-big {
+    font-size: 48px;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    line-height: 1;
+  }
+  .score-pct {
+    font-size: 24px;
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--ink-soft);
+  }
+  .score-verdict {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 2px;
+  }
+  .score-verdict.pass { background: var(--correct); color: #fff; }
+  .score-verdict.fail { background: var(--wrong); color: #fff; }
+
+  .domain-breakdown h3 {
+    font-size: 14px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+  }
+
+  .domain-row {
+    margin-bottom: 12px;
+  }
+  .domain-row-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .domain-row-title {
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .domain-row-score {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .domain-row-score.weak { color: var(--wrong); }
+  .domain-row-score.strong { color: var(--correct); }
+
+  .bar {
+    height: 8px;
+    background: var(--rule);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.6s ease-out;
+  }
+  .bar-fill.weak { background: var(--wrong); }
+  .bar-fill.strong { background: var(--correct); }
+
+  .missed-list {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+  }
+  .missed-list h3 {
+    font-size: 14px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 10px;
+  }
+  .missed-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .missed-chip {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 4px 10px;
+    background: var(--wrong-soft);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .missed-chip:hover { background: var(--wrong); color: #fff; }
+  .missed-chip.unanswered {
+    background: #eee;
+    color: var(--ink-soft);
+    border-color: var(--ink-faint);
+  }
+  .missed-chip.unanswered:hover { background: var(--ink-faint); color: #fff; }
+
+  .prompt-snippet {
+    margin-top: 24px;
+    padding: 16px 18px;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .prompt-snippet strong { color: var(--accent); }
+  .prompt-snippet code {
+    font-family: 'Courier New', Courier, monospace;
+    background: var(--surface);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 13px;
+  }
+
+  /* --- Confirm modal --- */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 26, 26, 0.55);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-backdrop.active { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: 3px;
+    padding: 28px;
+    max-width: 440px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .modal h3 {
+    margin: 0 0 10px;
+    font-size: 20px;
+    font-weight: normal;
+  }
+  .modal p { margin: 0 0 18px; color: var(--ink-soft); }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  .modal button {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    padding: 8px 16px;
+    border-radius: 2px;
+    cursor: pointer;
+    border: 1px solid var(--ink);
+    background: var(--surface);
+    color: var(--ink);
+  }
+  .modal button.primary { background: var(--ink); color: var(--bg); }
+  .modal button:hover { opacity: 0.85; }
+
+  @media (max-width: 600px) {
+    .page { padding: 24px 16px 100px; }
+    h1 { font-size: 24px; }
+    .question { padding: 18px; }
+    .statusbar { gap: 10px; }
+    .timer { font-size: 18px; min-width: 92px; padding: 5px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<header class="masthead">
+  <div class="eyebrow">Practice Exam · Self-Scored</div>
+  <h1>MuleSoft Integration Foundations</h1>
+  <p class="sub">40 questions · 70 minutes · 70% to pass · Aligned to Spring '24 exam guide</p>
+</header>
+
+<div class="statusbar">
+  <div id="timer" class="timer">70:00</div>
+  <div class="progress">
+    Answered <strong id="answered-count">0</strong> of 40
+    &nbsp;·&nbsp; Flagged <strong id="flagged-count">0</strong>
+  </div>
+  <button id="submit-btn" class="submit-btn">Submit Exam</button>
+</div>
+
+<div id="results-container"></div>
+
+<form id="quiz-form">
+<div id="questions-container"></div>
+</form>
+
+</div>
+
+<!-- Confirm submit modal -->
+<div id="confirm-modal" class="modal-backdrop">
+  <div class="modal">
+    <h3 id="confirm-title">Submit exam?</h3>
+    <p id="confirm-body">You have answered all 40 questions. Submit for scoring?</p>
+    <div class="modal-actions">
+      <button id="cancel-submit">Cancel</button>
+      <button id="confirm-submit" class="primary">Submit</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   DATA
+   ============================================================ */
+const QUIZ = {
+  durationSeconds: 70 * 60,
+  passingPercent: 70,
+  domains: [
+    { id: 'd1', label: 'Domain 1', title: 'Roles, responsibilities, and lifecycle of an integration project', weight: '17%', count: 7 },
+    { id: 'd2', label: 'Domain 2', title: 'Integration concepts and terminology',                                weight: '20%', count: 8 },
+    { id: 'd3', label: 'Domain 3', title: 'Integration problems, use cases, and solutions',                       weight: '17%', count: 7 },
+    { id: 'd4', label: 'Domain 4', title: 'Common technical complexities and patterns',                           weight: '18%', count: 7 },
+    { id: 'd5', label: 'Domain 5', title: 'Anypoint Platform for system integration',                             weight: '18%', count: 7 },
+    { id: 'd6', label: 'Domain 6', title: 'Anypoint Platform for API management',                                 weight: '10%', count: 4 }
+  ],
+  questions: [
+    // --- Domain 1 (Q1-Q7) ---
+    { n:1, d:'d1', q:"An IT director is reviewing why the organization's last three integration initiatives each shipped late and over budget. Which root cause does MuleSoft most commonly cite as a driver of IT project failure?",
+      options:{A:"Insufficient investment in proctored certification for developers",B:"A central IT team acting as a delivery bottleneck for every new integration request",C:"Over-reliance on commercial off-the-shelf (COTS) systems instead of custom code",D:"Using agile methodologies instead of waterfall delivery"}, answer:'B' },
+    { n:2, d:'d1', q:"A company wants to close the \"IT delivery gap\" that MuleSoft describes. Which strategy most directly addresses that gap?",
+      options:{A:"Hiring more full-time developers into the central IT team",B:"Standardizing on a single ESB vendor across all business units",C:"Enabling reusable assets that application teams can self-serve and discover",D:"Requiring every integration project to be approved by an architecture review board"}, answer:'C' },
+    { n:3, d:'d1', q:"In MuleSoft's API-led connectivity model, which layer is responsible for unlocking data from systems of record in a reusable, backend-agnostic form?",
+      options:{A:"Experience API layer",B:"Process API layer",C:"System API layer",D:"Edge API layer"}, answer:'C' },
+    { n:4, d:'d1', q:"A program manager is choosing a delivery methodology for an integration initiative with shifting requirements and a need for frequent stakeholder feedback. Which approach best fits?",
+      options:{A:"Waterfall, with a single release at the end of the project",B:"Agile, with iterative sprints and incremental releases",C:"V-model, with testing mirroring design phases",D:"Big-bang deployment, with all APIs released simultaneously"}, answer:'B' },
+    { n:5, d:'d1', q:"Which DevOps practice is most directly supported by automated builds and automated test suites that run on every code commit?",
+      options:{A:"Continuous integration",B:"Manual regression testing",C:"Passive monitoring",D:"Change advisory board approvals"}, answer:'A' },
+    { n:6, d:'d1', q:"MuleSoft's recommended product-centric API lifecycle has three stages. Which list correctly names them?",
+      options:{A:"Plan, build, retire",B:"Design, implement, manage",C:"Specify, deploy, decommission",D:"Model, code, test"}, answer:'B' },
+    { n:7, d:'d1', q:"On a typical MuleSoft integration project team, which role is primarily responsible for defining the API specification and ensuring it meets both producer and consumer needs before implementation begins?",
+      options:{A:"Integration developer",B:"API designer",C:"Platform administrator",D:"Release manager"}, answer:'B' },
+
+    // --- Domain 2 (Q8-Q15) ---
+    { n:8, d:'d2', q:"A company rents virtual machines, storage, and networking from a cloud provider and installs its own operating systems and applications on top. Which cloud service model is this?",
+      options:{A:"Software as a Service (SaaS)",B:"Platform as a Service (PaaS)",C:"Infrastructure as a Service (IaaS)",D:"Function as a Service (FaaS)"}, answer:'C' },
+    { n:9, d:'d2', q:"An enterprise system must handle unpredictable spikes in traffic by automatically adding or removing compute capacity as load changes. Which scalability principle is being applied?",
+      options:{A:"Vertical scaling",B:"Horizontal elasticity",C:"Static provisioning",D:"Active-passive failover"}, answer:'B' },
+    { n:10, d:'d2', q:"A developer inspects a configuration file that uses indentation to express hierarchy, with no brackets or angle tags. Which data format is most likely in use?",
+      options:{A:"XML",B:"JSON",C:"YAML",D:"CSV"}, answer:'C' },
+    { n:11, d:'d2', q:"Which statement most accurately describes the relationship between an API implementation and an API proxy?",
+      options:{A:"The proxy replaces the implementation and contains the business logic",B:"The proxy sits in front of the implementation and enforces policies such as authentication and rate limiting",C:"The proxy is the client that invokes the implementation",D:"The proxy and the implementation are identical in function but deployed to different environments"}, answer:'B' },
+    { n:12, d:'d2', q:"A REST API returns an HTTP 201 status code in response to a client request. What does this status most likely indicate?",
+      options:{A:"The request failed because the resource does not exist",B:"The request was successful and a new resource was created",C:"The request was redirected to a different URL",D:"The server is temporarily unavailable"}, answer:'B' },
+    { n:13, d:'d2', q:"Which API style uses a schema that allows the client to specify exactly which fields it wants returned in a single request, avoiding over-fetching?",
+      options:{A:"REST",B:"SOAP",C:"GraphQL",D:"AsyncAPI"}, answer:'C' },
+    { n:14, d:'d2', q:"An API describes a contract for publishing and subscribing to events over a message broker rather than a synchronous request-reply interaction. Which specification style most naturally describes this API?",
+      options:{A:"OpenAPI (OAS)",B:"RAML",C:"WSDL",D:"AsyncAPI"}, answer:'D' },
+    { n:15, d:'d2', q:"In the context of API security, what is the primary purpose of an OAuth 2.0 access token?",
+      options:{A:"To uniquely identify the physical device making the request",B:"To authorize a client to access a resource on behalf of a user or system, typically for a limited time",C:"To encrypt all payloads exchanged between client and server",D:"To replace TLS as the transport-level security mechanism"}, answer:'B' },
+
+    // --- Domain 3 (Q16-Q22) ---
+    { n:16, d:'d3', q:"A retailer must notify its warehouse, email service, and loyalty platform every time an online order is placed, with each downstream system reacting independently. Which integration interaction pattern best fits?",
+      options:{A:"Synchronous request-reply",B:"Publish-subscribe (event-driven)",C:"Batch file transfer run nightly",D:"Point-to-point polling from each downstream system"}, answer:'B' },
+    { n:17, d:'d3', q:"A 20-year-old mainframe system exposes data only via fixed-width flat files dropped on an SFTP server each night. A new mobile app needs near-real-time access to this data. Which tradeoff best describes the situation?",
+      options:{A:"The legacy approach provides faster delivery than a modern API-led approach",B:"The legacy approach limits timeliness and reuse; wrapping the mainframe with a System API improves both",C:"The modern approach is always cheaper to operate than the legacy approach",D:"Modern approaches eliminate the need for any batch processing"}, answer:'B' },
+    { n:18, d:'d3', q:"A business wants to combine data from three internal systems and expose a single unified view to a mobile application. Which composition pattern best describes combining multiple sources into one response?",
+      options:{A:"Orchestration",B:"Aggregation",C:"Choreography",D:"Broadcast"}, answer:'B' },
+    { n:19, d:'d3', q:"Two microservices each react to events published to a shared event bus without a central controller directing the sequence. Which composition pattern is this?",
+      options:{A:"Orchestration",B:"Aggregation",C:"Choreography",D:"Request-reply"}, answer:'C' },
+    { n:20, d:'d3', q:"A requirement states that an integration must process 10 million records overnight and does not require immediate response to any caller. Which integration technology class is most appropriate?",
+      options:{A:"Real-time API gateway",B:"Batch processing engine",C:"WebSocket streaming server",D:"Interactive chat service"}, answer:'B' },
+    { n:21, d:'d3', q:"An architect is decomposing a business problem into integration constituents. Which of the following is a system of record in most enterprises?",
+      options:{A:"A mobile application used by field technicians",B:"A customer-facing marketing website",C:"A core ERP database holding master customer and financial records",D:"A BI dashboard that visualizes aggregated KPIs"}, answer:'C' },
+    { n:22, d:'d3', q:"A team needs to expose an existing SOAP service to modern REST consumers without rewriting the backend. Which integration technology best fits?",
+      options:{A:"A data warehouse",B:"An API-led System or Process API that wraps the SOAP service and exposes a REST interface",C:"A file-based ETL job",D:"A direct database link from the consumers to the SOAP service's database"}, answer:'B' },
+
+    // --- Domain 4 (Q23-Q29) ---
+    { n:23, d:'d4', q:"Which interaction pattern is characterized by the sender not waiting for a response and typically being implemented with a message queue?",
+      options:{A:"Request-reply",B:"One-way (fire-and-forget)",C:"Synchronous RPC",D:"Polling"}, answer:'B' },
+    { n:24, d:'d4', q:"A team debates whether to define the API specification before or after writing the implementation. Which statement best captures the benefit of a design-first approach?",
+      options:{A:"It guarantees that the implementation will never need refactoring",B:"It allows consumers to review and mock against the contract before the backend is built, reducing rework",C:"It removes the need for any documentation later in the lifecycle",D:"It eliminates the need for integration testing"}, answer:'B' },
+    { n:25, d:'d4', q:"An operations team wants to understand not just whether their APIs are up, but also how a single request flowed across five downstream services. Which observability capability most directly supports this?",
+      options:{A:"Logs only",B:"Metrics only",C:"Distributed tracing",D:"Static code analysis"}, answer:'C' },
+    { n:26, d:'d4', q:"Which deployment architecture runs Mule runtimes on infrastructure managed by the customer inside their own data center?",
+      options:{A:"CloudHub (MuleSoft-hosted)",B:"On-premises (customer-hosted)",C:"Public SaaS tenant",D:"Shared serverless runtime"}, answer:'B' },
+    { n:27, d:'d4', q:"An architect is comparing monolithic and microservices architectures for a new integration platform. Which statement best captures a tradeoff of microservices?",
+      options:{A:"Microservices always cost less to operate than a monolith",B:"Microservices allow independent scaling and deployment but introduce distributed-system complexity",C:"Microservices eliminate the need for API contracts between services",D:"Microservices require all services to share a single database"}, answer:'B' },
+    { n:28, d:'d4', q:"Which statement best distinguishes an API gateway from a service mesh?",
+      options:{A:"They are identical and the terms can be used interchangeably",B:"An API gateway manages north-south traffic at the edge; a service mesh manages east-west traffic between services inside the cluster",C:"A service mesh replaces the need for any API gateway",D:"An API gateway can only be deployed on-premises; a service mesh can only be deployed in the cloud"}, answer:'B' },
+    { n:29, d:'d4', q:"A Mule application must read records from a database, transform them, and write them to a SaaS application. Which core connector category would the team most likely use for the database step?",
+      options:{A:"HTTP Listener",B:"Database connector",C:"File connector",D:"VM connector"}, answer:'B' },
+
+    // --- Domain 5 (Q30-Q36) ---
+    { n:30, d:'d5', q:"A developer needs to design and document an API specification in RAML or OAS, then share it with stakeholders for review before implementation. Which Anypoint Platform component is most appropriate?",
+      options:{A:"Anypoint Studio",B:"Anypoint Design Center",C:"Runtime Manager",D:"API Manager"}, answer:'B' },
+    { n:31, d:'d5', q:"After an API implementation is built and tested, the team needs to deploy it, monitor its health, and view runtime logs. Which Anypoint Platform component is most appropriate?",
+      options:{A:"Design Center",B:"Exchange",C:"Runtime Manager",D:"Access Management"}, answer:'C' },
+    { n:32, d:'d5', q:"Which Anypoint Platform component serves as the central marketplace for publishing, discovering, and reusing API specifications, templates, examples, and connectors?",
+      options:{A:"Anypoint Studio",B:"Anypoint Exchange",C:"API Manager",D:"MUnit"}, answer:'B' },
+    { n:33, d:'d5', q:"A MuleSoft deployment uses both a control plane and runtime planes. Which statement best describes the control plane?",
+      options:{A:"It executes the Mule applications that handle integration traffic",B:"It provides the management, monitoring, and governance services that configure and observe the runtime planes",C:"It is always hosted by the customer and never by MuleSoft",D:"It replaces the need for runtime planes in smaller deployments"}, answer:'B' },
+    { n:34, d:'d5', q:"Which deployment option lets a customer run Mule runtimes on MuleSoft-managed cloud infrastructure without managing the underlying servers?",
+      options:{A:"Customer-hosted on-premises",B:"CloudHub (MuleSoft-hosted)",C:"Standalone Mule runtime on a developer laptop",D:"Bare-metal Kubernetes managed by the customer"}, answer:'B' },
+    { n:35, d:'d5', q:"A developer wants to build and locally test a Mule application, including DataWeave transformations and connector configuration, before deploying it. Which tool is most appropriate?",
+      options:{A:"API Manager",B:"Anypoint Studio",C:"Exchange",D:"Access Management"}, answer:'B' },
+    { n:36, d:'d5', q:"Which reusable asset type in Anypoint Exchange represents a portion of an API specification — such as a common set of data types or security schemes — that can be referenced by multiple API specifications?",
+      options:{A:"API fragment",B:"Connector",C:"Template",D:"Example"}, answer:'A' },
+
+    // --- Domain 6 (Q37-Q40) ---
+    { n:37, d:'d6', q:"A governance team needs to apply authentication, rate limiting, and SLA tiers to an existing API without modifying its backend implementation. Which Anypoint Platform component is most appropriate?",
+      options:{A:"Anypoint Studio",B:"Design Center",C:"API Manager",D:"Exchange"}, answer:'C' },
+    { n:38, d:'d6', q:"Which phrase best captures the goal of \"full lifecycle API management\" as realized by Anypoint Platform?",
+      options:{A:"Managing APIs only after they are deployed to production",B:"Supporting API design, implementation, deployment, management, and retirement as a connected lifecycle",C:"Replacing API specifications with runtime configuration alone",D:"Restricting API management to a single cloud provider"}, answer:'B' },
+    { n:39, d:'d6', q:"Which statement best describes Universal API Management (UAPIM) as promoted by MuleSoft?",
+      options:{A:"Managing only APIs that are built on Mule runtimes",B:"Managing APIs regardless of where they run or how they were built, from a single control plane",C:"Replacing all non-MuleSoft APIs with Mule applications",D:"Managing only REST APIs, with SOAP and GraphQL excluded"}, answer:'B' },
+    { n:40, d:'d6', q:"An organization is evaluating API-led connectivity with Anypoint Platform against a traditional point-to-point integration approach. Which statement best captures an advantage of API-led connectivity?",
+      options:{A:"It removes the need for any governance or security controls",B:"It promotes reuse of System, Process, and Experience APIs, reducing duplicated integration work across projects",C:"It guarantees that integrations never need to be updated",D:"It eliminates the need for an integration platform entirely"}, answer:'B' }
+  ]
+};
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const state = {
+  answers: {},        // { qNum: 'A' | 'B' | 'C' | 'D' }
+  flagged: new Set(),
+  submitted: false,
+  timerInterval: null,
+  remaining: QUIZ.durationSeconds
+};
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function renderQuestions() {
+  const container = document.getElementById('questions-container');
+  let html = '';
+
+  for (const domain of QUIZ.domains) {
+    const domainQs = QUIZ.questions.filter(q => q.d === domain.id);
+    html += `<div class="domain" id="${domain.id}-section">
+      <div class="domain-header">
+        <div class="domain-label">${domain.label} · ${domain.weight}</div>
+        <h2 class="domain-title">${domain.title}</h2>
+        <div class="domain-weight">${domain.count} questions</div>
+      </div>`;
+
+    for (const q of domainQs) {
+      html += `<div class="question" id="q${q.n}" data-qnum="${q.n}" data-domain="${q.d}">
+        <div class="q-head">
+          <span class="q-num">Q${String(q.n).padStart(2,'0')}</span>
+          <button type="button" class="q-flag" data-qnum="${q.n}">Flag for review</button>
+        </div>
+        <p class="q-text">${escapeHtml(q.q)}</p>
+        <ul class="options">`;
+      for (const letter of ['A','B','C','D']) {
+        html += `<li><label data-option="${letter}">
+          <input type="radio" name="q${q.n}" value="${letter}">
+          <span class="opt-letter">${letter}</span>
+          <span class="opt-text">${escapeHtml(q.options[letter])}</span>
+        </label></li>`;
+      }
+      html += `</ul></div>`;
+    }
+    html += `</div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ============================================================
+   TIMER
+   ============================================================ */
+function startTimer() {
+  updateTimerDisplay();
+  state.timerInterval = setInterval(() => {
+    state.remaining--;
+    updateTimerDisplay();
+    if (state.remaining <= 0) {
+      clearInterval(state.timerInterval);
+      if (!state.submitted) {
+        alert('Time is up — submitting your exam now.');
+        submitExam(true);
+      }
+    }
+  }, 1000);
+}
+
+function updTimerClass(el) {
+  el.classList.remove('warning','danger','expired');
+  if (state.remaining <= 0) el.classList.add('expired');
+  else if (state.remaining <= 300) el.classList.add('danger');   // ≤5 min
+  else if (state.remaining <= 600) el.classList.add('warning');  // ≤10 min
+}
+
+function updateTimerDisplay() {
+  const el = document.getElementById('timer');
+  const m = Math.max(0, Math.floor(state.remaining / 60));
+  const s = Math.max(0, state.remaining % 60);
+  el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  updTimerClass(el);
+}
+
+/* ============================================================
+   INTERACTIONS
+   ============================================================ */
+function updateCounters() {
+  document.getElementById('answered-count').textContent = Object.keys(state.answers).length;
+  document.getElementById('flagged-count').textContent = state.flagged.size;
+}
+
+function bindInteractions() {
+  document.getElementById('quiz-form').addEventListener('change', e => {
+    if (state.submitted) return;
+    if (e.target.matches('input[type="radio"]')) {
+      const qNum = parseInt(e.target.name.replace('q',''), 10);
+      state.answers[qNum] = e.target.value;
+      updateCounters();
+    }
+  });
+
+  document.getElementById('questions-container').addEventListener('click', e => {
+    if (state.submitted) return;
+    if (e.target.matches('.q-flag')) {
+      const qNum = parseInt(e.target.dataset.qnum, 10);
+      if (state.flagged.has(qNum)) {
+        state.flagged.delete(qNum);
+        e.target.classList.remove('flagged');
+        e.target.textContent = 'Flag for review';
+      } else {
+        state.flagged.add(qNum);
+        e.target.classList.add('flagged');
+        e.target.textContent = '⚑ Flagged';
+      }
+      updateCounters();
+    }
+  });
+
+  document.getElementById('submit-btn').addEventListener('click', () => {
+    const answered = Object.keys(state.answers).length;
+    const unanswered = 40 - answered;
+    const flagged = state.flagged.size;
+
+    const modal = document.getElementById('confirm-modal');
+    const title = document.getElementById('confirm-title');
+    const body = document.getElementById('confirm-body');
+
+    if (unanswered === 0 && flagged === 0) {
+      title.textContent = 'Submit exam?';
+      body.textContent = 'All 40 questions answered, no flags. Submit for scoring?';
+    } else {
+      title.textContent = 'Submit exam?';
+      const parts = [];
+      if (unanswered > 0) parts.push(`${unanswered} unanswered`);
+      if (flagged > 0) parts.push(`${flagged} flagged for review`);
+      body.textContent = `You have ${parts.join(' and ')}. Unanswered questions count as wrong. Submit anyway?`;
+    }
+    modal.classList.add('active');
+  });
+
+  document.getElementById('cancel-submit').addEventListener('click', () => {
+    document.getElementById('confirm-modal').classList.remove('active');
+  });
+  document.getElementById('confirm-submit').addEventListener('click', () => {
+    document.getElementById('confirm-modal').classList.remove('active');
+    submitExam(false);
+  });
+}
+
+/* ============================================================
+   SUBMIT + SCORE
+   ============================================================ */
+function submitExam(fromTimeout) {
+  if (state.submitted) return;
+  state.submitted = true;
+  clearInterval(state.timerInterval);
+  document.getElementById('submit-btn').disabled = true;
+  document.getElementById('submit-btn').textContent = 'Submitted';
+
+  // Per-domain score
+  const domainScores = {};
+  for (const d of QUIZ.domains) domainScores[d.id] = { correct: 0, total: d.count };
+
+  const missed = [];
+  const unanswered = [];
+  let totalCorrect = 0;
+
+  for (const q of QUIZ.questions) {
+    const userAns = state.answers[q.n];
+    const card = document.getElementById('q'+q.n);
+    card.classList.add('review');
+
+    if (!userAns) {
+      card.classList.add('unanswered');
+      unanswered.push(q.n);
+      // mark correct answer in green for review
+      const correctLabel = card.querySelector(`label[data-option="${q.answer}"]`);
+      correctLabel.classList.add('marked-correct');
+      injectBadge(card, 'unanswered', 'Not answered · Correct: '+q.answer);
+    } else if (userAns === q.answer) {
+      totalCorrect++;
+      domainScores[q.d].correct++;
+      card.classList.add('correct');
+      const chosenLabel = card.querySelector(`label[data-option="${userAns}"]`);
+      chosenLabel.classList.add('marked-correct');
+      injectBadge(card, 'correct', 'Correct');
+    } else {
+      missed.push(q.n);
+      card.classList.add('wrong');
+      const chosenLabel = card.querySelector(`label[data-option="${userAns}"]`);
+      const correctLabel = card.querySelector(`label[data-option="${q.answer}"]`);
+      chosenLabel.classList.add('marked-wrong');
+      correctLabel.classList.add('marked-correct');
+      injectBadge(card, 'wrong', `Missed · You: ${userAns} · Correct: ${q.answer}`);
+    }
+
+    // disable inputs
+    card.querySelectorAll('input[type="radio"]').forEach(i => i.disabled = true);
+    card.querySelectorAll('.q-flag').forEach(b => b.style.display = 'none');
+  }
+
+  renderResults(totalCorrect, domainScores, missed, unanswered, fromTimeout);
+}
+
+function injectBadge(card, type, text) {
+  const head = card.querySelector('.q-head');
+  const badge = document.createElement('span');
+  badge.className = 'review-badge '+type;
+  badge.textContent = text;
+  head.appendChild(badge);
+}
+
+function renderResults(totalCorrect, domainScores, missed, unanswered, fromTimeout) {
+  const pct = Math.round((totalCorrect / 40) * 100);
+  const passed = pct >= QUIZ.passingPercent;
+
+  let html = `<div class="results" id="results">
+    <div class="results-eyebrow">Results${fromTimeout ? ' · Time Expired' : ''}</div>
+    <h2>Practice Exam Score</h2>
+    <div class="score-line">
+      <div class="score-big">${totalCorrect}<span style="color:var(--ink-faint)">/40</span></div>
+      <div class="score-pct">${pct}%</div>
+      <div class="score-verdict ${passed?'pass':'fail'}">${passed?'Pass threshold met':'Below 70% passing'}</div>
+    </div>
+
+    <div class="domain-breakdown">
+      <h3>Results by Domain</h3>`;
+
+  for (const d of QUIZ.domains) {
+    const s = domainScores[d.id];
+    const dPct = Math.round((s.correct / s.total) * 100);
+    const weakClass = dPct < 70 ? 'weak' : (dPct === 100 ? 'strong' : '');
+    html += `<div class="domain-row">
+      <div class="domain-row-head">
+        <span class="domain-row-title"><strong>${d.label}</strong> — ${d.title}</span>
+        <span class="domain-row-score ${weakClass}">${s.correct}/${s.total} · ${dPct}%</span>
+      </div>
+      <div class="bar"><div class="bar-fill ${weakClass}" style="width:${dPct}%"></div></div>
+    </div>`;
+  }
+  html += `</div>`;
+
+  // Missed / unanswered chip lists
+  if (missed.length + unanswered.length > 0) {
+    html += `<div class="missed-list"><h3>Review These Questions</h3><div class="missed-chips">`;
+    for (const n of missed) html += `<button type="button" class="missed-chip" data-target="q${n}">Q${String(n).padStart(2,'0')}</button>`;
+    for (const n of unanswered) html += `<button type="button" class="missed-chip unanswered" data-target="q${n}">Q${String(n).padStart(2,'0')} · skipped</button>`;
+    html += `</div></div>`;
+
+    // Ready-to-paste list for Claude follow-up
+    const combined = [...missed, ...unanswered].sort((a,b)=>a-b);
+    html += `<div class="prompt-snippet">
+      <strong>Want rationales?</strong> Paste this to Claude:<br>
+      <code>Explain questions: ${combined.join(', ')}</code>
+    </div>`;
+  } else {
+    html += `<div class="missed-list"><h3>Perfect score — nothing to review.</h3></div>`;
+  }
+
+  html += `</div>`;
+
+  const resultsContainer = document.getElementById('results-container');
+  resultsContainer.innerHTML = html;
+
+  // Bind chip jumps
+  resultsContainer.querySelectorAll('.missed-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const target = document.getElementById(chip.dataset.target);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Scroll to results
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+renderQuestions();
+bindInteractions();
+updateCounters();
+startTimer();
+</script>
+</body>
+</html>
