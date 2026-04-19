@@ -179,6 +179,11 @@
     padding: 22px 26px;
     margin-bottom: 18px;
     scroll-margin-top: 100px;
+    position: relative;
+  }
+
+  .question.has-flag {
+    border-left: 4px solid var(--flag);
   }
 
   .q-head {
@@ -187,6 +192,7 @@
     align-items: baseline;
     gap: 16px;
     margin-bottom: 12px;
+    flex-wrap: wrap;
   }
   .q-num {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -210,6 +216,21 @@
   }
   .q-flag:hover { color: var(--flag); border-color: var(--flag); }
   .q-flag.flagged { color: var(--flag); border-color: var(--flag); background: var(--flag-soft); }
+
+  .flag-status-badge {
+    display: inline-block;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-weight: 700;
+    background: var(--flag-soft);
+    color: var(--flag);
+    border: 1px solid var(--flag);
+    margin-left: 10px;
+  }
 
   .q-text {
     font-size: 17px;
@@ -249,6 +270,7 @@
   .question.review.correct { border-left: 4px solid var(--correct); }
   .question.review.wrong { border-left: 4px solid var(--wrong); }
   .question.review.unanswered { border-left: 4px solid var(--ink-faint); }
+  /* review state overrides has-flag border color, but we still show the badge */
 
   .question.review label.marked-correct {
     background: var(--correct-soft);
@@ -333,7 +355,7 @@
   .score-verdict.pass { background: var(--correct); color: #fff; }
   .score-verdict.fail { background: var(--wrong); color: #fff; }
 
-  .domain-breakdown h3 {
+  .domain-breakdown h3, .flag-matrix h3, .chip-legend h3 {
     font-size: 14px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     letter-spacing: 0.1em;
@@ -375,6 +397,80 @@
   .bar-fill.weak { background: var(--wrong); }
   .bar-fill.strong { background: var(--correct); }
 
+  /* Flag × Correctness 2x2 matrix */
+  .flag-matrix {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+  }
+  .matrix-grid {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 13px;
+  }
+  .matrix-cell {
+    background: var(--surface);
+    padding: 12px 14px;
+  }
+  .matrix-cell.header {
+    background: var(--bg);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .matrix-cell.label {
+    background: var(--bg);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .matrix-count {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .matrix-cell.aware-miss .matrix-count { color: var(--warn); }
+  .matrix-cell.blind-miss .matrix-count { color: var(--wrong); }
+  .matrix-cell.aware-hit .matrix-count { color: var(--ink-soft); }
+  .matrix-cell.blind-hit .matrix-count { color: var(--correct); }
+
+  .matrix-caption {
+    display: block;
+    font-size: 11px;
+    color: var(--ink-faint);
+    font-weight: normal;
+    margin-top: 4px;
+  }
+  .matrix-nums {
+    margin-top: 6px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    word-spacing: 2px;
+  }
+
+  .matrix-insight {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
   .missed-list {
     margin-top: 24px;
     padding-top: 20px;
@@ -388,6 +484,25 @@
     color: var(--ink-soft);
     margin: 0 0 10px;
   }
+  .chip-legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
+  .chip-legend .sample {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    vertical-align: middle;
+    margin-right: 4px;
+    border: 1px solid;
+  }
+
   .missed-chips {
     display: flex;
     flex-wrap: wrap;
@@ -398,20 +513,30 @@
     font-size: 13px;
     font-weight: bold;
     padding: 4px 10px;
-    background: var(--wrong-soft);
-    color: var(--wrong);
-    border: 1px solid var(--wrong);
     border-radius: 2px;
     cursor: pointer;
     transition: background 0.15s;
+    border: 1px solid;
+    position: relative;
   }
-  .missed-chip:hover { background: var(--wrong); color: #fff; }
-  .missed-chip.unanswered {
-    background: #eee;
-    color: var(--ink-soft);
-    border-color: var(--ink-faint);
+
+  /* Chip color codes */
+  .chip-wrong-unflagged { background: var(--wrong-soft); color: var(--wrong); border-color: var(--wrong); }
+  .chip-wrong-unflagged:hover { background: var(--wrong); color: #fff; }
+
+  .chip-wrong-flagged { background: var(--warn-soft); color: var(--warn); border-color: var(--warn); }
+  .chip-wrong-flagged:hover { background: var(--warn); color: #fff; }
+
+  .chip-correct-flagged { background: var(--flag-soft); color: var(--flag); border-color: var(--flag); }
+  .chip-correct-flagged:hover { background: var(--flag); color: #fff; }
+
+  .chip-unanswered { background: #eee; color: var(--ink-soft); border-color: var(--ink-faint); }
+  .chip-unanswered:hover { background: var(--ink-faint); color: #fff; }
+
+  .chip-flag-icon {
+    font-size: 10px;
+    margin-right: 3px;
   }
-  .missed-chip.unanswered:hover { background: var(--ink-faint); color: #fff; }
 
   .prompt-snippet {
     margin-top: 24px;
@@ -475,6 +600,9 @@
     .question { padding: 18px; }
     .statusbar { gap: 10px; }
     .timer { font-size: 18px; min-width: 92px; padding: 5px 10px; }
+    .matrix-grid { font-size: 11px; }
+    .matrix-cell { padding: 10px; }
+    .matrix-count { font-size: 16px; }
   }
 </style>
 </head>
@@ -723,14 +851,17 @@ function bindInteractions() {
     if (state.submitted) return;
     if (e.target.matches('.q-flag')) {
       const qNum = parseInt(e.target.dataset.qnum, 10);
+      const card = document.getElementById('q'+qNum);
       if (state.flagged.has(qNum)) {
         state.flagged.delete(qNum);
         e.target.classList.remove('flagged');
         e.target.textContent = 'Flag for review';
+        card.classList.remove('has-flag');
       } else {
         state.flagged.add(qNum);
         e.target.classList.add('flagged');
         e.target.textContent = '⚑ Flagged';
+        card.classList.add('has-flag');
       }
       updateCounters();
     }
@@ -777,18 +908,39 @@ function submitExam(fromTimeout) {
   const domainScores = {};
   for (const d of QUIZ.domains) domainScores[d.id] = { correct: 0, total: d.count };
 
-  const missed = [];
-  const unanswered = [];
+  const buckets = {
+    flaggedWrong: [],
+    flaggedCorrect: [],
+    unflaggedWrong: [],
+    unflaggedCorrect: [],
+    unanswered: []
+  };
+
   let totalCorrect = 0;
 
   for (const q of QUIZ.questions) {
     const userAns = state.answers[q.n];
+    const wasFlagged = state.flagged.has(q.n);
     const card = document.getElementById('q'+q.n);
     card.classList.add('review');
 
+    card.querySelectorAll('input[type="radio"]').forEach(i => i.disabled = true);
+    const flagBtn = card.querySelector('.q-flag');
+    if (flagBtn) {
+      flagBtn.disabled = true;
+      if (wasFlagged) {
+        const badge = document.createElement('span');
+        badge.className = 'flag-status-badge';
+        badge.textContent = '⚑ Was flagged';
+        flagBtn.parentNode.replaceChild(badge, flagBtn);
+      } else {
+        flagBtn.style.display = 'none';
+      }
+    }
+
     if (!userAns) {
       card.classList.add('unanswered');
-      unanswered.push(q.n);
+      buckets.unanswered.push(q.n);
       const correctLabel = card.querySelector(`label[data-option="${q.answer}"]`);
       correctLabel.classList.add('marked-correct');
       injectBadge(card, 'unanswered', 'Not answered · Correct: '+q.answer);
@@ -799,21 +951,21 @@ function submitExam(fromTimeout) {
       const chosenLabel = card.querySelector(`label[data-option="${userAns}"]`);
       chosenLabel.classList.add('marked-correct');
       injectBadge(card, 'correct', 'Correct');
+      if (wasFlagged) buckets.flaggedCorrect.push(q.n);
+      else buckets.unflaggedCorrect.push(q.n);
     } else {
-      missed.push(q.n);
       card.classList.add('wrong');
       const chosenLabel = card.querySelector(`label[data-option="${userAns}"]`);
       const correctLabel = card.querySelector(`label[data-option="${q.answer}"]`);
       chosenLabel.classList.add('marked-wrong');
       correctLabel.classList.add('marked-correct');
       injectBadge(card, 'wrong', `Missed · You: ${userAns} · Correct: ${q.answer}`);
+      if (wasFlagged) buckets.flaggedWrong.push(q.n);
+      else buckets.unflaggedWrong.push(q.n);
     }
-
-    card.querySelectorAll('input[type="radio"]').forEach(i => i.disabled = true);
-    card.querySelectorAll('.q-flag').forEach(b => b.style.display = 'none');
   }
 
-  renderResults(totalCorrect, domainScores, missed, unanswered, fromTimeout);
+  renderResults(totalCorrect, domainScores, buckets, fromTimeout);
 }
 
 function injectBadge(card, type, text) {
@@ -824,7 +976,12 @@ function injectBadge(card, type, text) {
   head.appendChild(badge);
 }
 
-function renderResults(totalCorrect, domainScores, missed, unanswered, fromTimeout) {
+function fmtNums(arr) {
+  if (arr.length === 0) return '—';
+  return arr.sort((a,b)=>a-b).map(n => 'Q'+String(n).padStart(2,'0')).join(' ');
+}
+
+function renderResults(totalCorrect, domainScores, buckets, fromTimeout) {
   const pct = Math.round((totalCorrect / 40) * 100);
   const passed = pct >= QUIZ.passingPercent;
 
@@ -847,26 +1004,124 @@ function renderResults(totalCorrect, domainScores, missed, unanswered, fromTimeo
     html += `<div class="domain-row">
       <div class="domain-row-head">
         <span class="domain-row-title"><strong>${d.label}</strong> — ${d.title}</span>
-        <span class="domain-row-score ${weakClass}">${s.correct}/${s.total} · ${dPct}%</span>
+        <span class="domain-row-score ${weakClass}">${s.correct}/${s.total} �� ${dPct}%</span>
       </div>
       <div class="bar"><div class="bar-fill ${weakClass}" style="width:${dPct}%"></div></div>
     </div>`;
   }
   html += `</div>`;
 
-  if (missed.length + unanswered.length > 0) {
-    html += `<div class="missed-list"><h3>Review These Questions</h3><div class="missed-chips">`;
-    for (const n of missed) html += `<button type="button" class="missed-chip" data-target="q${n}">Q${String(n).padStart(2,'0')}</button>`;
-    for (const n of unanswered) html += `<button type="button" class="missed-chip unanswered" data-target="q${n}">Q${String(n).padStart(2,'0')} · skipped</button>`;
+  // Flag × Correctness matrix
+  const fw = buckets.flaggedWrong.length;
+  const fc = buckets.flaggedCorrect.length;
+  const uw = buckets.unflaggedWrong.length;
+  const uc = buckets.unflaggedCorrect.length;
+
+  html += `<div class="flag-matrix">
+    <h3>Flag vs. Correctness Audit</h3>
+    <div class="matrix-grid">
+      <div class="matrix-cell header"></div>
+      <div class="matrix-cell header">Correct</div>
+      <div class="matrix-cell header">Wrong</div>
+
+      <div class="matrix-cell label">⚑ Flagged</div>
+      <div class="matrix-cell aware-hit">
+        <div class="matrix-count">${fc}</div>
+        <span class="matrix-caption">Uncertain but right — good caution</span>
+        <div class="matrix-nums">${fmtNums(buckets.flaggedCorrect)}</div>
+      </div>
+      <div class="matrix-cell aware-miss">
+        <div class="matrix-count">${fw}</div>
+        <span class="matrix-caption">Aware miss — flagged AND got wrong</span>
+        <div class="matrix-nums">${fmtNums(buckets.flaggedWrong)}</div>
+      </div>
+
+      <div class="matrix-cell label">Unflagged</div>
+      <div class="matrix-cell blind-hit">
+        <div class="matrix-count">${uc}</div>
+        <span class="matrix-caption">Clean — confident and right</span>
+        <div class="matrix-nums"></div>
+      </div>
+      <div class="matrix-cell blind-miss">
+        <div class="matrix-count">${uw}</div>
+        <span class="matrix-caption">Blind miss — felt confident, got wrong</span>
+        <div class="matrix-nums">${fmtNums(buckets.unflaggedWrong)}</div>
+      </div>
+    </div>`;
+
+  // Calibration insight
+  const totalWrong = fw + uw;
+  if (totalWrong > 0) {
+    const blindRatio = uw / totalWrong;
+    let insight = '';
+    if (uw === 0 && fw > 0) {
+      insight = `All your misses were flagged. Your uncertainty-detection is well calibrated — when you don't know, you know you don't know. Good signal for exam day.`;
+    } else if (fw === 0 && uw > 0) {
+      insight = `None of your misses were flagged. All misses were blind — you felt confident on questions you got wrong. Worth re-reading options more carefully on "easy" questions before exam day.`;
+    } else if (blindRatio >= 0.67) {
+      insight = `${uw} of your ${totalWrong} misses were blind (unflagged). Uncertainty-detection is under-calibrated — you're missing questions you felt sure about. Slow down on questions that feel obvious.`;
+    } else if (blindRatio <= 0.33) {
+      insight = `${fw} of your ${totalWrong} misses were flagged. Uncertainty-detection is well calibrated — most misses were on questions you already suspected.`;
+    } else {
+      insight = `Mixed calibration — roughly half of your misses were flagged (${fw}) and half were blind (${uw}).`;
+    }
+    html += `<div class="matrix-insight">${insight}</div>`;
+  }
+  html += `</div>`;
+
+  // Chip list with color coding
+  const allMissed = [...buckets.flaggedWrong, ...buckets.unflaggedWrong, ...buckets.unanswered];
+  if (allMissed.length > 0) {
+    html += `<div class="missed-list"><h3>Review These Questions</h3>
+      <div class="chip-legend">
+        <span><span class="sample" style="background:var(--wrong-soft);border-color:var(--wrong)"></span> Missed, not flagged</span>
+        <span><span class="sample" style="background:var(--warn-soft);border-color:var(--warn)"></span> Missed, flagged</span>
+        <span><span class="sample" style="background:#eee;border-color:var(--ink-faint)"></span> Skipped</span>
+      </div>
+      <div class="missed-chips">`;
+
+    const allMissedSorted = [...buckets.flaggedWrong, ...buckets.unflaggedWrong, ...buckets.unanswered].sort((a,b)=>a-b);
+    for (const n of allMissedSorted) {
+      let chipClass = 'chip-wrong-unflagged';
+      let prefix = '';
+      if (buckets.unanswered.includes(n)) {
+        chipClass = 'chip-unanswered';
+        prefix = '';
+      } else if (buckets.flaggedWrong.includes(n)) {
+        chipClass = 'chip-wrong-flagged';
+        prefix = '<span class="chip-flag-icon">⚑</span>';
+      }
+      html += `<button type="button" class="missed-chip ${chipClass}" data-target="q${n}">${prefix}Q${String(n).padStart(2,'0')}</button>`;
+    }
     html += `</div></div>`;
 
-    const combined = [...missed, ...unanswered].sort((a,b)=>a-b);
+    // Flagged-but-correct section
+    if (buckets.flaggedCorrect.length > 0) {
+      html += `<div class="missed-list" style="margin-top:20px"><h3>Flagged But Correct</h3>
+        <p style="font-size:13px;color:var(--ink-soft);margin:0 0 10px">You flagged these but got them right. Worth reviewing the reasoning anyway — your uncertainty may point to a definitional edge.</p>
+        <div class="missed-chips">`;
+      for (const n of buckets.flaggedCorrect) {
+        html += `<button type="button" class="missed-chip chip-correct-flagged" data-target="q${n}"><span class="chip-flag-icon">⚑</span>Q${String(n).padStart(2,'0')}</button>`;
+      }
+      html += `</div></div>`;
+    }
+
+    const combined = [...buckets.flaggedWrong, ...buckets.unflaggedWrong, ...buckets.unanswered].sort((a,b)=>a-b);
     html += `<div class="prompt-snippet">
       <strong>Want rationales?</strong> Paste this to Claude:<br>
       <code>Mock 2 — explain questions: ${combined.join(', ')}</code>
     </div>`;
   } else {
     html += `<div class="missed-list"><h3>Perfect score — nothing to review.</h3></div>`;
+    if (buckets.flaggedCorrect.length > 0) {
+      html += `<div class="missed-list"><h3>Flagged But Correct</h3>
+        <p style="font-size:13px;color:var(--ink-soft);margin:0 0 10px">You flagged these but got them right. Worth reviewing the reasoning anyway.</p>
+        <div class="missed-chips">`;
+      for (const n of buckets.flaggedCorrect) {
+        html += `<button type="button" class="missed-chip chip-correct-flagged" data-target="q${n}"><span class="chip-flag-icon">⚑</span>Q${String(n).padStart(2,'0')}</button>`;
+      }
+      html += `</div></div>`;
+    }
   }
 
   html += `</div>`;

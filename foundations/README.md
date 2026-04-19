@@ -4,6 +4,8 @@ Practice exams for the [MuleSoft Integration Foundations](https://trailheadacade
 
 ## About the Exam
 
+This exam can be taken independently — no DEX-401 course or hands-on MuleSoft experience required. If you're planning to pursue the SCMD (Developer) certification, this is a low-stakes way to validate your understanding of the conceptual layer before diving into the technical depth.
+
 40 questions, 70 minutes, 70% to pass. No coding, no DataWeave, no Anypoint Studio — this is a concepts and vocabulary exam covering integration architecture, API-led connectivity, interaction patterns, and the Anypoint Platform at a high level.
 
 If you're coming from the SCMD/DEX-401 track, a lot of this will feel familiar — but the framing is different. This exam tests whether you can articulate *why* and *when*, not *how*.
@@ -38,4 +40,4 @@ Weighted toward weak spots. Same 40 questions and 70-minute timer, but the domai
 **[MuleSoft_Foundations_Quiz_Mock3_Adversarial.html](MuleSoft_Foundations_Quiz_Mock3_Adversarial.html)**
 The adversarial exam. Back to standard exam weighting, but the wrong answers are designed to be plausible. Where the first two exams sometimes had obviously incorrect distractors that you could eliminate without domain knowledge, this one uses answers that sound right if you're pattern-matching from experience with other platforms — similar vocabulary, adjacent concepts, reasonable-sounding but technically wrong claims.
 
-I'm still pretty disappointed with Claude's ability (or willingless?) to make plausible-sounding but incorrect answers - so this STILL felt too easy.  I'll blame it on the (lack of) quality and specificity of my prompts.  I need to remember that it's **all relative** based on each individual's experience and perspective.  Having years of experience working with various concepts, or being freshly introduced to them, will influence your comfort with this material.
+I'm still pretty disappointed with Claude's ability (or willingness?) to make plausible-sounding but incorrect answers - so this STILL felt too easy.  I'll blame it on the (lack of) quality and specificity of my prompts.  I need to remember that it's **all relative** based on each individual's experience and perspective.  Having years of experience working with various concepts, or being freshly introduced to them, will influence your comfort with this material.
