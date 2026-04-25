@@ -453,8 +453,8 @@ body[data-atmosphere="sparse"] .conn-line { opacity: 0.18 !important; }
 
 <nav>
   <span class="nav-logo">MULESOFT CERT</span>
-  <button class="tab" data-view="foundations">Foundations · Mule-101</button>
   <button class="tab active" data-view="scmd">SCMD · DEX-401</button>
+  <button class="tab" data-view="foundations">Foundations · Mule-101</button>
   <button class="tab" data-view="mule-event">Mule Event Model</button>
 </nav>
 
@@ -570,7 +570,7 @@ body[data-atmosphere="sparse"] .conn-line { opacity: 0.18 !important; }
             <span class="rule-bad">flowVars.x</span><br>
             Survives HTTP Request <span class="rule-ok">✓</span><br>
             Survives Flow Ref <span class="rule-ok">✓</span><br>
-            <span class="rule-bad">Lost between executions</span> — use Object Store
+            Cross-execution → Object Store
           </div>
         </div>
 
