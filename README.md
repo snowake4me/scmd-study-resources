@@ -1,6 +1,6 @@
 # SCMD / DEX-401 Study Resources
 
-A bespoke collection of study materials built around my own Salesforce Certified Mulesoft Developer ([SCMD](https://trailheadacademy.salesforce.com/certificate/exam-mule-dev---Mule-Dev-201)) exam journey — not a generic course summary. These resources are generated with Claude and curated by me. Your mileage may vary.
+A bespoke collection of study materials built around my own Salesforce Certified MuleSoft Developer ([SCMD](https://trailheadacademy.salesforce.com/certificate/exam-mule-dev---Mule-Dev-201)) exam journey — not a generic course summary. These resources are generated with Claude and curated by me. Your mileage may vary.
 
 > *"There's no compression algorithm for experience."*
 > — and this exam will remind you of that.
