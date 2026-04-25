@@ -5,6 +5,18 @@ A bespoke collection of study materials built around my own Salesforce Certified
 > *"There's no compression algorithm for experience."*
 > — and this exam will remind you of that.
 
+## Visual Resources
+
+Two interactive infographics for navigating the MuleSoft certification ecosystem at a glance. Click either preview to launch the live, interactive version.
+
+| Certification Infographics | Certification Ecosystem |
+| :---: | :---: |
+| [![Certification Infographics](resources/screenshots/infographics-scmd.png)](https://snowake4me.github.io/scmd-study-resources/resources/MuleSoft_Certification_Infographics.html) | [![Certification Ecosystem](resources/screenshots/ecosystem-progression.png)](https://snowake4me.github.io/scmd-study-resources/resources/MuleSoft_Certification_Ecosystem.html) |
+| Foundations domains, SCMD domains, and the Mule Event Model | Progression map and side-by-side exam comparison |
+| **[View live →](https://snowake4me.github.io/scmd-study-resources/resources/MuleSoft_Certification_Infographics.html)** | **[View live →](https://snowake4me.github.io/scmd-study-resources/resources/MuleSoft_Certification_Ecosystem.html)** |
+
+See [resources/README.md](resources/README.md) for a full walkthrough of all five views.
+
 ## The Flow
 
 Let me preface this by saying ALL of this study was done on a personal machine, via my personal ISP connection.  That removed a ***lot*** of friction in several of the exercises and significantly reduced AnypointStudio configuration issues, crashes and failures.
