@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MuleSoft Certification — Study Infographics</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+:root {
+  --bg:         oklch(0.11 0.015 240);
+  --surface:    oklch(0.17 0.015 240);
+  --surface-hi: oklch(0.22 0.018 240);
+  --border:     oklch(0.28 0.02 240);
+  --text:       oklch(0.92 0.008 240);
+  --muted:      oklch(0.54 0.01 240);
+  --teal:       oklch(0.74 0.165 185);
+  --blue:       oklch(0.74 0.165 240);
+  --purple:     oklch(0.74 0.165 290);
+  --amber:      oklch(0.74 0.165 55);
+  --red:        oklch(0.74 0.165 22);
+  --green:      oklch(0.74 0.165 155);
+  --teal-a:     oklch(0.74 0.165 185 / 0.15);
+  --blue-a:     oklch(0.74 0.165 240 / 0.15);
+  --purple-a:   oklch(0.74 0.165 290 / 0.15);
+  --amber-a:    oklch(0.74 0.165 55 / 0.15);
+  --red-a:      oklch(0.74 0.165 22 / 0.15);
+  --green-a:    oklch(0.74 0.165 155 / 0.15);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  min-height: 100vh;
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    linear-gradient(oklch(0.30 0.02 240 / var(--grid-opacity, 0.09)) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.30 0.02 240 / var(--grid-opacity, 0.09)) 1px, transparent 1px);
+  background-size: var(--grid-size, 48px) var(--grid-size, 48px);
+  pointer-events: none;
+  z-index: 0;
+  transition: all 0.4s;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 200;
+  display: flex; align-items: center; gap: 6px;
+  padding: 11px 28px;
+  background: oklch(0.12 0.015 240 / 0.96);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--teal);
+  letter-spacing: 0.16em; opacity: 0.7;
+  margin-right: 14px; white-space: nowrap;
+}
+.tab {
+  padding: 7px 16px;
+  border: 1px solid var(--border); border-radius: 6px;
+  background: transparent; color: var(--muted);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px; font-weight: 500; cursor: pointer;
+  transition: all 0.2s; letter-spacing: 0.01em;
+}
+.tab:hover { border-color: var(--teal); color: var(--teal); }
+.tab.active { background: var(--teal-a); border-color: var(--teal); color: var(--teal); }
+
+/* ── VIEWS ── */
+.view { display: none; position: relative; z-index: 1; padding: 36px 28px 56px; }
+.view.active { display: block; }
+
+.vhead { text-align: center; margin-bottom: 36px; }
+.badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 0.16em;
+  padding: 4px 12px; border-radius: 4px; margin-bottom: 14px;
+}
+.badge-scmd   { background: var(--blue-a);   color: var(--blue);   border: 1px solid oklch(0.74 0.165 240 / 0.3); }
+.badge-found  { background: var(--teal-a);   color: var(--teal);   border: 1px solid oklch(0.74 0.165 185 / 0.3); }
+.badge-event  { background: var(--purple-a); color: var(--purple); border: 1px solid oklch(0.74 0.165 290 / 0.3); }
+
+.vhead h1 { font-size: 27px; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 9px; }
+.vhead p  { color: var(--muted); font-size: 14px; max-width: 540px; margin: 0 auto; line-height: 1.6; }
+
+/* ═══════════════════════════════════
+   SCMD GRID
+═══════════════════════════════════ */
+.scmd-wrapper { position: relative; max-width: 1040px; margin: 0 auto; }
+
+.scmd-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px 26px;
+  padding: 8px 10px 10px;
+}
+
+.row-label {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 8px; margin-bottom: -4px;
+}
+.row-label span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+  white-space: nowrap;
+}
+.row-label::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(to right, currentColor 0%, transparent 100%);
+  opacity: 0.18;
+}
+
+.dcard {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 15px 17px 13px;
+  cursor: default;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, opacity 0.2s;
+  border-left: 3px solid transparent;
+  min-height: 100px;
+}
+.dcard[data-group="lifecycle"]  { border-left-color: var(--teal); }
+.dcard[data-group="structure"]  { border-left-color: var(--blue); }
+.dcard[data-group="processing"] { border-left-color: var(--purple); }
+.dcard[data-group="control"]    { border-left-color: var(--amber); }
+
+.dcard:hover { transform: translateY(-3px); }
+.dcard[data-group="lifecycle"]:hover  { border-color: var(--teal);   box-shadow: 0 0 22px var(--teal-a),   0 8px 24px rgba(0,0,0,0.4); }
+.dcard[data-group="structure"]:hover  { border-color: var(--blue);   box-shadow: 0 0 22px var(--blue-a),   0 8px 24px rgba(0,0,0,0.4); }
+.dcard[data-group="processing"]:hover { border-color: var(--purple); box-shadow: 0 0 22px var(--purple-a), 0 8px 24px rgba(0,0,0,0.4); }
+.dcard[data-group="control"]:hover    { border-color: var(--amber);  box-shadow: 0 0 22px var(--amber-a),  0 8px 24px rgba(0,0,0,0.4); }
+
+.dcard.dimmed  { opacity: 0.22; transform: none !important; }
+.dcard.related { opacity: 1; }
+
+.card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+.card-num { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.1em; }
+.card-stakes {
+  font-size: 8px; font-weight: 700; color: var(--amber);
+  background: var(--amber-a); padding: 2px 6px; border-radius: 3px; letter-spacing: 0.06em;
+}
+.card-title { font-size: 13px; font-weight: 600; line-height: 1.3; margin-bottom: 10px; }
+.card-bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; }
+.card-weight {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 26px; font-weight: 600; line-height: 1; flex-shrink: 0;
+}
+.dcard[data-group="lifecycle"]  .card-weight { color: var(--teal); }
+.dcard[data-group="structure"]  .card-weight { color: var(--blue); }
+.dcard[data-group="processing"] .card-weight { color: var(--purple); }
+.dcard[data-group="control"]    .card-weight { color: var(--amber); }
+
+.card-topics { font-size: 10px; color: var(--muted); line-height: 1.6; text-align: right; }
+
+.conn-svg {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; overflow: visible; z-index: 5;
+}
+.conn-line { transition: opacity 0.2s, stroke-width 0.2s; }
+
+.scmd-legend {
+  display: flex; gap: 22px; justify-content: center;
+  margin-top: 20px; flex-wrap: wrap;
+}
+.legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--muted); }
+.l-swatch { width: 10px; height: 10px; border-radius: 2px; }
+
+/* ═══════════════════════════════════
+   FOUNDATIONS
+═══════════════════════════════════ */
+.found-wrapper {
+  position: relative;
+  max-width: 960px; margin: 0 auto;
+  height: 620px;
+}
+.found-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+
+.fcard {
+  position: absolute;
+  width: 188px;
+  transform: translate(-50%, -50%);
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px 15px 13px;
+  transition: all 0.22s; cursor: default;
+  border-top: 2px solid var(--teal);
+}
+.fcard:hover {
+  border-color: var(--teal);
+  box-shadow: 0 0 26px var(--teal-a), 0 8px 24px rgba(0,0,0,0.4);
+  transform: translate(-50%, -55%); z-index: 10;
+}
+.fcard-num { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 5px; }
+.fcard-title { font-size: 12px; font-weight: 600; line-height: 1.35; margin-bottom: 9px; }
+.fcard-pct { display: flex; align-items: baseline; gap: 4px; }
+.fcard-weight { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 600; color: var(--teal); }
+.fcard-pct-label { font-size: 11px; color: var(--muted); }
+.fcard-bar { height: 2px; border-radius: 1px; background: var(--teal); margin-top: 8px; opacity: 0.5; transition: opacity 0.2s; }
+.fcard:hover .fcard-bar { opacity: 1; }
+.fcard-topics {
+  font-size: 10px; color: var(--muted); line-height: 1.6;
+  margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--border);
+  display: none;
+}
+.fcard:hover .fcard-topics { display: block; }
+
+.found-center {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 116px; height: 116px; border-radius: 50%;
+  border: 2px solid var(--teal);
+  background: oklch(0.15 0.025 185 / 0.55);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  box-shadow: 0 0 40px var(--teal-a), 0 0 80px oklch(0.74 0.165 185 / 0.06);
+}
+.center-code { font-family: 'JetBrains Mono', monospace; font-size: 17px; font-weight: 600; color: var(--teal); line-height: 1.1; }
+.center-sub  { font-size: 10px; color: var(--muted); margin-top: 5px; line-height: 1.4; }
+
+/* ═══════════════════════════════════
+   MULE EVENT MODEL
+═══════════════════════════════════ */
+.event-wrapper { max-width: 1040px; margin: 0 auto; }
+
+/* ── NESTED BOX DIAGRAM ── */
+.nested-diagram {
+  position: relative;
+  border: 2px solid oklch(0.74 0.165 185 / 0.55);
+  border-radius: 18px;
+  padding: 22px 22px 20px;
+  background: oklch(0.13 0.018 185 / 0.35);
+  box-shadow: 0 0 60px oklch(0.74 0.165 185 / 0.08), 0 0 120px oklch(0.74 0.165 185 / 0.04);
+  margin-bottom: 32px;
+}
+.nd-outer-label {
+  position: absolute; top: -12px; left: 22px;
+  background: var(--bg); padding: 0 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 600; color: var(--teal);
+  letter-spacing: 0.14em; text-transform: uppercase;
+  display: flex; align-items: center; gap: 8px;
+}
+.nd-outer-label span { font-size: 10px; color: var(--muted); font-weight: 400; letter-spacing: 0.04em; text-transform: none; font-family: 'Space Grotesk', sans-serif; }
+
+/* Top row: Mule Message + Variables */
+.nd-top-row {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+/* Mule Message container */
+.nd-message {
+  border: 2px solid oklch(0.74 0.165 155 / 0.45);
+  border-radius: 13px;
+  padding: 16px 16px 14px;
+  background: oklch(0.13 0.018 155 / 0.25);
+  position: relative;
+}
+.nd-message-label {
+  position: absolute; top: -11px; left: 16px;
+  background: var(--bg); padding: 0 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 600; color: var(--green);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  display: flex; align-items: center; gap: 7px;
+}
+.nd-message-label span { font-size: 9px; color: var(--muted); font-weight: 400; letter-spacing: 0.02em; text-transform: none; font-family: 'Space Grotesk', sans-serif; }
+.nd-message-children {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin-top: 6px;
+}
+
+/* Payload box */
+.nd-payload {
+  border: 1.5px solid oklch(0.74 0.165 185 / 0.5);
+  border-radius: 10px; padding: 14px 15px 13px;
+  background: oklch(0.13 0.018 185 / 0.3);
+}
+.nd-attrs {
+  border: 1.5px solid oklch(0.74 0.165 240 / 0.5);
+  border-radius: 10px; padding: 14px 15px 13px;
+  background: oklch(0.13 0.018 240 / 0.3);
+}
+.nd-box-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px; font-weight: 700; margin-bottom: 4px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nd-box-sub { font-size: 11px; color: var(--muted); line-height: 1.55; margin-bottom: 10px; }
+.nd-box-rules {
+  font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+  line-height: 1.75; color: oklch(0.78 0.01 240);
+  background: oklch(0.10 0.012 240 / 0.6);
+  border-radius: 6px; padding: 8px 10px;
+}
+.nd-box-rules .rule-warn { color: var(--amber); }
+.nd-box-rules .rule-ok   { color: var(--green); }
+.nd-box-rules .rule-bad  { color: oklch(0.60 0.01 240); text-decoration: line-through; }
+
+/* Variables box (peer) */
+.nd-vars {
+  border: 1.5px solid oklch(0.74 0.165 55 / 0.5);
+  border-radius: 13px; padding: 16px 16px 14px;
+  background: oklch(0.13 0.018 55 / 0.2);
+  position: relative; display: flex; flex-direction: column;
+}
+.nd-peer-label {
+  position: absolute; top: -11px; left: 14px;
+  background: var(--bg); padding: 0 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; font-weight: 600; color: var(--amber);
+  letter-spacing: 0.12em; text-transform: uppercase;
+}
+
+/* Error box */
+.nd-error {
+  border: 1.5px solid oklch(0.74 0.165 22 / 0.45);
+  border-radius: 10px; padding: 14px 18px 13px;
+  background: oklch(0.12 0.018 22 / 0.25);
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 14px; align-items: start;
+  position: relative;
+}
+.nd-error-label {
+  position: absolute; top: -11px; left: 16px;
+  background: var(--bg); padding: 0 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 600; color: var(--red);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  display: flex; align-items: center; gap: 7px;
+}
+.nd-error-label span { font-size: 9px; color: var(--muted); font-weight: 400; letter-spacing: 0.02em; text-transform: none; font-family: 'Space Grotesk', sans-serif; }
+
+/* Mutability pill */
+.mutability {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.08em;
+  padding: 2px 7px; border-radius: 3px; font-family: 'Space Grotesk', sans-serif;
+}
+.mut-yes  { background: var(--green-a);  color: var(--green);  border: 1px solid oklch(0.74 0.165 155 / 0.3); }
+.mut-no   { background: var(--red-a);    color: var(--red);    border: 1px solid oklch(0.74 0.165 22  / 0.3); }
+.mut-cond { background: var(--amber-a);  color: var(--amber);  border: 1px solid oklch(0.74 0.165 55  / 0.3); }
+
+/* ── REFERENCE SECTION ── */
+.event-reference {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+.ref-panel {
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: 10px;
+  overflow: hidden;
+}
+.ref-panel-title {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+  padding: 9px 14px; border-bottom: 1px solid var(--border);
+  background: var(--surface-hi);
+}
+.ref-panel-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 7px; }
+
+.side-item {
+  background: var(--surface-hi);
+  border: 1px solid var(--border); border-radius: 7px;
+  padding: 9px 11px;
+}
+.side-item.src  { border-left: 3px solid var(--teal); }
+.side-item.proc { border-left: 3px solid var(--purple); }
+.side-item.note { border-left: 3px solid var(--blue); }
+.side-item.warn { border-left: 3px solid var(--red); }
+
+.side-item h5 { font-size: 11px; font-weight: 600; margin-bottom: 3px; display: flex; align-items: center; gap: 5px; }
+.side-item p  { font-size: 10px; color: var(--muted); line-height: 1.6; }
+.side-item p strong { color: oklch(0.85 0.01 240); }
+.side-item code {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  background: oklch(0.20 0.015 240 / 0.8); padding: 1px 4px; border-radius: 3px;
+}
+
+.tag-new { background: var(--teal-a);   color: var(--teal);   font-size: 7px; padding: 1px 5px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.06em; }
+.tag-mut { background: var(--purple-a); color: var(--purple); font-size: 7px; padding: 1px 5px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.06em; }
+.tag-ok  { background: var(--green-a);  color: var(--green);  font-size: 7px; padding: 1px 5px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.06em; }
+
+.access-panel {
+  background: var(--surface-hi); border: 1px solid var(--border);
+  border-radius: 7px; padding: 11px 12px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; line-height: 1.9;
+}
+
+/* Boundary table */
+.boundary-section { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.boundary-title {
+  background: var(--surface-hi); padding: 11px 20px;
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+.btable { width: 100%; border-collapse: collapse; font-size: 12px; }
+.btable th {
+  padding: 10px 16px; text-align: left;
+  font-size: 11px; font-weight: 600; color: var(--muted);
+  background: var(--surface); border-bottom: 1px solid var(--border);
+}
+.btable td { padding: 11px 16px; border-bottom: 1px solid oklch(0.22 0.015 240 / 0.7); vertical-align: top; }
+.btable tr:last-child td { border-bottom: none; }
+.btable tr:hover td { background: oklch(0.19 0.015 240 / 0.5); }
+.btable td:first-child { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.btable td:not(:first-child):not(:last-child) { text-align: center; }
+
+.check   { color: var(--green);  font-weight: 700; font-size: 13px; }
+.replace { color: var(--amber);  font-size: 9px; font-weight: 700; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; }
+.cross   { color: var(--red);    font-weight: 700; font-size: 13px; }
+.note-sm { color: var(--muted);  font-size: 10px; line-height: 1.5; }
+
+/* ── Tweak: Card Style ── */
+body[data-card-style="focused"] .card-topics { display: none !important; }
+body[data-card-style="open"]    .card-topics { display: block !important; }
+body[data-card-style="focused"] .fcard-topics { display: none !important; }
+body[data-card-style="open"]    .fcard-topics { display: block !important; }
+
+/* ── Tweak: Circuit Atmosphere ── */
+body[data-atmosphere="circuit"] .dcard,
+body[data-atmosphere="circuit"] .fcard,
+body[data-atmosphere="circuit"] .event-object,
+body[data-atmosphere="circuit"] .side-item {
+  box-shadow: 0 0 8px oklch(0.74 0.165 var(--accent-h, 185) / 0.08);
+}
+body[data-atmosphere="sparse"] .conn-line { opacity: 0.18 !important; }
+
+/* ── Entrance animation ──
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.dcard { animation: fadeUp 0.35s ease both; }
+/* fcard appears immediately — no fadeUp (display:none resets animations) */
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">MULESOFT CERT</span>
+  <button class="tab" data-view="foundations">Foundations · Mule-101</button>
+  <button class="tab active" data-view="scmd">SCMD · DEX-401</button>
+  <button class="tab" data-view="mule-event">Mule Event Model</button>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     VIEW 1 — SCMD
+══════════════════════════════════════════ -->
+<div id="view-scmd" class="view active">
+  <div class="vhead">
+    <div class="badge badge-scmd">DEX-401 · 60 QUESTIONS · 120 MIN · 70% TO PASS</div>
+    <h1>SCMD Exam Domains</h1>
+    <p>12 weighted sections across 4 conceptual layers. <span style="color:var(--amber)">⚑ High-stakes sections</span> account for ~65% of the exam. Hover any domain to see key concepts and illuminate related sections.</p>
+  </div>
+  <div class="scmd-wrapper" id="scmd-wrapper">
+    <div class="scmd-grid" id="scmd-grid"></div>
+    <svg class="conn-svg" id="conn-svg"></svg>
+  </div>
+  <div class="scmd-legend">
+    <div class="legend-item"><div class="l-swatch" style="background:var(--teal)"></div>Design &amp; Lifecycle</div>
+    <div class="legend-item"><div class="l-swatch" style="background:var(--blue)"></div>App Structure</div>
+    <div class="legend-item"><div class="l-swatch" style="background:var(--purple)"></div>Data Processing</div>
+    <div class="legend-item"><div class="l-swatch" style="background:var(--amber)"></div>Flow Control</div>
+    <div class="legend-item" style="margin-left:12px;"><span style="color:var(--amber);font-weight:600;">⚑</span>&nbsp;High-stakes — tested most heavily</div>
+    <div class="legend-item"><span style="color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;">- - -</span>&nbsp;Conceptual synergy</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VIEW 2 — FOUNDATIONS
+══════════════════════════════════════════ -->
+<div id="view-foundations" class="view">
+  <div class="vhead">
+    <div class="badge badge-found">MULE-101 · 40 QUESTIONS · 70 MIN · 70% TO PASS · $75</div>
+    <h1>Foundations Exam Domains</h1>
+    <p>6 conceptual domains. No code, no DataWeave, no Studio. Tests <em>why</em> and <em>when</em>, not <em>how</em>. Hover any domain to reveal key topics and synergies.</p>
+  </div>
+  <div class="found-wrapper" id="found-wrapper">
+    <svg class="found-svg" id="found-svg"></svg>
+    <!-- cards injected by JS -->
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VIEW 3 — MULE EVENT MODEL
+══════════════════════════════════════════ -->
+<div id="view-mule-event" class="view">
+  <div class="vhead">
+    <div class="badge badge-event">SCMD · SECTION 03 · 10% WEIGHT · ROOT CAUSE OF MANY MISSES</div>
+    <h1>The Mule Event Model</h1>
+    <p>One event flows through the flow, mutating as it goes. The key to the exam is understanding <em>what is inside what</em>, who can change it, and what survives a scope boundary.</p>
+  </div>
+  <div class="event-wrapper">
+
+    <!-- ── NESTED BOX DIAGRAM ── -->
+    <div class="nested-diagram">
+      <div class="nd-outer-label">Mule Event <span>· one event, evolving through the flow</span></div>
+
+      <!-- Top row: Mule Message + Variables -->
+      <div class="nd-top-row">
+
+        <!-- Mule Message -->
+        <div class="nd-message">
+          <div class="nd-message-label">Mule Message <span>· the data in transit</span></div>
+          <div class="nd-message-children">
+
+            <!-- Payload -->
+            <div class="nd-payload">
+              <div class="nd-box-title">
+                <span style="color:var(--teal)">payload</span>
+                <span class="mutability mut-yes">MUTABLE</span>
+              </div>
+              <div class="nd-box-sub">The message body. The primary data flowing through the app.</div>
+              <div class="nd-box-rules">
+                Set Payload / Transform Message<br>
+                HTTP Request → <span class="rule-warn">response body</span><br>
+                DB Select → <span class="rule-warn">Java List of Maps</span><br>
+                JMS Publish → <span class="rule-ok">UNCHANGED</span><br>
+                For Each → <span class="rule-ok">RESTORED after scope</span><br>
+                target= set → <span class="rule-ok">payload PRESERVED</span>
+              </div>
+            </div>
+
+            <!-- Attributes -->
+            <div class="nd-attrs">
+              <div class="nd-box-title">
+                <span style="color:var(--blue)">attributes</span>
+                <span class="mutability mut-no">READ-ONLY</span>
+              </div>
+              <div class="nd-box-sub">Source metadata. Set by the source; replaced after HTTP Request.</div>
+              <div class="nd-box-rules">
+                attributes.uriParams.ID<br>
+                attributes.queryParams.dest<br>
+                attributes.headers.'content-type'<br>
+                attributes.method<br>
+                <span class="rule-warn">→ REPLACED after HTTP Request</span><br>
+                <span class="rule-bad">attributes.'http.uri.params'.x</span>
+              </div>
+            </div>
+
+          </div><!-- /nd-message-children -->
+        </div><!-- /nd-message -->
+
+        <!-- Variables — peer of Mule Message -->
+        <div class="nd-vars">
+          <div class="nd-peer-label">PEER — NOT INSIDE MULE MESSAGE</div>
+          <div class="nd-box-title" style="margin-top:16px;">
+            <span style="color:var(--amber)">vars</span>
+            <span class="mutability mut-yes">MUTABLE</span>
+          </div>
+          <div class="nd-box-sub" style="flex:1">Your scratchpad. Flow-scoped. Set by Set Variable or target attribute. Peer of Mule Message — not inside it.</div>
+          <div class="nd-box-rules">
+            vars.myVar  <span class="rule-ok">✓</span><br>
+            <span class="rule-bad">variables.x</span><br>
+            <span class="rule-bad">flowVars.x</span><br>
+            Survives HTTP Request <span class="rule-ok">✓</span><br>
+            Survives Flow Ref <span class="rule-ok">✓</span><br>
+            Cross-execution → Object Store
+          </div>
+        </div>
+
+      </div><!-- /nd-top-row -->
+
+      <!-- Error — bottom, full width -->
+      <div class="nd-error">
+        <div class="nd-error-label">error <span>· populated only when an error occurs — null on the happy path</span></div>
+        <div>
+          <div class="nd-box-title" style="margin-top:12px;">
+            <span style="color:var(--red)">error</span>
+            <span class="mutability mut-cond">ERROR SCOPE ONLY</span>
+          </div>
+          <div class="nd-box-sub">Null during normal execution. Accessible only inside On Error Continue / On Error Propagate handlers.</div>
+        </div>
+        <div class="nd-box-rules" style="margin-top:12px; align-self:end;">
+          error.errorType.namespace   → "HTTP"<br>
+          error.errorType.identifier  → "NOT_FOUND"<br>
+          error.description           → message string<br>
+          error.cause                 → Java exception<br>
+          Catch all HTTP: Type=(empty) When: <span style="color:var(--teal)">#[error.errorType.namespace == "HTTP"]</span>
+        </div>
+      </div>
+
+    </div><!-- /nested-diagram -->
+
+    <!-- ── REFERENCE PANELS ── -->
+    <div class="event-reference">
+
+      <!-- Sources -->
+      <div class="ref-panel">
+        <div class="ref-panel-title">Sources — Create New Events</div>
+        <div class="ref-panel-body">
+          <div class="side-item src">
+            <h5>HTTP Listener <span class="tag-new">CREATES</span></h5>
+            <p><strong>payload</strong> = request body<br><strong>attributes</strong> = headers, URI/query params, method<br><strong>vars</strong> = empty initially</p>
+          </div>
+          <div class="side-item src">
+            <h5>Scheduler <span class="tag-new">CREATES</span></h5>
+            <p><strong>payload</strong> = null · <strong>attributes</strong> = minimal<br>No incoming message — time-driven only</p>
+          </div>
+          <div class="side-item src">
+            <h5>JMS / File Listener <span class="tag-new">CREATES</span></h5>
+            <p><strong>payload</strong> = message / file content<br><strong>attributes</strong> = source metadata</p>
+          </div>
+          <div class="access-panel">
+            <div style="color:var(--teal)">payload</div>
+            <div style="color:var(--blue)">attributes.uriParams.id</div>
+            <div style="color:var(--blue)">attributes.queryParams.dest</div>
+            <div style="color:var(--blue)">attributes.headers.'content-type'</div>
+            <div style="color:var(--amber)">vars.myVar</div>
+            <div style="color:var(--red)">error.errorType.namespace</div>
+          </div>
+          <div class="side-item warn">
+            <h5>Mule 3 — Eliminate on Sight</h5>
+            <p style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.8;color:var(--red);text-decoration:line-through;">
+              inboundProperties · outboundProperties<br>flowVars · sessionVars<br>attributes.'http.uri.params'.x<br>message.payload
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Connectors -->
+      <div class="ref-panel">
+        <div class="ref-panel-title">Connectors — Mutate the Event</div>
+        <div class="ref-panel-body">
+          <div class="side-item proc">
+            <h5>HTTP Request <span class="tag-mut">REPLACES</span></h5>
+            <p><strong>payload</strong> → response body<br><strong>attributes</strong> → response attrs<br><strong>vars</strong> → PRESERVED ✓ always</p>
+          </div>
+          <div class="side-item proc">
+            <h5>DB Select <span class="tag-mut">REPLACES</span></h5>
+            <p><strong>payload</strong> → Java List of Maps<br>No rows → <code>[]</code> not null, not false<br>Needs Transform Message for JSON output</p>
+          </div>
+          <div class="side-item proc">
+            <h5>JMS Publish <span class="tag-ok">PRESERVES</span></h5>
+            <p>Fire-and-forget. <strong>payload unchanged.</strong><br>Publish-Consume → payload = reply</p>
+          </div>
+          <div class="side-item note">
+            <h5>Target Attribute</h5>
+            <p><code>target="varName"</code> → result in <strong>vars.varName</strong>, original <strong>payload PRESERVED</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scopes -->
+      <div class="ref-panel">
+        <div class="ref-panel-title">Scopes &amp; Routers</div>
+        <div class="ref-panel-body">
+          <div class="side-item proc">
+            <h5>For Each</h5>
+            <p>Input must be <strong>Array</strong> — Map/Object = zero iterations. Each iteration: element is payload. After scope: <strong>original payload restored.</strong> Vars set inside persist outside.</p>
+          </div>
+          <div class="side-item proc">
+            <h5>Scatter-Gather</h5>
+            <p>Sends <strong>entire event</strong> to ALL routes in <strong>parallel.</strong> Output: <strong>Object</strong> (not Array) with keys "0","1","2". Access: <code>payload[0].payload</code>. After: attributes = null.</p>
+          </div>
+          <div class="side-item note">
+            <h5>Flow Reference</h5>
+            <p><strong>Same Mule event.</strong> payload + attributes + vars all travel both directions. No network boundary — internal only.</p>
+          </div>
+          <div class="side-item note">
+            <h5>Sub-flow vs Private flow</h5>
+            <p>Sub-flow: <strong>always</strong> uses calling flow's error handler — no own handler.<br>Private flow: <strong>can</strong> have its own handler.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /event-reference -->
+
+    <!-- Boundary table -->
+    <div class="boundary-section">
+      <div class="boundary-title">Scope Boundaries — What Survives?</div>
+      <table class="btable">
+        <thead>
+          <tr>
+            <th>Boundary Type</th>
+            <th style="color:var(--teal)">payload</th>
+            <th style="color:var(--blue)">attributes</th>
+            <th style="color:var(--amber)">vars</th>
+            <th>Key Rule</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Flow Reference (internal)</td>
+            <td><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+            <td class="note-sm">Same Mule event object. Full bidirectional visibility.</td>
+          </tr>
+          <tr>
+            <td>HTTP Request (network)</td>
+            <td><span class="replace">REPLACED<br>→ response body</span></td>
+            <td><span class="replace">REPLACED<br>→ response attrs</span></td>
+            <td><span class="check">✓</span></td>
+            <td class="note-sm">vars are the ONLY element that crosses a network boundary intact.</td>
+          </tr>
+          <tr>
+            <td>For Each scope</td>
+            <td><span class="replace">→ element<br>restored after</span></td>
+            <td><span class="check">✓</span></td>
+            <td><span class="check">✓ set inside persist outside</span></td>
+            <td class="note-sm">Input must be Array. Sequential, not parallel.</td>
+          </tr>
+          <tr>
+            <td>Batch Step (per record)</td>
+            <td><span class="replace">→ record</span></td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="cross">✗ don't reach On Complete</span></td>
+            <td class="note-sm">On Complete = BatchJobResult summary, NOT records. Parallel.</td>
+          </tr>
+          <tr>
+            <td>Sub-flow (via Flow Ref)</td>
+            <td><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+            <td class="note-sm">Same as Flow Reference. Sub-flow ALWAYS uses calling flow's error handler.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /event-wrapper -->
+</div><!-- /view-mule-event -->
+
+<script>
+// ═══════════════════════
+// DATA
+// ═══════════════════════
+
+const SECTIONS = [
+  { id:'s1',  num:'01', title:'Creating Application Networks',      weight:5,  group:'lifecycle',  stakes:false,
+    topics:['API-led: System / Process / Experience layers','C4E — Center for Enablement (not "Excellence")','Anypoint Platform component roles'],
+    pos:[0,0] },
+  { id:'s2',  num:'02', title:'Designing APIs',                      weight:10, group:'lifecycle',  stakes:false,
+    topics:['RAML 1.0 syntax · !include with full path','PUT = full replace · PATCH = partial','Traits, resource types, data types'],
+    pos:[0,1] },
+  { id:'s12', num:'12', title:'Deploying & Managing APIs',           weight:10, group:'lifecycle',  stakes:false,
+    topics:['CloudHub 2.0: workers, vCores, Private Space','Autodiscovery (no extra vCores) vs API Proxy','${http.port} for CloudHub · SLA policy → redeploy'],
+    pos:[0,2] },
+  { id:'s4',  num:'04', title:'Structuring Mule Applications',       weight:10, group:'structure',  stakes:true,
+    topics:['Flow · Sub-flow (no own handler) · Private flow','Global elements hold config file — NOT pom.xml','${training.host} syntax · APIKit: 1 flow per method+resource'],
+    pos:[1,0] },
+  { id:'s3',  num:'03', title:'Accessing & Modifying Mule Events',   weight:10, group:'structure',  stakes:true,
+    topics:['payload · attributes · vars · error model','vars survive HTTP Request; attributes do not','Target attribute → payload preserved, result in vars'],
+    pos:[1,1] },
+  { id:'s5',  num:'05', title:'Building API Implementation Flows',   weight:5,  group:'structure',  stakes:false,
+    topics:['APIKit-generated flows: 1 per HTTP method+resource','REST Connect: publish to Exchange first','HTTP base path · APIKit router maps resources'],
+    pos:[1,2] },
+  { id:'s6',  num:'06', title:'Using Connectors',                    weight:10, group:'processing', stakes:false,
+    topics:['DB Select → Java List of Maps (empty = [], not null)','File Read → source renamed to .bak','JMS Publish (unchanged) vs Publish-Consume (reply) · WSDL at design time'],
+    pos:[2,0] },
+  { id:'s8',  num:'08', title:'Transforming Data with DataWeave',    weight:15, group:'processing', stakes:true,
+    topics:['fun · = · :: · ++ (not +)','filter → orderBy → groupBy (order matters)','groupBy → Object · map/filter → Array'],
+    pos:[2,1] },
+  { id:'s7',  num:'07', title:'Processing Records',                  weight:10, group:'processing', stakes:true,
+    topics:['For Each (sequential, Array only) vs Batch (parallel)','Object Store for watermarks — not vars','On Complete = BatchJobResult summary, not records'],
+    pos:[2,2] },
+  { id:'s11', num:'11', title:'Debugging & Troubleshooting',         weight:5,  group:'control',    stakes:false,
+    topics:['Breakpoint = state BEFORE processor runs','Missing Maven dep → install to ~/.m2 local repo','MUnit: Mock When · Assert That · Verify Call'],
+    pos:[3,0] },
+  { id:'s10', num:'10', title:'Handling Errors',                     weight:10, group:'control',    stakes:true,
+    topics:['Continue: handler payload returned; Propagate: error re-thrown','Global handler bypassed if flow has ANY own handler','HTTP:* wildcard NOT valid in Type field'],
+    pos:[3,1] },
+  { id:'s9',  num:'09', title:'Routing Events',                      weight:10, group:'control',    stakes:true,
+    topics:['Choice Router: top-down, first match wins','Scatter-Gather: parallel, returns Object (keys 0/1/2)','First Successful · Round Robin'],
+    pos:[3,2] },
+];
+
+const ROW_META = [
+  { label:'Design & Lifecycle',           color:'var(--teal)'   },
+  { label:'App Structure & Core Model',   color:'var(--blue)'   },
+  { label:'Data Processing & Connectors', color:'var(--purple)' },
+  { label:'Flow Control & Operations',    color:'var(--amber)'  },
+];
+
+const CONNECTIONS = [
+  // Horizontal (row-adjacent)
+  ['s1','s2','adj'],  ['s2','s12','adj'],
+  ['s4','s3','adj'],  ['s3','s5','adj'],
+  ['s6','s8','adj'],  ['s8','s7','adj'],
+  ['s11','s10','adj'],['s10','s9','adj'],
+  // Vertical (column-adjacent)
+  ['s1','s4','adj'],  ['s2','s3','adj'],  ['s12','s5','adj'],
+  ['s4','s6','adj'],  ['s3','s8','adj'],  ['s5','s7','adj'],
+  ['s6','s11','adj'], ['s8','s10','adj'], ['s7','s9','adj'],
+  // Conceptual / non-adjacent
+  ['s3','s10','rel'], // Mule Events ↔ Error Handling (error = 4th event element)
+  ['s4','s10','rel'], // Structuring ↔ Error Handling (flow type determines error scope)
+  ['s3','s9','rel'],  // Mule Events ↔ Routing (Choice uses event data)
+  ['s2','s5','rel'],  // Design APIs ↔ Build Flows (RAML → APIKit)
+  ['s6','s7','rel'],  // Connectors ↔ Records (batch uses DB/File connectors)
+];
+
+const RELATED = {};
+SECTIONS.forEach(s => RELATED[s.id] = new Set());
+CONNECTIONS.forEach(([a,b]) => { RELATED[a].add(b); RELATED[b].add(a); });
+
+// ═══════════════════════
+// BUILD SCMD GRID
+// ═══════════════════════
+function buildGrid() {
+  const grid = document.getElementById('scmd-grid');
+  grid.innerHTML = '';
+
+  for (let row = 0; row < 4; row++) {
+    const lbl = document.createElement('div');
+    lbl.className = 'row-label';
+    lbl.style.color = ROW_META[row].color;
+    lbl.innerHTML = `<span>${ROW_META[row].label}</span>`;
+    grid.appendChild(lbl);
+
+    const rowSecs = SECTIONS.filter(s => s.pos[0] === row).sort((a,b) => a.pos[1]-b.pos[1]);
+    rowSecs.forEach((s, ci) => {
+      const card = document.createElement('div');
+      card.className = 'dcard';
+      card.id = s.id;
+      card.dataset.group = s.group;
+      card.style.animationDelay = `${(row*3+ci)*0.05}s`;
+      card.innerHTML = `
+        <div class="card-top">
+          <span class="card-num">S${s.num}</span>
+          ${s.stakes ? '<span class="card-stakes">⚑ HIGH STAKES</span>' : ''}
+        </div>
+        <div class="card-title">${s.title}</div>
+        <div class="card-bottom">
+          <span class="card-weight">${s.weight}%</span>
+          <div class="card-topics">${s.topics.join('<br>')}</div>
+        </div>`;
+      card.addEventListener('mouseenter', () => highlight(s.id));
+      card.addEventListener('mouseleave', clearHL);
+      grid.appendChild(card);
+    });
+  }
+}
+
+function highlight(id) {
+  const rel = RELATED[id];
+  document.querySelectorAll('.dcard').forEach(c => {
+    if (c.id === id) c.classList.remove('dimmed','related');
+    else if (rel.has(c.id)) { c.classList.remove('dimmed'); c.classList.add('related'); }
+    else { c.classList.add('dimmed'); c.classList.remove('related'); }
+  });
+  document.querySelectorAll('.conn-line').forEach(l => {
+    const on = l.dataset.a === id || l.dataset.b === id;
+    l.style.opacity = on ? '0.9' : '0.06';
+    l.style.strokeWidth = on ? '2.5' : l.dataset.base;
+  });
+}
+
+function clearHL() {
+  document.querySelectorAll('.dcard').forEach(c => c.classList.remove('dimmed','related'));
+  document.querySelectorAll('.conn-line').forEach(l => {
+    l.style.opacity = '';
+    l.style.strokeWidth = '';
+  });
+}
+
+// ═══════════════════════
+// DRAW SVG CONNECTIONS
+// ═══════════════════════
+function drawLines() {
+  const svg = document.getElementById('conn-svg');
+  const wrap = document.getElementById('scmd-wrapper');
+  svg.innerHTML = '';
+  const wr = wrap.getBoundingClientRect();
+  svg.setAttribute('width', wr.width);
+  svg.setAttribute('height', wr.height);
+
+  CONNECTIONS.forEach(([a,b,type]) => {
+    const ca = document.getElementById(a);
+    const cb = document.getElementById(b);
+    if (!ca || !cb) return;
+    const ra = ca.getBoundingClientRect();
+    const rb = cb.getBoundingClientRect();
+
+    const ax = ra.left + ra.width/2  - wr.left;
+    const ay = ra.top  + ra.height/2 - wr.top;
+    const bx = rb.left + rb.width/2  - wr.left;
+    const by = rb.top  + rb.height/2 - wr.top;
+
+    const hw = ra.width/2, hh = ra.height/2;
+    const dx = bx-ax, dy = by-ay;
+    let x1=ax,y1=ay,x2=bx,y2=by;
+
+    // Trim to card edges for adjacent connections
+    if (type==='adj') {
+      if (Math.abs(dx) > Math.abs(dy)) {
+        x1 = ax + (dx>0?hw:-hw); y1 = ay;
+        x2 = bx + (dx<0?hw:-hw); y2 = by;
+      } else {
+        x1 = ax; y1 = ay + (dy>0?hh:-hh);
+        x2 = bx; y2 = by + (dy<0?hh:-hh);
+      }
+    }
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    let d;
+    if (type==='adj') {
+      d = `M${x1},${y1} L${x2},${y2}`;
+    } else {
+      // Curve: control point offset perpendicular to midpoint
+      const mx=(ax+bx)/2, my=(ay+by)/2;
+      const pdx=-(by-ay), pdy=(bx-ax);
+      const len=Math.sqrt(pdx*pdx+pdy*pdy)||1;
+      const off=50;
+      const cx2=mx+pdx/len*off, cy2=my+pdy/len*off;
+      d = `M${ax},${ay} Q${cx2},${cy2} ${bx},${by}`;
+    }
+
+    path.setAttribute('d',d);
+    path.setAttribute('fill','none');
+    const isRel = type==='rel';
+    path.setAttribute('stroke', isRel ? 'oklch(0.70 0.10 55)' : 'oklch(0.45 0.04 240)');
+    path.setAttribute('stroke-width', isRel ? '1.5' : '1');
+    path.setAttribute('stroke-dasharray', isRel ? '6 4' : '3 6');
+    path.setAttribute('opacity', isRel ? '0' : '0.38');
+    path.classList.add('conn-line');
+    path.dataset.a = a;
+    path.dataset.b = b;
+    path.dataset.base = isRel ? '1.5' : '1';
+    svg.appendChild(path);
+  });
+}
+
+// ═══════════════════════
+// BUILD FOUNDATIONS
+// ═══════════════════════
+const FOUND_DATA = [
+  { num:'01', title:'Roles & Project Lifecycle', weight:17,
+    angle:-90,
+    topics:['Integration architect, developer, ops roles','C4E structure and purpose','API-led project lifecycle stages'] },
+  { num:'02', title:'Integration Concepts & Terminology', weight:20,
+    angle:-30,
+    topics:['REST vs SOAP','Orchestration vs choreography','Sync vs async communication patterns'] },
+  { num:'03', title:'Integration Problems & Solutions', weight:17,
+    angle:30,
+    topics:['When to apply API-led connectivity','Point-to-point pitfalls','System / Process / Experience layer mapping'] },
+  { num:'04', title:'Technical Complexities & Patterns', weight:18,
+    angle:90,
+    topics:['Retry, circuit breaker, idempotency','Security: OAuth, TLS, mTLS','Pub-sub, polling, push patterns'] },
+  { num:'05', title:'Anypoint Platform for Integration', weight:18,
+    angle:150,
+    topics:['Exchange · Studio · Runtime Manager','Environments & business groups','CloudHub vs hybrid deployment'] },
+  { num:'06', title:'Anypoint Platform for API Management', weight:10,
+    angle:210,
+    topics:['API Manager: policies & SLA tiers','UAPIM · Anypoint Flex Gateway','API Gateway vs service mesh — relative weak spot (D6 75%)'] },
+];
+
+const FOUND_CONNS = [
+  [0,1,'adj'],[1,2,'adj'],[2,3,'adj'],[3,4,'adj'],[4,5,'adj'],[5,0,'adj'], // ring
+  [1,3,'rel'],[1,4,'rel'],[2,4,'rel'], // inner synergies
+];
+
+function buildFoundations() {
+  const wrap = document.getElementById('found-wrapper');
+  const svg  = document.getElementById('found-svg');
+  const W = 960, H = 620, cx = W/2, cy = 300;
+  const rx = 265, ry = 185; // ellipse: compact vertical, wider horizontal
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+
+  const pos = FOUND_DATA.map(d => {
+    const rad = d.angle * Math.PI / 180;
+    return { x: cx + rx*Math.cos(rad), y: cy + ry*Math.sin(rad) };
+  });
+
+  // Draw connections
+  FOUND_CONNS.forEach(([a,b,type]) => {
+    const pa=pos[a], pb=pos[b];
+    const isRel = type==='rel';
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    let d;
+    if (isRel) {
+      d = `M${pa.x},${pa.y} Q${cx},${cy+20} ${pb.x},${pb.y}`;
+    } else {
+      d = `M${pa.x},${pa.y} L${pb.x},${pb.y}`;
+    }
+    path.setAttribute('d',d);
+    path.setAttribute('fill','none');
+    path.setAttribute('stroke', isRel ? 'oklch(0.74 0.12 185 / 0.35)' : 'oklch(0.45 0.04 185 / 0.5)');
+    path.setAttribute('stroke-width', isRel ? '1.5' : '1');
+    path.setAttribute('stroke-dasharray', isRel ? '5 4' : '3 6');
+    svg.appendChild(path);
+  });
+
+  // Center hub
+  const center = document.createElement('div');
+  center.className = 'found-center';
+  center.style.cssText = `left:${cx}px;top:${cy}px;`;
+  center.innerHTML = `<div class="center-code">MULE<br>101</div><div class="center-sub">6 domains<br>40 questions</div>`;
+  wrap.appendChild(center);
+
+  // Domain cards
+  FOUND_DATA.forEach((d,i) => {
+    const p = pos[i];
+    const card = document.createElement('div');
+    card.className = 'fcard';
+    card.style.cssText = `left:${p.x}px;top:${p.y}px;animation-delay:${i*0.07}s`;
+    const barW = Math.round((d.weight/20)*100);
+    card.innerHTML = `
+      <div class="fcard-num">DOMAIN ${d.num}</div>
+      <div class="fcard-title">${d.title}</div>
+      <div class="fcard-pct">
+        <span class="fcard-weight">${d.weight}%</span>
+        <span class="fcard-pct-label">of exam</span>
+      </div>
+      <div class="fcard-bar" style="width:${barW}%"></div>
+      <div class="fcard-topics">${d.topics.join('<br>')}</div>`;
+    wrap.appendChild(card);
+  });
+}
+
+// ═══════════════════════
+// TAB SWITCHING
+// ═══════════════════════
+let foundBuilt = false;
+
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const v = btn.dataset.view;
+    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(`view-${v}`).classList.add('active');
+
+    if (v === 'scmd') setTimeout(drawLines, 80);
+    if (v === 'foundations' && !foundBuilt) { buildFoundations(); foundBuilt = true; }
+  });
+});
+
+// ═══════════════════════
+// INIT
+// ═══════════════════════
+buildGrid();
+setTimeout(drawLines, 250);
+window.addEventListener('resize', () => {
+  if (document.getElementById('view-scmd').classList.contains('active')) drawLines();
+});
+</script>
+<div id="tweaks-root"></div>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accentHue": 190,
+  "atmosphere": "technical",
+  "cardStyle": "standard"
+}/*EDITMODE-END*/;
+
+function TweaksApp() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  // Apply accent hue — shift all accent colors together
+  React.useEffect(() => {
+    const shift = t.accentHue - 185;
+    const bases = { teal:185, blue:240, purple:290, amber:55, green:155, red:22 };
+    const r = document.documentElement;
+    r.style.setProperty('--accent-h', t.accentHue);
+    Object.entries(bases).forEach(([name, base]) => {
+      const h = ((base + shift) % 360 + 360) % 360;
+      r.style.setProperty(`--${name}`,   `oklch(0.74 0.165 ${h})`);
+      r.style.setProperty(`--${name}-a`, `oklch(0.74 0.165 ${h} / 0.15)`);
+    });
+  }, [t.accentHue]);
+
+  // Apply atmosphere — grid density + surface depth
+  React.useEffect(() => {
+    const r = document.documentElement;
+    const cfg = {
+      sparse:    { opacity:'0.03', size:'64px', surface:'oklch(0.20 0.010 240)', bg:'oklch(0.12 0.012 240)' },
+      technical: { opacity:'0.09', size:'48px', surface:'oklch(0.17 0.015 240)', bg:'oklch(0.11 0.015 240)' },
+      circuit:   { opacity:'0.18', size:'32px', surface:'oklch(0.14 0.020 240)', bg:'oklch(0.09 0.018 240)' },
+    }[t.atmosphere] || {};
+    r.style.setProperty('--grid-opacity', cfg.opacity);
+    r.style.setProperty('--grid-size',    cfg.size);
+    r.style.setProperty('--surface',      cfg.surface);
+    r.style.setProperty('--bg',           cfg.bg);
+    document.body.dataset.atmosphere = t.atmosphere;
+  }, [t.atmosphere]);
+
+  // Apply card style
+  React.useEffect(() => {
+    document.body.dataset.cardStyle = t.cardStyle;
+  }, [t.cardStyle]);
+
+  const hueLabel = t.accentHue < 160 ? 'Green' : t.accentHue < 210 ? 'Teal' :
+                   t.accentHue < 255 ? 'Blue' : t.accentHue < 285 ? 'Indigo' : 'Purple';
+
+  return (
+    <TweaksPanel>
+      <TweakSection label="Color" />
+      <TweakSlider
+        label={`Accent hue — ${hueLabel}`}
+        value={t.accentHue} min={130} max={300} step={5}
+        onChange={v => setTweak('accentHue', v)}
+      />
+      <TweakSection label="Atmosphere" />
+      <TweakRadio
+        label="Grid &amp; surface depth"
+        value={t.atmosphere}
+        options={['sparse', 'technical', 'circuit']}
+        onChange={v => setTweak('atmosphere', v)}
+      />
+      <TweakSection label="Cards" />
+      <TweakRadio
+        label="Information density"
+        value={t.cardStyle}
+        options={['focused', 'standard', 'open']}
+        onChange={v => setTweak('cardStyle', v)}
+      />
+    </TweaksPanel>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<TweaksApp />);
+</script>
+
+</body>
+</html>

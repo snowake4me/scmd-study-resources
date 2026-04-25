@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MuleSoft Certification Ecosystem</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+:root {
+  --bg:         oklch(0.11 0.015 240);
+  --surface:    oklch(0.17 0.015 240);
+  --surface-hi: oklch(0.22 0.018 240);
+  --border:     oklch(0.28 0.02 240);
+  --text:       oklch(0.92 0.008 240);
+  --muted:      oklch(0.54 0.01 240);
+  --teal:       oklch(0.74 0.165 185);
+  --blue:       oklch(0.74 0.165 240);
+  --purple:     oklch(0.74 0.165 290);
+  --amber:      oklch(0.74 0.165 55);
+  --green:      oklch(0.74 0.165 155);
+  --teal-a:     oklch(0.74 0.165 185 / 0.14);
+  --blue-a:     oklch(0.74 0.165 240 / 0.14);
+  --purple-a:   oklch(0.74 0.165 290 / 0.14);
+  --amber-a:    oklch(0.74 0.165 55 / 0.14);
+  --green-a:    oklch(0.74 0.165 155 / 0.14);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  min-height: 100vh;
+}
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background:
+    linear-gradient(oklch(0.30 0.02 240 / 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.30 0.02 240 / 0.09) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none; z-index: 0;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 200;
+  display: flex; align-items: center; gap: 6px;
+  padding: 11px 28px;
+  background: oklch(0.12 0.015 240 / 0.96);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--teal); letter-spacing: 0.16em; opacity: 0.7; margin-right: 14px; }
+.tab { padding: 7px 16px; border: 1px solid var(--border); border-radius: 6px; background: transparent; color: var(--muted); font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+.tab:hover { border-color: var(--teal); color: var(--teal); }
+.tab.active { background: var(--teal-a); border-color: var(--teal); color: var(--teal); }
+
+/* ── VIEWS ── */
+.view { display: none; position: relative; z-index: 1; padding: 36px 28px 56px; }
+.view.active { display: block; }
+
+.vhead { text-align: center; margin-bottom: 40px; }
+.vhead .badge { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.16em; padding: 4px 12px; border-radius: 4px; margin-bottom: 14px; background: var(--teal-a); color: var(--teal); border: 1px solid oklch(0.74 0.165 185 / 0.3); }
+.vhead h1 { font-size: 27px; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 9px; }
+.vhead p { color: var(--muted); font-size: 14px; max-width: 580px; margin: 0 auto; line-height: 1.65; }
+
+/* ═══════════════════════════════
+   JOURNEY VIEW
+═══════════════════════════════ */
+.journey-wrapper {
+  position: relative; max-width: 1160px; margin: 0 auto;
+}
+.journey-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 20px 40px;
+  padding: 10px;
+}
+
+/* Cert cards */
+.cert-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 22px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.25s, border-color 0.25s;
+}
+.cert-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+}
+.cert-card.c-teal::before  { background: var(--teal); }
+.cert-card.c-blue::before  { background: var(--blue); }
+.cert-card.c-purple::before{ background: var(--purple); }
+.cert-card.c-amber::before { background: var(--amber); }
+
+.cert-card.c-teal  { border-color: oklch(0.74 0.165 185 / 0.4); box-shadow: 0 0 28px var(--teal-a); }
+.cert-card.c-blue  { border-color: oklch(0.74 0.165 240 / 0.4); box-shadow: 0 0 28px var(--blue-a); }
+.cert-card.c-purple{ border-color: oklch(0.74 0.165 290 / 0.3); }
+.cert-card.c-amber { border-color: oklch(0.74 0.165 55  / 0.3); }
+
+.cert-card.next { opacity: 0.78; }
+
+/* Status badge */
+.cert-status {
+  position: absolute; top: 16px; right: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; font-weight: 600; letter-spacing: 0.12em;
+  padding: 3px 8px; border-radius: 3px;
+}
+.status-passed { background: var(--green-a); color: var(--green); border: 1px solid oklch(0.74 0.165 155 / 0.3); }
+.status-next   { background: var(--surface-hi); color: var(--muted); border: 1px solid var(--border); }
+
+/* Spans both rows */
+.span-rows { grid-row: 1 / -1; display: flex; align-items: center; }
+.span-rows .cert-card { width: 100%; }
+
+/* Card content */
+.cert-code { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.14em; margin-bottom: 5px; }
+.cert-name { font-size: 16px; font-weight: 700; line-height: 1.25; margin-bottom: 3px; letter-spacing: -0.01em; }
+.cert-level-badge {
+  display: inline-block; font-size: 10px; font-weight: 600;
+  padding: 2px 8px; border-radius: 4px; margin-bottom: 16px; letter-spacing: 0.04em;
+}
+.c-teal  .cert-level-badge { background: var(--teal-a);   color: var(--teal);   }
+.c-blue  .cert-level-badge { background: var(--blue-a);   color: var(--blue);   }
+.c-purple.cert-level-badge,
+.c-purple .cert-level-badge{ background: var(--purple-a); color: var(--purple); }
+.c-amber .cert-level-badge { background: var(--amber-a);  color: var(--amber);  }
+
+/* Stats row */
+.cert-stats {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px; margin-bottom: 16px;
+  padding: 12px; border-radius: 8px;
+  background: var(--surface-hi);
+}
+.stat-item { text-align: center; }
+.stat-val { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 600; line-height: 1; }
+.stat-label { font-size: 9px; color: var(--muted); letter-spacing: 0.08em; margin-top: 3px; }
+
+.c-teal  .stat-val { color: var(--teal); }
+.c-blue  .stat-val { color: var(--blue); }
+.c-purple .stat-val { color: var(--purple); }
+.c-amber  .stat-val { color: var(--amber); }
+
+/* Focus */
+.cert-focus-label { font-size: 9px; font-weight: 600; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 4px; }
+.cert-focus { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.cert-focus-desc { font-size: 11px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+
+/* Skills */
+.cert-skills { display: flex; flex-direction: column; gap: 5px; }
+.skill-tag {
+  font-size: 11px; color: oklch(0.80 0.01 240);
+  padding: 4px 10px; border-radius: 4px;
+  background: oklch(0.20 0.015 240 / 0.7);
+  border-left: 2px solid transparent;
+  line-height: 1.3;
+}
+.c-teal  .skill-tag { border-left-color: var(--teal); }
+.c-blue  .skill-tag { border-left-color: var(--blue); }
+.c-purple .skill-tag { border-left-color: var(--purple); }
+.c-amber  .skill-tag { border-left-color: var(--amber); }
+
+/* Roles */
+.cert-roles { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+.role-pill { font-size: 10px; color: var(--muted); padding: 3px 8px; border-radius: 20px; border: 1px solid var(--border); }
+
+/* Cost note */
+.cert-cost-note { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); margin-top: 8px; letter-spacing: 0.06em; }
+
+/* SVG connector layer */
+.conn-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 10; }
+
+/* Legend */
+.journey-legend { display: flex; gap: 24px; justify-content: center; margin-top: 28px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+.l-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* ═══════════════════════════════
+   COMPARISON VIEW
+═══════════════════════════════ */
+.comparison-wrapper { max-width: 1160px; margin: 0 auto; }
+
+.comp-grid {
+  display: grid;
+  grid-template-columns: 160px repeat(4, 1fr);
+  border: 1px solid var(--border); border-radius: 14px;
+  overflow: hidden;
+}
+
+.comp-header-row {
+  display: contents;
+}
+
+.comp-row-label {
+  display: contents;
+}
+
+.comp-cell {
+  padding: 14px 16px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.comp-cell:last-child { border-right: none; }
+
+/* Header cells */
+.comp-head {
+  padding: 18px 16px;
+  background: var(--surface-hi);
+  border-right: 1px solid var(--border);
+  border-bottom: 2px solid var(--border);
+  text-align: center;
+}
+.comp-head:first-child { text-align: left; border-right: 1px solid oklch(0.40 0.02 240); }
+.comp-head:last-child { border-right: none; }
+
+.comp-head-name { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.comp-head-code { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.12em; margin-bottom: 8px; }
+.comp-head-bar { height: 3px; border-radius: 2px; margin: 0 auto 8px; }
+.comp-head-status { font-size: 9px; font-weight: 600; letter-spacing: 0.08em; }
+
+.comp-row-key {
+  font-size: 11px; font-weight: 600; color: var(--muted);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  background: oklch(0.145 0.015 240 / 0.6);
+  border-right: 1px solid oklch(0.40 0.02 240);
+  display: flex; align-items: center;
+}
+.comp-row-key:nth-child(odd) { background: oklch(0.13 0.015 240 / 0.4); }
+
+/* Alternate row backgrounds */
+.comp-grid > *:nth-child(10n+6),
+.comp-grid > *:nth-child(10n+7),
+.comp-grid > *:nth-child(10n+8),
+.comp-grid > *:nth-child(10n+9),
+.comp-grid > *:nth-child(10n+10) { background: oklch(0.145 0.015 240 / 0.3); }
+
+.comp-val { font-size: 13px; text-align: center; }
+.comp-val.big { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 600; }
+.comp-val.small { font-size: 11px; color: var(--muted); }
+
+.comp-tag {
+  display: inline-block; font-size: 10px; font-weight: 600;
+  padding: 3px 9px; border-radius: 4px; margin: 2px;
+}
+
+.comp-skill-list { font-size: 11px; line-height: 1.8; color: oklch(0.80 0.01 240); }
+.comp-skill-list li { list-style: none; padding-left: 10px; position: relative; }
+.comp-skill-list li::before { content: '→'; position: absolute; left: -2px; color: var(--muted); }
+
+/* Domain bar */
+.domain-bar-wrap { display: flex; flex-direction: column; gap: 4px; }
+.domain-bar { height: 4px; border-radius: 2px; opacity: 0.7; margin-bottom: 2px; }
+.domain-bar-label { font-size: 9px; color: var(--muted); display: flex; justify-content: space-between; }
+
+/* Difficulty indicator */
+.diff-dots { display: flex; gap: 5px; justify-content: center; margin-bottom: 4px; }
+.diff-dot { width: 10px; height: 10px; border-radius: 50%; }
+.diff-dot.on  { opacity: 1; }
+.diff-dot.off { opacity: 0.15; background: var(--border) !important; }
+
+/* Section separator row */
+.comp-section-row { grid-column: 1 / -1; background: oklch(0.14 0.018 240 / 0.8); padding: 8px 16px; border-bottom: 1px solid var(--border); }
+.comp-section-row span { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--teal); letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.7; }
+
+/* Shift indicator (between certs) */
+.shift-col { display: flex; align-items: center; justify-content: center; padding: 0 8px; }
+.shift-arrow { color: var(--muted); font-size: 18px; opacity: 0.4; }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">MULESOFT ECOSYSTEM</span>
+  <button class="tab active" data-view="journey">Progression Map</button>
+  <button class="tab" data-view="comparison">Exam Comparison</button>
+</nav>
+
+<!-- ════════════════════════════════════
+     JOURNEY VIEW
+════════════════════════════════════ -->
+<div id="view-journey" class="view active">
+  <div class="vhead">
+    <div class="badge">4 CERTIFICATIONS · 1 PLATFORM · YOUR PATH</div>
+    <h1>MuleSoft Certification Ecosystem</h1>
+    <p>From conceptual vocabulary to platform strategy. The path branches at Architect level — Integration Architect owns the <em>how</em>, Platform Architect owns the <em>why and where</em>.</p>
+  </div>
+
+  <div class="journey-wrapper" id="journey-wrapper">
+    <div class="journey-grid" id="journey-grid">
+
+      <!-- Col 1: Foundations (spans both rows, centered) -->
+      <div class="span-rows">
+        <div class="cert-card c-teal" id="card-foundations">
+          <div class="cert-status status-passed">✓ PASSED · APR 2026</div>
+          <div class="cert-code">MULE-101</div>
+          <div class="cert-name">Integration Foundations</div>
+          <div class="cert-level-badge">ENTRY LEVEL</div>
+          <div class="cert-stats">
+            <div class="stat-item"><div class="stat-val">40</div><div class="stat-label">QUESTIONS</div></div>
+            <div class="stat-item"><div class="stat-val">70m</div><div class="stat-label">TIME LIMIT</div></div>
+            <div class="stat-item"><div class="stat-val">$75</div><div class="stat-label">REGISTRATION</div></div>
+          </div>
+          <div class="cert-focus-label">Core Focus</div>
+          <div class="cert-focus">WHY &amp; WHEN</div>
+          <div class="cert-focus-desc">Concepts and vocabulary. No coding, no Studio. Tests whether you understand integration architecture and Anypoint Platform at a strategic level.</div>
+          <div class="cert-skills">
+            <div class="skill-tag">API-led connectivity concepts</div>
+            <div class="skill-tag">Anypoint Platform overview</div>
+            <div class="skill-tag">Integration patterns &amp; roles</div>
+          </div>
+          <div class="cert-roles">
+            <div class="role-pill">Business Analysts</div>
+            <div class="role-pill">Aspiring Developers</div>
+            <div class="role-pill">New to MuleSoft</div>
+          </div>
+          <div class="cert-cost-note">Free retake · Spring '24 aligned</div>
+        </div>
+      </div>
+
+      <!-- Col 2: SCMD (spans both rows, centered) -->
+      <div class="span-rows">
+        <div class="cert-card c-blue" id="card-scmd">
+          <div class="cert-status status-passed">✓ PASSED · APR 2026</div>
+          <div class="cert-code">DEX-401 / SCMD</div>
+          <div class="cert-name">Certified MuleSoft Developer</div>
+          <div class="cert-level-badge">DEVELOPER</div>
+          <div class="cert-stats">
+            <div class="stat-item"><div class="stat-val">60</div><div class="stat-label">QUESTIONS</div></div>
+            <div class="stat-item"><div class="stat-val">120m</div><div class="stat-label">TIME LIMIT</div></div>
+            <div class="stat-item"><div class="stat-val">$200</div><div class="stat-label">REGISTRATION</div></div>
+          </div>
+          <div class="cert-focus-label">Core Focus</div>
+          <div class="cert-focus">HOW TO BUILD</div>
+          <div class="cert-focus-desc">Hands-on Anypoint Studio. Flows, DataWeave, error handling, connectors, routing, deployment. Mechanical fluency is the gap between studying and passing.</div>
+          <div class="cert-skills">
+            <div class="skill-tag">Mule Event model &amp; DataWeave (25%)</div>
+            <div class="skill-tag">Error handling &amp; routing (20%)</div>
+            <div class="skill-tag">Connectors, records &amp; deployment</div>
+          </div>
+          <div class="cert-roles">
+            <div class="role-pill">MuleSoft Developers</div>
+            <div class="role-pill">Integration Engineers</div>
+          </div>
+          <div class="cert-cost-note">Mule-101 recommended · $100 retake</div>
+        </div>
+      </div>
+
+      <!-- Col 3 row 1: Integration Architect -->
+      <div class="cert-card c-purple next" id="card-ia">
+        <div class="cert-status status-next">→ NEXT</div>
+        <div class="cert-code">ARC-730 AREA · INTEGRATION ARCHITECT</div>
+        <div class="cert-name">Platform Integration Architect</div>
+        <div class="cert-level-badge" style="background:var(--purple-a);color:var(--purple);">ARCHITECT</div>
+        <div class="cert-stats">
+          <div class="stat-item"><div class="stat-val" style="color:var(--purple)">60</div><div class="stat-label">QUESTIONS</div></div>
+          <div class="stat-item"><div class="stat-val" style="color:var(--purple)">120m</div><div class="stat-label">TIME LIMIT</div></div>
+          <div class="stat-item"><div class="stat-val" style="color:var(--purple)">$400</div><div class="stat-label">REGISTRATION</div></div>
+        </div>
+        <div class="cert-focus-label">Core Focus</div>
+        <div class="cert-focus" style="color:var(--purple)">HOW TO DESIGN</div>
+        <div class="cert-focus-desc">Leading Anypoint Platform implementations. Technical quality, governance, and operationalization. You own the architecture decisions and their consequences.</div>
+        <div class="cert-skills">
+          <div class="skill-tag" style="border-left-color:var(--purple)">Runtime architecture &amp; DevOps (29%)</div>
+          <div class="skill-tag" style="border-left-color:var(--purple)">Reliability, security &amp; performance (23%)</div>
+          <div class="skill-tag" style="border-left-color:var(--purple)">Integration paradigms &amp; persistence (20%)</div>
+        </div>
+        <div class="cert-roles">
+          <div class="role-pill">Solution Architects</div>
+          <div class="role-pill">Technical Architects</div>
+          <div class="role-pill">Senior Developers</div>
+        </div>
+        <div class="cert-cost-note">SCMD recommended · $200 retake · 10 domains</div>
+      </div>
+
+      <!-- Col 3 row 2: Platform Architect -->
+      <div class="cert-card c-amber next" id="card-pa">
+        <div class="cert-status status-next">→ NEXT</div>
+        <div class="cert-code">ARC-720 AREA · PLATFORM ARCHITECT</div>
+        <div class="cert-name">Platform Architect</div>
+        <div class="cert-level-badge" style="background:var(--amber-a);color:var(--amber);">ARCHITECT</div>
+        <div class="cert-stats">
+          <div class="stat-item"><div class="stat-val" style="color:var(--amber)">60</div><div class="stat-label">QUESTIONS</div></div>
+          <div class="stat-item"><div class="stat-val" style="color:var(--amber)">120m</div><div class="stat-label">TIME LIMIT</div></div>
+          <div class="stat-item"><div class="stat-val" style="color:var(--amber)">$400</div><div class="stat-label">REGISTRATION</div></div>
+        </div>
+        <div class="cert-focus-label">Core Focus</div>
+        <div class="cert-focus" style="color:var(--amber)">HOW TO GOVERN</div>
+        <div class="cert-focus-desc">Defining and owning the organization's Anypoint Platform strategy. C4E, API governance, multi-LoB adoption, and platform sustainability at scale.</div>
+        <div class="cert-skills">
+          <div class="skill-tag" style="border-left-color:var(--amber)">API governance &amp; policy enforcement (27%)</div>
+          <div class="skill-tag" style="border-left-color:var(--amber)">Platform deployment &amp; monitoring (23%)</div>
+          <div class="skill-tag" style="border-left-color:var(--amber)">API design, C4E &amp; org foundations (22%)</div>
+        </div>
+        <div class="cert-roles">
+          <div class="role-pill">Enterprise Architects</div>
+          <div class="role-pill">Solution Architects</div>
+        </div>
+        <div class="cert-cost-note">No official prereqs · $200 retake · 9 domains</div>
+      </div>
+
+    </div><!-- /journey-grid -->
+    <svg class="conn-svg" id="conn-svg"></svg>
+  </div><!-- /journey-wrapper -->
+
+  <div class="journey-legend">
+    <div class="legend-item"><div class="l-dot" style="background:var(--teal)"></div>Foundations · Mule-101</div>
+    <div class="legend-item"><div class="l-dot" style="background:var(--blue)"></div>Developer · DEX-401</div>
+    <div class="legend-item"><div class="l-dot" style="background:var(--purple)"></div>Integration Architect</div>
+    <div class="legend-item"><div class="l-dot" style="background:var(--amber)"></div>Platform Architect</div>
+    <div class="legend-item" style="margin-left:16px; font-size:11px;"><span style="color:var(--green);font-weight:600;">✓ PASSED</span>&nbsp;— both completed April 2026</div>
+    <div class="legend-item"><span style="color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;">- - -</span>&nbsp;Parallel paths — pursue in either order</div>
+  </div>
+
+  <!-- Key insight callout -->
+  <div style="max-width:1160px;margin:28px auto 0;padding:0 10px;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:0.14em;margin-bottom:6px;">THE BIGGEST SHIFT</div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Foundations → Developer</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.6;">Concepts to execution. Knowing <em>what</em> a Mule Event is vs. debugging one mid-flow. No shortcut for hands-on time in Studio.</div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--purple);letter-spacing:0.14em;margin-bottom:6px;">IA vs PA — NOT A LADDER</div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Parallel Architect Tracks</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.6;">Both are $400, both intermediate. IA = implementation ownership. PA = platform strategy. Neither requires the other as a prerequisite.</div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--amber);letter-spacing:0.14em;margin-bottom:6px;">COST STEP-UP</div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px;">$75 → $200 → $400</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.6;">Price reflects expected experience level. Foundations is deliberately accessible. Architect exams assume you've already shipped production Mule apps.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /view-journey -->
+
+<!-- ════════════════════════════════════
+     COMPARISON VIEW
+════════════════════════════════════ -->
+<div id="view-comparison" class="view">
+  <div class="vhead">
+    <div class="badge">SIDE-BY-SIDE · ALL FOUR CERTIFICATIONS</div>
+    <h1>Exam Comparison</h1>
+    <p>Every dimension of each certification, laid side-by-side. Use this to understand what changes — and what doesn't — as you move through the ecosystem.</p>
+  </div>
+
+  <div class="comparison-wrapper">
+    <div class="comp-grid">
+
+      <!-- Header row -->
+      <div class="comp-head" style="background:oklch(0.14 0.018 240 / 0.8);">
+        <div style="font-size:11px;color:var(--muted);font-weight:600;">DIMENSION</div>
+      </div>
+      <div class="comp-head">
+        <div class="comp-head-bar" style="width:60%;background:var(--teal);"></div>
+        <div class="comp-head-name" style="color:var(--teal)">Foundations</div>
+        <div class="comp-head-code">MULE-101</div>
+        <div class="comp-head-status" style="color:var(--green)">✓ PASSED</div>
+      </div>
+      <div class="comp-head">
+        <div class="comp-head-bar" style="width:80%;background:var(--blue);"></div>
+        <div class="comp-head-name" style="color:var(--blue)">Developer</div>
+        <div class="comp-head-code">DEX-401 / SCMD</div>
+        <div class="comp-head-status" style="color:var(--green)">✓ PASSED</div>
+      </div>
+      <div class="comp-head">
+        <div class="comp-head-bar" style="width:100%;background:var(--purple);"></div>
+        <div class="comp-head-name" style="color:var(--purple)">Integ. Architect</div>
+        <div class="comp-head-code">ARC-730 AREA</div>
+        <div class="comp-head-status" style="color:var(--muted)">→ NEXT</div>
+      </div>
+      <div class="comp-head">
+        <div class="comp-head-bar" style="width:100%;background:var(--amber);"></div>
+        <div class="comp-head-name" style="color:var(--amber)">Platform Architect</div>
+        <div class="comp-head-code">ARC-720 AREA</div>
+        <div class="comp-head-status" style="color:var(--muted)">→ NEXT</div>
+      </div>
+
+      <!-- Section: Exam Format -->
+      <div class="comp-section-row"><span>Exam Format</span></div>
+
+      <div class="comp-cell comp-row-key">Questions</div>
+      <div class="comp-cell"><div class="comp-val big" style="color:var(--teal)">40</div></div>
+      <div class="comp-cell"><div class="comp-val big" style="color:var(--blue)">60</div></div>
+      <div class="comp-cell"><div class="comp-val big" style="color:var(--purple)">60</div></div>
+      <div class="comp-cell"><div class="comp-val big" style="color:var(--amber)">60</div></div>
+
+      <div class="comp-cell comp-row-key">Time</div>
+      <div class="comp-cell"><div class="comp-val big" style="color:var(--teal)">70<span style="font-size:12px">m</span></div></div>
+      <div class="comp-cell"><div class="comp-val big" style="color:var(--blue)">120<span style="font-size:12px">m</span></div></div>
+      <div class="comp-cell"><div class="comp-val big" style="color:var(--purple)">120<span style="font-size:12px">m</span></div></div>
+      <div class="comp-cell"><div class="comp-val big" style="color:var(--amber)">120<span style="font-size:12px">m</span></div></div>
+
+      <div class="comp-cell comp-row-key">Pass Score</div>
+      <div class="comp-cell"><div class="comp-val">70%</div></div>
+      <div class="comp-cell"><div class="comp-val">70%</div></div>
+      <div class="comp-cell"><div class="comp-val">70%</div></div>
+      <div class="comp-cell"><div class="comp-val">70%</div></div>
+
+      <!-- Section: Cost -->
+      <div class="comp-section-row"><span>Investment</span></div>
+
+      <div class="comp-cell comp-row-key">Registration</div>
+      <div class="comp-cell"><div class="comp-val big" style="color:var(--teal)">$75</div></div>
+      <div class="comp-cell"><div class="comp-val big" style="color:var(--blue)">$200</div></div>
+      <div class="comp-cell"><div class="comp-val big" style="color:var(--purple)">$400</div></div>
+      <div class="comp-cell"><div class="comp-val big" style="color:var(--amber)">$400</div></div>
+
+      <div class="comp-cell comp-row-key">Retake</div>
+      <div class="comp-cell"><div class="comp-val small">Free</div></div>
+      <div class="comp-cell"><div class="comp-val small">$100</div></div>
+      <div class="comp-cell"><div class="comp-val small">$200</div></div>
+      <div class="comp-cell"><div class="comp-val small">$200</div></div>
+
+      <div class="comp-cell comp-row-key">Relative Cost</div>
+      <div class="comp-cell" style="text-align:center">
+        <div style="display:flex;gap:4px;justify-content:center">
+          <div style="width:14px;height:6px;border-radius:3px;background:var(--teal)"></div>
+          <div style="width:14px;height:6px;border-radius:3px;background:var(--border)"></div>
+          <div style="width:14px;height:6px;border-radius:3px;background:var(--border)"></div>
+          <div style="width:14px;height:6px;border-radius:3px;background:var(--border)"></div>
+        </div>
+      </div>
+      <div class="comp-cell" style="text-align:center">
+        <div style="display:flex;gap:4px;justify-content:center">
+          <div style="width:14px;height:6px;border-radius:3px;background:var(--blue)"></div>
+          <div style="width:14px;height:6px;border-radius:3px;background:var(--blue)"></div>
+          <div style="width:14px;height:6px;border-radius:3px;background:var(--border)"></div>
+          <div style="width:14px;height:6px;border-radius:3px;background:var(--border)"></div>
+        </div>
+      </div>
+      <div class="comp-cell" style="text-align:center">
+        <div style="display:flex;gap:4px;justify-content:center">
+          <div style="width:14px;height:6px;border-radius:3px;background:var(--purple)"></div>
+          <div style="width:14px;height:6px;border-radius:3px;background:var(--purple)"></div>
+          <div style="width:14px;height:6px;border-radius:3px;background:var(--purple)"></div>
+          <div style="width:14px;height:6px;border-radius:3px;background:var(--purple)"></div>
+        </div>
+      </div>
+      <div class="comp-cell" style="text-align:center">
+        <div style="display:flex;gap:4px;justify-content:center">
+          <div style="width:14px;height:6px;border-radius:3px;background:var(--amber)"></div>
+          <div style="width:14px;height:6px;border-radius:3px;background:var(--amber)"></div>
+          <div style="width:14px;height:6px;border-radius:3px;background:var(--amber)"></div>
+          <div style="width:14px;height:6px;border-radius:3px;background:var(--amber)"></div>
+        </div>
+      </div>
+
+      <!-- Section: Orientation -->
+      <div class="comp-section-row"><span>Orientation</span></div>
+
+      <div class="comp-cell comp-row-key">Level</div>
+      <div class="comp-cell"><div class="comp-tag" style="background:var(--teal-a);color:var(--teal)">Entry</div></div>
+      <div class="comp-cell"><div class="comp-tag" style="background:var(--blue-a);color:var(--blue)">Developer</div></div>
+      <div class="comp-cell"><div class="comp-tag" style="background:var(--purple-a);color:var(--purple)">Architect</div></div>
+      <div class="comp-cell"><div class="comp-tag" style="background:var(--amber-a);color:var(--amber)">Architect</div></div>
+
+      <div class="comp-cell comp-row-key">Core Question</div>
+      <div class="comp-cell"><div class="comp-val small" style="font-style:italic">Why &amp; when?</div></div>
+      <div class="comp-cell"><div class="comp-val small" style="font-style:italic">How do I build it?</div></div>
+      <div class="comp-cell"><div class="comp-val small" style="font-style:italic">How do I design it at scale?</div></div>
+      <div class="comp-cell"><div class="comp-val small" style="font-style:italic">How do I govern the platform?</div></div>
+
+      <div class="comp-cell comp-row-key">Coding Required</div>
+      <div class="comp-cell" style="text-align:center"><span style="color:var(--green)">✗ None</span></div>
+      <div class="comp-cell" style="text-align:center"><span style="color:var(--blue);font-weight:600;">✓ DataWeave</span></div>
+      <div class="comp-cell" style="text-align:center"><span style="color:var(--purple);font-weight:600;">✓ Advanced</span></div>
+      <div class="comp-cell" style="text-align:center"><span style="color:var(--muted)">Conceptual</span></div>
+
+      <div class="comp-cell comp-row-key">Prerequisite</div>
+      <div class="comp-cell"><div class="comp-val small">None</div></div>
+      <div class="comp-cell"><div class="comp-val small">None<br><span style="font-size:9px;color:var(--muted)">(Mule-101 rec.)</span></div></div>
+      <div class="comp-cell"><div class="comp-val small">None<br><span style="font-size:9px;color:var(--muted)">(SCMD rec.)</span></div></div>
+      <div class="comp-cell"><div class="comp-val small">None<br><span style="font-size:9px;color:var(--muted)">(experience req.)</span></div></div>
+
+      <!-- Section: Target Roles -->
+      <div class="comp-section-row"><span>Target Roles</span></div>
+
+      <div class="comp-cell comp-row-key">Primary Roles</div>
+      <div class="comp-cell">
+        <div class="comp-val small" style="text-align:left;line-height:1.8">
+          Business Analysts<br>New to MuleSoft<br>Aspiring Devs
+        </div>
+      </div>
+      <div class="comp-cell">
+        <div class="comp-val small" style="text-align:left;line-height:1.8">
+          MuleSoft Developers<br>Integration Engineers
+        </div>
+      </div>
+      <div class="comp-cell">
+        <div class="comp-val small" style="text-align:left;line-height:1.8">
+          Solution Architects<br>Technical Architects<br>Senior Developers
+        </div>
+      </div>
+      <div class="comp-cell">
+        <div class="comp-val small" style="text-align:left;line-height:1.8">
+          Enterprise Architects<br>Solution Architects
+        </div>
+      </div>
+
+      <!-- Section: Top Domains -->
+      <div class="comp-section-row"><span>Heaviest Exam Domains</span></div>
+
+      <div class="comp-cell comp-row-key">Top 3 Domains</div>
+      <div class="comp-cell">
+        <div style="font-size:10px;color:var(--muted);line-height:1.9">
+          Integration Concepts 20%<br>
+          Tech Complexities 18%<br>
+          Platform Integration 18%
+        </div>
+      </div>
+      <div class="comp-cell">
+        <div style="font-size:10px;color:var(--muted);line-height:1.9">
+          DataWeave 15%<br>
+          Designing APIs 10%<br>
+          Error Handling 10%
+        </div>
+      </div>
+      <div class="comp-cell">
+        <div style="font-size:10px;color:var(--muted);line-height:1.9">
+          Runtime Architecture 15%<br>
+          Mule Application Dev 15%<br>
+          DevOps &amp; Operations 14%
+        </div>
+      </div>
+      <div class="comp-cell">
+        <div style="font-size:10px;color:var(--muted);line-height:1.9">
+          API Governance 17%<br>
+          API Impl. &amp; Deploy 11%<br>
+          CloudHub Deploy 11%
+        </div>
+      </div>
+
+    </div><!-- /comp-grid -->
+  </div><!-- /comparison-wrapper -->
+</div><!-- /view-comparison -->
+
+<div id="tweaks-root"></div>
+
+<script>
+// Tab switching
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const v = btn.dataset.view;
+    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(`view-${v}`).classList.add('active');
+    if (v === 'journey') setTimeout(drawConnectors, 80);
+  });
+});
+
+// Draw SVG connectors in journey view
+function drawConnectors() {
+  const svg = document.getElementById('conn-svg');
+  const wrap = document.getElementById('journey-wrapper');
+  if (!svg || !wrap) return;
+  svg.innerHTML = '';
+  const wr = wrap.getBoundingClientRect();
+
+  function center(id) {
+    const el = document.getElementById(id);
+    if (!el) return null;
+    const r = el.getBoundingClientRect();
+    return {
+      x: r.left + r.width/2 - wr.left,
+      y: r.top + r.height/2 - wr.top,
+      r: r.right - wr.left,
+      l: r.left - wr.left,
+      t: r.top - wr.top,
+      b: r.bottom - wr.top,
+    };
+  }
+
+  const f  = center('card-foundations');
+  const s  = center('card-scmd');
+  const ia = center('card-ia');
+  const pa = center('card-pa');
+  if (!f || !s || !ia || !pa) return;
+
+  // Foundations → SCMD
+  addLine(svg, f.r + 4, f.y, s.l - 4, s.y, 'var(--teal)', 2, '6 4', 0.7);
+
+  // SCMD → branch point
+  const bx = s.r + (ia.l - s.r) * 0.35;
+  addLine(svg, s.r + 4, s.y, bx, s.y, 'var(--blue)', 2, '6 4', 0.7);
+
+  // Branch → IA (up)
+  addPath(svg,
+    `M ${bx},${s.y} L ${bx},${ia.y} Q ${bx},${ia.y} ${ia.l - 4},${ia.y}`,
+    'var(--purple)', 1.5, '5 4', 0.55);
+
+  // Branch → PA (down)
+  addPath(svg,
+    `M ${bx},${s.y} L ${bx},${pa.y} Q ${bx},${pa.y} ${pa.l - 4},${pa.y}`,
+    'var(--amber)', 1.5, '5 4', 0.55);
+
+  // Branch point circle
+  const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  circle.setAttribute('cx', bx);
+  circle.setAttribute('cy', s.y);
+  circle.setAttribute('r', 4);
+  circle.setAttribute('fill', 'var(--blue)');
+  circle.setAttribute('opacity', '0.7');
+  svg.appendChild(circle);
+
+  // Arrowheads
+  addArrow(svg, ia.l - 2, ia.y, 'right', 'var(--purple)', 0.7);
+  addArrow(svg, pa.l - 2, pa.y, 'right', 'var(--amber)', 0.7);
+  addArrow(svg, s.l - 2, s.y, 'right', 'var(--teal)', 0.7);
+}
+
+function addLine(svg, x1, y1, x2, y2, stroke, sw, dash, opacity) {
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+  line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+  line.setAttribute('stroke', stroke);
+  line.setAttribute('stroke-width', sw);
+  line.setAttribute('stroke-dasharray', dash);
+  line.setAttribute('opacity', opacity);
+  svg.appendChild(line);
+}
+
+function addPath(svg, d, stroke, sw, dash, opacity) {
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', d); path.setAttribute('fill', 'none');
+  path.setAttribute('stroke', stroke);
+  path.setAttribute('stroke-width', sw);
+  path.setAttribute('stroke-dasharray', dash);
+  path.setAttribute('opacity', opacity);
+  svg.appendChild(path);
+}
+
+function addArrow(svg, x, y, dir, color, opacity) {
+  const size = 6;
+  let d;
+  if (dir === 'right') d = `M ${x},${y-size} L ${x+size},${y} L ${x},${y+size}`;
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', d); path.setAttribute('fill', 'none');
+  path.setAttribute('stroke', color); path.setAttribute('stroke-width', '1.5');
+  path.setAttribute('opacity', opacity);
+  svg.appendChild(path);
+}
+
+setTimeout(drawConnectors, 300);
+window.addEventListener('resize', () => {
+  if (document.getElementById('view-journey').classList.contains('active')) drawConnectors();
+});
+</script>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accentHue": 185,
+  "showProgress": true,
+  "cardDetail": "standard"
+}/*EDITMODE-END*/;
+
+function EcosystemTweaks() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  React.useEffect(() => {
+    const shift = t.accentHue - 185;
+    const bases = { teal:185, blue:240, purple:290, amber:55, green:155 };
+    const r = document.documentElement;
+    Object.entries(bases).forEach(([name, base]) => {
+      const h = ((base + shift) % 360 + 360) % 360;
+      r.style.setProperty(`--${name}`, `oklch(0.74 0.165 ${h})`);
+      r.style.setProperty(`--${name}-a`, `oklch(0.74 0.165 ${h} / 0.14)`);
+    });
+  }, [t.accentHue]);
+
+  React.useEffect(() => {
+    document.querySelectorAll('.cert-status').forEach(el => {
+      el.style.display = t.showProgress ? '' : 'none';
+    });
+  }, [t.showProgress]);
+
+  React.useEffect(() => {
+    document.querySelectorAll('.cert-focus-desc').forEach(el => {
+      el.style.display = t.cardDetail === 'compact' ? 'none' : '';
+    });
+    document.querySelectorAll('.cert-roles').forEach(el => {
+      el.style.display = t.cardDetail === 'minimal' ? 'none' : '';
+    });
+  }, [t.cardDetail]);
+
+  const hueLabel = t.accentHue < 160 ? 'Green' : t.accentHue < 210 ? 'Teal' :
+                   t.accentHue < 255 ? 'Blue' : t.accentHue < 285 ? 'Indigo' : 'Purple';
+
+  return (
+    <TweaksPanel>
+      <TweakSection label="Color" />
+      <TweakSlider label={`Accent hue — ${hueLabel}`} value={t.accentHue} min={130} max={300} step={5}
+                   onChange={v => setTweak('accentHue', v)} />
+      <TweakSection label="Display" />
+      <TweakToggle label="Show progress badges" value={t.showProgress}
+                   onChange={v => setTweak('showProgress', v)} />
+      <TweakRadio label="Card detail level" value={t.cardDetail}
+                  options={['minimal', 'compact', 'standard']}
+                  onChange={v => setTweak('cardDetail', v)} />
+    </TweaksPanel>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<EcosystemTweaks />);
+</script>
+
+</body>
+</html>

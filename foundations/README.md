@@ -1,12 +1,12 @@
 # Salesforce Certified MuleSoft Integration Foundations
 
-Practice exams for the [MuleSoft Integration Foundations](https://trailheadacademy.salesforce.com/certificate/exam-mule-foundations---Mule-101) certification — the conceptual entry point to the MuleSoft certification catalog.
+Practice exams for the [MuleSoft Integration Foundations](https://trailheadacademy.salesforce.com/certificate/exam-mule-foundations---Mule-101) certification (exam code **Mule-101**, previously **Salesforce Certified MuleSoft Associate**) — the conceptual entry point to the MuleSoft certification catalog.
 
 ## About the Exam
 
 This exam can be taken independently — no DEX-401 course or hands-on MuleSoft experience required. If you're planning to pursue the SCMD (Developer) certification, this is a low-stakes way to validate your understanding of the conceptual layer before diving into the technical depth.
 
-40 questions, 70 minutes, 70% to pass. No coding, no DataWeave, no Anypoint Studio — this is a concepts and vocabulary exam covering integration architecture, API-led connectivity, interaction patterns, and the Anypoint Platform at a high level.
+40 scored questions (plus up to 5 unscored), 70 minutes, 70% to pass. $75 registration with a free retake if needed. Content is aligned to the Spring '24 release. No coding, no DataWeave, no Anypoint Studio — this is a concepts and vocabulary exam covering integration architecture, API-led connectivity, interaction patterns, and the Anypoint Platform at a high level.
 
 If you're coming from the SCMD/DEX-401 track, a lot of this will feel familiar — but the framing is different. This exam tests whether you can articulate *why* and *when*, not *how*.
 
@@ -41,3 +41,38 @@ Weighted toward weak spots. Same 40 questions and 70-minute timer, but the domai
 The adversarial exam. Back to standard exam weighting, but the wrong answers are designed to be plausible. Where the first two exams sometimes had obviously incorrect distractors that you could eliminate without domain knowledge, this one uses answers that sound right if you're pattern-matching from experience with other platforms — similar vocabulary, adjacent concepts, reasonable-sounding but technically wrong claims.
 
 I'm still pretty disappointed with Claude's ability (or willingness?) to make plausible-sounding but incorrect answers - so this STILL felt too easy.  I'll blame it on the (lack of) quality and specificity of my prompts.  I need to remember that it's **all relative** based on each individual's experience and perspective.  Having years of experience working with various concepts, or being freshly introduced to them, will influence your comfort with this material.
+
+## Results & Reflections
+
+Sat for the real exam on **April 23, 2026** — passed in 12:21 of the 70 minutes allotted. Including this as a benchmark rather than a brag: the practice exams in this folder were a reasonable calibration tool, and the relative difficulty between mocks and the real thing is useful signal for anyone else using them.
+
+**Benchmarks (first sitting):**
+
+| Attempt | Score | Time |
+| --- | --- | --- |
+| Mock 1 (baseline) | 93% (37/40) | ~15 min |
+| Mock 2 (weighted) | 100% (40/40) | ~12 min |
+| Mock 3 (adversarial) | 100% (40/40) | ~12 min |
+| **Real exam** | **Pass** (est. ~92.7% weighted) | 12:21 |
+
+Real exam domain breakdown: D1 86%, D2 100%, D3 86%, D4 100%, D5 100%, **D6 75%**. The API management domain (D6) was the relative weak spot — more on that below.
+
+### Mentor notes for the cohort
+
+This exam is genuinely foundational, but it's not trivial for someone without enterprise IT background. Concepts like orchestration vs. choreography, API-led connectivity layering (System/Process/Experience), the C4E model, and the distinction between an API gateway and a service mesh are non-obvious without lived integration experience.
+
+**Feels easy with enterprise IT background, requires deliberate study without it:** HTTP status families, REST verbs, OAuth/TLS, DevOps principles, cloud service models (IaaS/PaaS/SaaS), and enterprise system topology (systems of record vs. systems of engagement).
+
+**Consistent relative weak spot — Domain 6 (API management).** UAPIM, API Manager, and policy enforcement don't map cleanly from Kubernetes, AWS, or general API design knowledge. Expect curveballs here even if the rest of the material feels comfortable. My own D6 score (75%) tracks with this pattern.
+
+**A clean Mule-101 score does not predict SCMD readiness.** Mule-101 tests conceptual understanding. SCMD tests implementation, debugging, and runtime behavior in Anypoint Studio. Different exams, different skills — don't let a strong Foundations result create false confidence heading into SCMD.
+
+**Recommended sequencing:**
+
+- **Mule-101 first** if a team member needs conceptual vocabulary before touching Studio.
+- **SCMD second** once they're hands-on with flows, connectors, and DataWeave.
+
+**Time budgeting:**
+
+- Deep enterprise IT background → Trailmix + light review is usually enough.
+- Earlier in the IT journey → treat the Trailmix as mandatory, not optional, and budget real study time. The practice exams in this folder are meant to supplement that, not replace it.
