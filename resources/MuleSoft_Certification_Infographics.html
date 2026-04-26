@@ -447,6 +447,117 @@ body[data-atmosphere="sparse"] .conn-line { opacity: 0.18 !important; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .dcard { animation: fadeUp 0.35s ease both; }
 /* fcard appears immediately — no fadeUp (display:none resets animations) */
+
+/* ═══════════════════════════════════
+   DEEP-DIVE TABS SHARED
+═══════════════════════════════════ */
+.content-wrapper { max-width: 1040px; margin: 0 auto; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.mb16 { margin-bottom: 16px; } .mb24 { margin-bottom: 24px; } .mb28 { margin-bottom: 28px; }
+
+.sec-div { display: flex; align-items: center; gap: 10px; margin: 28px 0 14px; }
+.sec-div span { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.sec-div::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
+
+/* Syntax trap cards */
+.trap-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.trap-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.trap-lbl { padding: 5px 12px; font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.14em; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+.trap-lbl.ok  { background: var(--green-a); color: var(--green); border-bottom: 1px solid oklch(0.74 0.165 155 / 0.2); }
+.trap-lbl.bad { background: var(--red-a);   color: var(--red);   border-bottom: 1px solid oklch(0.74 0.165 22  / 0.2); }
+.trap-code { padding: 10px 12px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.8; }
+.trap-code .sk { color: oklch(0.45 0.01 240); text-decoration: line-through; }
+.hi-g { color: var(--green); }  .hi-t { color: var(--teal); }
+.hi-a { color: var(--amber); }  .hi-r { color: var(--red); }
+.hi-b { color: var(--blue); }   .hi-p { color: var(--purple); }
+.hi-m { color: var(--muted); font-size: 9px; }
+
+/* Operator table */
+.op-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.op-table th { padding: 9px 14px; text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom: 1px solid var(--border); }
+.op-table td { padding: 9px 14px; border-bottom: 1px solid oklch(0.22 0.015 240 / 0.7); vertical-align: middle; }
+.op-table tr:last-child td { border-bottom: none; }
+.op-table tr:hover td { background: oklch(0.19 0.015 240 / 0.5); }
+.op-table td:first-child { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--teal); font-weight: 600; }
+.ret-arr { background: var(--blue-a);   color: var(--blue);   font-size: 8px; padding: 2px 6px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-weight: 700; letter-spacing: 0.06em; }
+.ret-obj { background: var(--purple-a); color: var(--purple); font-size: 8px; padding: 2px 6px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-weight: 700; letter-spacing: 0.06em; }
+.ret-any { background: var(--amber-a);  color: var(--amber);  font-size: 8px; padding: 2px 6px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-weight: 700; letter-spacing: 0.06em; }
+
+/* Batch phase diagram */
+.phase-diagram { display: flex; align-items: stretch; gap: 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.phase-block { flex: 1; padding: 16px 14px; border-right: 1px solid var(--border); position: relative; }
+.phase-block:last-child { border-right: none; }
+.phase-name { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+.phase-arrow { position: absolute; right: -10px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--muted); z-index: 2; }
+.phase-detail { font-size: 11px; color: var(--muted); line-height: 1.6; }
+.phase-detail strong { color: oklch(0.85 0.01 240); }
+.phase-detail code { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; background: oklch(0.20 0.015 240 / 0.8); padding: 1px 4px; border-radius: 3px; }
+.pbadge { display: inline-block; font-size: 8px; font-weight: 700; padding: 2px 7px; border-radius: 3px; margin-top: 6px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.06em; }
+.pbadge.par  { background: var(--blue-a);   color: var(--blue); }
+.pbadge.seq  { background: var(--teal-a);   color: var(--teal); }
+.pbadge.once { background: var(--amber-a);  color: var(--amber); }
+
+/* Error Handling — resolution hierarchy */
+.eh-levels { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.eh-level { display: grid; grid-template-columns: 160px 1fr 110px; align-items: stretch; border-bottom: 1px solid var(--border); transition: background 0.2s; }
+.eh-level:last-child { border-bottom: none; }
+.eh-level:hover { background: var(--surface-hi); }
+.eh-num { display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 16px 18px; border-right: 1px solid var(--border); gap: 3px; }
+.eh-num-n { font-family: 'JetBrains Mono', monospace; font-size: 32px; font-weight: 600; line-height: 1; }
+.eh-num-lbl { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.eh-body { padding: 16px 20px; }
+.eh-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.eh-desc { font-size: 12px; color: var(--muted); line-height: 1.55; }
+.eh-desc code { font-family: 'JetBrains Mono', monospace; font-size: 10px; background: var(--surface-hi); padding: 1px 4px; border-radius: 3px; }
+.eh-tag { display: flex; align-items: center; justify-content: center; border-left: 1px solid var(--border); font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; padding: 16px 10px; text-align: center; }
+.eh-level[data-lv="1"] .eh-num-n { color: var(--teal); }
+.eh-level[data-lv="1"] .eh-tag   { color: var(--teal); background: var(--teal-a); }
+.eh-level[data-lv="2"] .eh-num-n { color: var(--blue); }
+.eh-level[data-lv="2"] .eh-tag   { color: var(--blue); background: var(--blue-a); }
+.eh-level[data-lv="3"] .eh-num-n { color: var(--purple); }
+.eh-level[data-lv="3"] .eh-tag   { color: var(--purple); background: var(--purple-a); }
+.eh-gotcha { grid-column: 1 / -1; display: flex; align-items: flex-start; gap: 10px; padding: 9px 18px; background: oklch(0.74 0.165 55 / 0.06); border-top: 1px solid var(--border); font-size: 11px; color: var(--amber); line-height: 1.5; }
+.eh-gotcha::before { content: '⚠'; flex-shrink: 0; }
+
+/* Error Handling — compare cards */
+.eh-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.ehcc { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.ehcc-head { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.ehcc-name { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; }
+.ehcc-pill { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; padding: 3px 9px; border-radius: 4px; text-transform: uppercase; }
+.pill-cont { background: var(--green-a); color: var(--green); border: 1px solid oklch(0.74 0.165 155 / 0.3); }
+.pill-prop { background: var(--red-a);   color: var(--red);   border: 1px solid oklch(0.74 0.165 22  / 0.3); }
+.ehcc-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+.attr-r { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; padding: 7px 0; border-bottom: 1px solid var(--border); }
+.attr-r:last-child { border-bottom: none; padding-bottom: 0; }
+.attr-k { font-size: 11px; color: var(--muted); flex: 1; line-height: 1.4; }
+.attr-v { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-align: right; line-height: 1.4; }
+.v-g { color: var(--green); } .v-r { color: var(--red); } .v-a { color: var(--amber); } .v-m { color: var(--muted); }
+
+/* Flow type cards (error handling) */
+.ft-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.ftc { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 17px 14px; border-top: 2px solid; transition: transform 0.2s, box-shadow 0.2s; }
+.ftc:hover { transform: translateY(-3px); }
+.ftc[data-t="flow"]    { border-top-color: var(--blue); }
+.ftc[data-t="flow"]:hover    { box-shadow: 0 0 22px var(--blue-a),   0 8px 24px rgba(0,0,0,.4); }
+.ftc[data-t="private"] { border-top-color: var(--amber); }
+.ftc[data-t="private"]:hover { box-shadow: 0 0 22px var(--amber-a),  0 8px 24px rgba(0,0,0,.4); }
+.ftc[data-t="sub"]     { border-top-color: var(--purple); }
+.ftc[data-t="sub"]:hover     { box-shadow: 0 0 22px var(--purple-a), 0 8px 24px rgba(0,0,0,.4); }
+.ftc-name { font-size: 13px; font-weight: 600; margin-bottom: 12px; }
+.ftc-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.ftc-row:last-child { border-bottom: none; padding-bottom: 0; }
+.ftc-k { font-size: 10px; color: var(--muted); }
+.ftc-v { font-size: 10px; font-weight: 600; font-family: 'JetBrains Mono', monospace; text-align: right; }
+.v-yes { color: var(--green); } .v-no { color: var(--red); } .v-always { color: var(--amber); }
+
+/* APIKit chips */
+.ak-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.ak-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; transition: border-color 0.2s; }
+.ak-chip:hover { border-color: var(--red); }
+.ak-type { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--red); }
+.ak-status { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 600; color: var(--muted); line-height: 1; margin-top: 4px; }
+.ak-label { font-size: 10px; color: var(--muted); margin-top: 3px; }
 </style>
 </head>
 <body>
@@ -454,8 +565,11 @@ body[data-atmosphere="sparse"] .conn-line { opacity: 0.18 !important; }
 <nav>
   <span class="nav-logo">MULESOFT CERT</span>
   <button class="tab active" data-view="scmd">SCMD · DEX-401</button>
-  <button class="tab" data-view="foundations">Foundations · Mule-101</button>
-  <button class="tab" data-view="mule-event">Mule Event Model</button>
+  <button class="tab" data-view="mule-event">Mule Event</button>
+  <button class="tab" data-view="routing">Routing · S09</button>
+  <button class="tab" data-view="records">Records · S07</button>
+  <button class="tab" data-view="dataweave">DataWeave · S08</button>
+  <button class="tab" data-view="errors">Error Handling · S10</button>
 </nav>
 
 <!-- ══════════════════════════════════════════
@@ -482,22 +596,7 @@ body[data-atmosphere="sparse"] .conn-line { opacity: 0.18 !important; }
 </div>
 
 <!-- ══════════════════════════════════════════
-     VIEW 2 — FOUNDATIONS
-══════════════════════════════════════════ -->
-<div id="view-foundations" class="view">
-  <div class="vhead">
-    <div class="badge badge-found">MULE-101 · 40 QUESTIONS · 70 MIN · 70% TO PASS · $75</div>
-    <h1>Foundations Exam Domains</h1>
-    <p>6 conceptual domains. No code, no DataWeave, no Studio. Tests <em>why</em> and <em>when</em>, not <em>how</em>. Hover any domain to reveal key topics and synergies.</p>
-  </div>
-  <div class="found-wrapper" id="found-wrapper">
-    <svg class="found-svg" id="found-svg"></svg>
-    <!-- cards injected by JS -->
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════
-     VIEW 3 — MULE EVENT MODEL
+     VIEW 2 — MULE EVENT MODEL
 ══════════════════════════════════════════ -->
 <div id="view-mule-event" class="view">
   <div class="vhead">
@@ -570,7 +669,7 @@ body[data-atmosphere="sparse"] .conn-line { opacity: 0.18 !important; }
             <span class="rule-bad">flowVars.x</span><br>
             Survives HTTP Request <span class="rule-ok">✓</span><br>
             Survives Flow Ref <span class="rule-ok">✓</span><br>
-            <span class="rule-bad">Lost between executions</span> — use Object Store
+            Cross-execution → Object Store
           </div>
         </div>
 
@@ -736,6 +835,600 @@ body[data-atmosphere="sparse"] .conn-line { opacity: 0.18 !important; }
 
   </div><!-- /event-wrapper -->
 </div><!-- /view-mule-event -->
+
+<!-- ══════════════════════════════════════════
+     VIEW: ROUTING
+══════════════════════════════════════════ -->
+<div id="view-routing" class="view">
+  <div class="vhead">
+    <div class="badge" style="background:var(--amber-a);color:var(--amber);border:1px solid oklch(0.74 0.165 55/0.3)">SCMD · SECTION 09 · 10% WEIGHT · HIGH STAKES ⚑</div>
+    <h1>Routing Events</h1>
+    <p>Four routers with fundamentally different behaviors. Scatter-Gather's Object output structure is the single most-missed concept. Choice Router expression syntax trips on single-equals and Mule 3 patterns.</p>
+  </div>
+  <div class="content-wrapper">
+
+    <div class="sec-div" style="color:var(--amber)"><span>All Four Routers — Compared</span></div>
+    <div class="boundary-section mb28">
+      <table class="btable">
+        <thead><tr><th>Router</th><th>Routes executed</th><th>Execution model</th><th>Output / result</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--amber);font-weight:700">Choice Router</td>
+            <td>ONE — first matching condition</td>
+            <td>Top → bottom, first match wins</td>
+            <td class="note-sm">Payload from matched route. Default runs when NO condition matches.</td>
+          </tr>
+          <tr>
+            <td style="color:var(--purple);font-weight:700">Scatter-Gather</td>
+            <td><strong>ALL</strong> — always, no exceptions</td>
+            <td><span class="check" style="font-size:11px">Parallel</span></td>
+            <td class="note-sm"><strong>Object</strong> keys <code>"0","1","2"…</code> Each value = full Mule message. <code>attributes = null</code> after.</td>
+          </tr>
+          <tr>
+            <td style="color:var(--teal);font-weight:700">First Successful</td>
+            <td>ONE — first that doesn't throw</td>
+            <td>Sequential, stops on first success</td>
+            <td class="note-sm">Result of the first route that completes without error. Remaining routes skipped.</td>
+          </tr>
+          <tr>
+            <td style="color:var(--blue);font-weight:700">Round Robin</td>
+            <td>ONE — rotates per message</td>
+            <td>Each new message → next route in sequence</td>
+            <td class="note-sm">Load distribution across identical processors. Stateful rotation.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="two-col mb28">
+
+      <!-- LEFT: Scatter-Gather -->
+      <div>
+        <div class="sec-div" style="color:var(--purple)"><span>Scatter-Gather — Deep Dive</span></div>
+        <div class="ref-panel mb16">
+          <div class="ref-panel-title">Critical Rules</div>
+          <div class="ref-panel-body">
+            <div class="side-item warn">
+              <h5>Output is an OBJECT — never an Array</h5>
+              <p>String keys <code>"0"</code>, <code>"1"</code>, <code>"2"</code>… one per route. Each value is a full Mule message with <code>.payload</code> + <code>.attributes</code>.<br>Access: <code>payload[0].payload</code>, <code>payload[1].payload</code></p>
+            </div>
+            <div class="side-item note">
+              <h5>Entire event sent to ALL routes — in parallel</h5>
+              <p>Not split. Every route receives the same complete Mule event simultaneously. SG waits for ALL routes to finish before continuing.</p>
+            </div>
+            <div class="side-item proc">
+              <h5>After completion</h5>
+              <p><code>attributes = null</code> · <code>payload</code> = assembled Object · <code>vars</code> from before are still accessible</p>
+            </div>
+          </div>
+        </div>
+        <div class="nd-box-rules" style="font-size:10px;line-height:2;padding:14px 16px;border-radius:8px;margin-bottom:16px">
+          <span style="color:var(--muted);font-size:9px">// Output structure after Scatter-Gather</span><br>
+          payload = <span style="color:var(--amber)">{</span><br>
+          &nbsp;&nbsp;<span style="color:var(--teal)">"0"</span>: { payload: <em>route0Result</em>, attributes: ... },<br>
+          &nbsp;&nbsp;<span style="color:var(--teal)">"1"</span>: { payload: <em>route1Result</em>, attributes: ... },<br>
+          &nbsp;&nbsp;<span style="color:var(--teal)">"2"</span>: { payload: <em>route2Result</em>, attributes: ... }<br>
+          <span style="color:var(--amber)">}</span><br>
+          attributes = <span style="color:var(--red)">null</span>
+        </div>
+        <div class="sec-div" style="color:var(--purple)"><span>Partial Failure — Try Scope Pattern</span></div>
+        <div class="side-item note mb16">
+          <h5>Graceful degradation per route</h5>
+          <p>Wrap each route in a <strong>Try scope</strong> with <strong>On Error Continue → Transform <code>[]</code></strong>. A failed route returns an empty array instead of failing the whole Scatter-Gather.</p>
+        </div>
+        <div class="nd-box-rules" style="font-size:10px;line-height:1.9;padding:14px 16px;border-radius:8px">
+          Scatter-Gather<br>
+          &nbsp;&nbsp;Route 0: [<span style="color:var(--teal)">Try</span>] → getAmericanFlights<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[On Error Continue → <span style="color:var(--amber)">Transform []</span>]<br>
+          &nbsp;&nbsp;Route 1: [<span style="color:var(--teal)">Try</span>] → getUnitedFlights&nbsp;&nbsp;<span style="color:var(--muted);font-size:9px">(same)</span><br>
+          &nbsp;&nbsp;Route 2: [<span style="color:var(--teal)">Try</span>] → getDeltaFlights&nbsp;&nbsp;&nbsp;<span style="color:var(--muted);font-size:9px">(same)</span><br>
+          <br>
+          <span style="color:var(--green)">→ Partial results assembled even if 1–2 routes fail</span>
+        </div>
+      </div>
+
+      <!-- RIGHT: Choice + Validate -->
+      <div>
+        <div class="sec-div" style="color:var(--amber)"><span>Choice Router</span></div>
+        <div class="ref-panel mb16">
+          <div class="ref-panel-title">Evaluation Rules</div>
+          <div class="ref-panel-body">
+            <div class="side-item warn">
+              <h5>Top-to-bottom — first match wins</h5>
+              <p>Like firewall rules. Only ONE branch executes. <strong>Default</strong> branch runs when NO condition matches — it is not an error fallback.</p>
+            </div>
+          </div>
+        </div>
+        <div class="sec-div" style="color:var(--amber)"><span>When-Expression Syntax</span></div>
+        <div class="trap-row mb16">
+          <div class="trap-card">
+            <div class="trap-lbl ok">✓ CORRECT</div>
+            <div class="trap-code"><span class="hi-t">#[</span> <span class="hi-g">'MuleSoft'</span> <span class="hi-a">==</span> payload.company <span class="hi-t">]</span><br><br><span class="hi-t">#[</span> vars.airline <span class="hi-a">==</span> <span class="hi-g">"american"</span> <span class="hi-t">]</span></div>
+          </div>
+          <div class="trap-card">
+            <div class="trap-lbl bad">✗ WRONG</div>
+            <div class="trap-code"><span class="sk">#[company = "MuleSoft"]</span><br><span class="hi-m">single = is assignment</span><br><br><span class="sk">#[if(payload == "x")]</span><br><span class="hi-m">no if() wrapper needed</span></div>
+          </div>
+        </div>
+        <div class="sec-div" style="color:var(--teal)"><span>Validate Component</span></div>
+        <div class="ref-panel mb16">
+          <div class="ref-panel-title">A Gate, Not a Transform</div>
+          <div class="ref-panel-body">
+            <div class="side-item src">
+              <h5>How it works</h5>
+              <p>Evaluates a DataWeave <strong>boolean</strong>.<br>
+              <strong>TRUE</strong> → event passes through unchanged.<br>
+              <strong>FALSE</strong> → throws error with configurable type (e.g. <code>APP:INVALID_DESTINATION</code>)<br>
+              Does NOT return a value or modify the event on success.</p>
+            </div>
+            <div class="side-item warn">
+              <h5>Think of it as an assertion</h5>
+              <p>On failure it throws — the flow's error handler catches it. On success the flow continues as if Validate wasn't there.</p>
+            </div>
+          </div>
+        </div>
+        <div class="sec-div" style="color:var(--blue)"><span>APIKit + Routing</span></div>
+        <div class="side-item note">
+          <h5>APIKit validates BEFORE Choice Router fires</h5>
+          <p>Invalid enum value → <code>APIKIT:BAD_REQUEST</code> thrown at the APIKit Router. The Choice Router's when-expression is <strong>never evaluated</strong>.</p>
+        </div>
+      </div>
+
+    </div><!-- /two-col -->
+  </div><!-- /content-wrapper -->
+</div><!-- /view-routing -->
+
+<!-- ══════════════════════════════════════════
+     VIEW: RECORD PROCESSING
+══════════════════════════════════════════ -->
+<div id="view-records" class="view">
+  <div class="vhead">
+    <div class="badge" style="background:var(--blue-a);color:var(--blue);border:1px solid oklch(0.74 0.165 240/0.3)">SCMD · SECTION 07 · 10% WEIGHT · HIGH STAKES ⚑</div>
+    <h1>Processing Records</h1>
+    <p>For Each and Batch share a surface similarity but differ completely in execution model, scoping, and error behavior. On Complete receiving a summary report (never records), and Max Failed Records = 0 defaulting to zero-tolerance, are the persistent exam traps.</p>
+  </div>
+  <div class="content-wrapper">
+
+    <div class="sec-div" style="color:var(--blue)"><span>For Each vs Batch — Side by Side</span></div>
+    <div class="boundary-section mb28">
+      <table class="btable">
+        <thead><tr><th>Feature</th><th style="color:var(--teal)">For Each</th><th style="color:var(--blue)">Batch Job</th></tr></thead>
+        <tbody>
+          <tr><td>Execution</td><td><strong>Sequential</strong> — array order, one at a time</td><td><span style="color:var(--blue);font-weight:700">Parallel</span> — records processed concurrently</td></tr>
+          <tr><td>Input type required</td><td><strong>Array only</strong> — Object/Map = <span class="cross">zero iterations</span>, no error thrown</td><td>Any collection — auto-split into individual records</td></tr>
+          <tr><td>Payload inside scope</td><td>Current array element</td><td>Current record (per batch step)</td></tr>
+          <tr><td>Payload after scope</td><td><span class="check">Restored</span> to pre-scope payload</td><td>N/A — async handoff; outer payload unaffected</td></tr>
+          <tr><td>Variables set inside</td><td><span class="check">Accessible outside</span> (last iteration value)</td><td><span class="cross">Don't propagate</span> to On Complete or outer flow</td></tr>
+          <tr><td>Error behavior</td><td>Stops entire scope on first error</td><td>Record marked failed; others continue (see Max Failed Records)</td></tr>
+          <tr><td><code>counter</code> variable</td><td>Available inside; <span class="cross">removed after scope exits</span></td><td>N/A</td></tr>
+          <tr><td>Use case</td><td>Small collections, synchronous, in-memory</td><td>Large datasets, files, DB result sets — high volume async</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sec-div" style="color:var(--blue)"><span>Batch Job — Three Phases</span></div>
+    <div class="phase-diagram mb28">
+      <div class="phase-block" style="background:oklch(0.13 0.018 155/0.2)">
+        <div class="phase-name" style="color:var(--green)">Input</div>
+        <div class="phase-arrow">→</div>
+        <div class="phase-detail">
+          Collection arrives. Auto-split into <strong>individual records</strong>.<br><br>
+          Outer flow: <strong>async handoff begins</strong> — client response must be sent before this point.
+          <div><span class="pbadge seq">IMPLICIT PHASE</span></div>
+        </div>
+      </div>
+      <div class="phase-block" style="background:oklch(0.13 0.018 240/0.2)">
+        <div class="phase-name" style="color:var(--blue)">Batch Step(s)</div>
+        <div class="phase-arrow">→</div>
+        <div class="phase-detail">
+          Each step runs every record. Multiple steps are <strong>sequential per record</strong>. Records within a step run <strong>in parallel</strong>.<br><br>
+          Failed record: marked failed, skipped in subsequent steps — others continue.
+          <div><span class="pbadge par">PARALLEL PER RECORD</span></div>
+        </div>
+      </div>
+      <div class="phase-block" style="background:oklch(0.13 0.018 55/0.2)">
+        <div class="phase-name" style="color:var(--amber)">On Complete</div>
+        <div class="phase-detail">
+          Runs <strong>once</strong> after all records finish.<br><br>
+          Payload = <code>BatchJobResult</code> — a <strong>summary report</strong> (counts, job ID).<br>
+          <span style="color:var(--red);font-weight:600">Never the processed records.</span>
+          <div><span class="pbadge once">RUNS ONCE</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="sec-div" style="color:var(--red)"><span>Critical Gotchas</span></div>
+        <div class="ref-panel">
+          <div class="ref-panel-body">
+            <div class="side-item warn">
+              <h5>Max Failed Records = 0 means ZERO tolerance</h5>
+              <p>Default <code>0</code> = <strong>zero failures allowed</strong>. If ANY record fails, the entire batch stops. This is the opposite of what "zero" implies intuitively.</p>
+            </div>
+            <div class="side-item warn">
+              <h5>On Complete ≠ client response</h5>
+              <p>Batch is <strong>asynchronous</strong>. Send a <code>202 Accepted</code> response <strong>before</strong> the async handoff. On Complete fires long after the client connection has closed.</p>
+            </div>
+            <div class="side-item proc">
+              <h5>For Each + Object input = silent no-op</h5>
+              <p>Passing an Object/Map produces <strong>zero iterations with no error</strong>. The scope is silently skipped. Input must be an Array.</p>
+            </div>
+            <div class="side-item proc">
+              <h5>Scheduler fixedFrequency — no waiting</h5>
+              <p>Fires on schedule <strong>regardless</strong> of whether the prior execution is still running. Does not wait.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-div" style="color:var(--teal)"><span>Watermarking Pattern</span></div>
+        <div class="ref-panel mb16">
+          <div class="ref-panel-title">Why Object Store — not a variable</div>
+          <div class="ref-panel-body">
+            <div class="side-item note">
+              <h5>Variables reset each execution</h5>
+              <p>Object Store <strong>persists across executions</strong> — exactly what watermarking needs to track the last processed ID between Scheduler runs.</p>
+            </div>
+          </div>
+        </div>
+        <div class="nd-box-rules" style="font-size:10px;line-height:1.9;padding:14px 16px;border-radius:8px;margin-bottom:16px">
+          <span style="color:var(--muted);font-size:9px">// Manual watermark flow</span><br>
+          1. <span style="color:var(--teal)">OS Retrieve</span> → <span style="color:var(--amber)">vars.lastID</span><br>
+          2. <span style="color:var(--blue)">DB Select</span> WHERE id &gt; <span style="color:var(--amber)">#[vars.lastID]</span><br>
+          3. For Each / Batch → process records<br>
+          4. <span style="color:var(--teal)">OS Store</span> → save new max ID<br>
+          <br>
+          <span style="color:var(--green)">✓ Object Store: persists across executions</span><br>
+          <span style="color:var(--red)">✗ Variable: resets each run — useless for watermark</span>
+        </div>
+        <div class="sec-div" style="color:var(--teal)"><span>For Each Payload Rule</span></div>
+        <div class="side-item proc">
+          <h5>Payload restored after scope exits</h5>
+          <p>Whatever For Each was iterating, the <strong>original payload is restored</strong> once the scope exits — regardless of what Set Payload calls happened inside. Variables set in the last iteration <strong>are</strong> accessible outside.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content-wrapper -->
+</div><!-- /view-records -->
+
+<!-- ══════════════════════════════════════════
+     VIEW: DATAWEAVE
+══════════════════════════════════════════ -->
+<div id="view-dataweave" class="view">
+  <div class="vhead">
+    <div class="badge" style="background:var(--purple-a);color:var(--purple);border:1px solid oklch(0.74 0.165 290/0.3)">SCMD · SECTION 08 · 15% WEIGHT · HIGHEST WEIGHT ⚑</div>
+    <h1>Transforming Data with DataWeave</h1>
+    <p>Highest-weighted section. Every trap below has appeared on exams. <code>fun</code> keyword, <code>::</code> module separator, <code>@()</code> XML attributes, and operation chaining order are the persistent failure points.</p>
+  </div>
+  <div class="content-wrapper">
+
+    <div class="sec-div" style="color:var(--purple)"><span>Script Anatomy</span></div>
+    <div class="two-col mb24">
+      <div class="nd-box-rules" style="font-size:10.5px;line-height:1.9;padding:14px 16px;border-radius:8px;background:oklch(0.10 0.012 290/0.5);border:1px solid oklch(0.74 0.165 290/0.15)">
+        <span class="hi-m">// Canonical DW 2.0 script</span><br>
+        <span class="hi-p">%dw 2.0</span><br>
+        <span class="hi-b">output</span> application/json<br>
+        <span class="hi-t">import</span> modules<span class="hi-a">::</span>Utility<br>
+        <span class="hi-a">type</span> DateYMD = <span class="hi-b">Date</span> <span class="hi-a">{</span> format: <span class="hi-g">"yyyy/MM/dd"</span> <span class="hi-a">}</span><br>
+        <span class="hi-t">fun</span> greet(name: <span class="hi-b">String</span>) <span class="hi-a">=</span> <span class="hi-g">"Hi "</span> ++ name<br>
+        <span style="color:var(--muted)">---</span><br>
+        { result: greet(payload.name) }
+      </div>
+      <div class="ref-panel">
+        <div class="ref-panel-title">Header Sections</div>
+        <div class="ref-panel-body" style="gap:5px">
+          <div class="side-item note"><h5><code>%dw 2.0</code></h5><p>Version declaration — always first line.</p></div>
+          <div class="side-item note"><h5><code>output application/json</code></h5><p>Output MIME type — controls serialization. Default between processors is <code>application/java</code>.</p></div>
+          <div class="side-item note"><h5><code>---</code></h5><p>Separator between header and body. Body is the single expression producing the output.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-div" style="color:var(--red)"><span>Syntax Traps — All High Exam Frequency</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px">
+
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;color:var(--muted);margin-bottom:8px;text-transform:uppercase">Function Definition</div>
+        <div class="trap-row">
+          <div class="trap-card">
+            <div class="trap-lbl ok">✓ CORRECT</div>
+            <div class="trap-code"><span class="hi-t">fun</span> newCode(id: <span class="hi-b">Number</span>) <span class="hi-a">=</span><br>&nbsp;&nbsp;<span class="hi-g">"PC-"</span> ++ (id <span class="hi-t">as String</span>)</div>
+          </div>
+          <div class="trap-card">
+            <div class="trap-lbl bad">✗ WRONG</div>
+            <div class="trap-code"><span class="sk">function</span> newCode(id) <span class="sk">-></span><br><span class="hi-m">wrong keyword + wrong arrow</span><br><br><span class="sk">var</span> newCode = (id) <span class="sk">-></span><br><span class="hi-m">var + lambda ≠ fun</span></div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--muted);padding:4px 4px 0;line-height:1.6">Keyword: <span class="hi-t">fun</span> · Assign: <span class="hi-a">=</span> · Types: <span class="hi-b">Capitalized</span> · No <code>return</code></div>
+      </div>
+
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;color:var(--muted);margin-bottom:8px;text-transform:uppercase">Module Import &amp; Call</div>
+        <div class="trap-row">
+          <div class="trap-card">
+            <div class="trap-lbl ok">✓ CORRECT</div>
+            <div class="trap-code"><span class="hi-t">import</span> modules<span class="hi-a">::</span>Utility<br><span style="color:var(--muted)">---</span><br>Utility<span class="hi-a">::</span>pascalize(<span class="hi-g">"max mule"</span>)<br><br><span class="hi-m">// or import all:</span><br><span class="hi-t">import</span> * from modules<span class="hi-a">::</span>Utility<br>pascalize(<span class="hi-g">"max mule"</span>)</div>
+          </div>
+          <div class="trap-card">
+            <div class="trap-lbl bad">✗ WRONG</div>
+            <div class="trap-code"><span class="sk">import modules.Utility</span><br><span class="hi-m">dot ≠ double colon</span><br><br><span class="sk">Utility.pascalize()</span><br><span class="hi-m">dot notation for call</span><br><br><span class="sk">import Utility</span><br><span class="hi-m">missing modules:: path</span></div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--muted);padding:4px 4px 0;line-height:1.6">Separator is always <span class="hi-a">::</span> — both in path and in call syntax</div>
+      </div>
+
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;color:var(--muted);margin-bottom:8px;text-transform:uppercase">XML Attribute Syntax</div>
+        <div class="trap-row">
+          <div class="trap-card">
+            <div class="trap-lbl ok">✓ CORRECT</div>
+            <div class="trap-code">employee <span class="hi-a">@(</span><br>&nbsp;&nbsp;firstName: payload.first<span class="hi-t">,</span><br>&nbsp;&nbsp;lastName: payload.last<br><span class="hi-a">)</span>: <span class="hi-b">null</span></div>
+          </div>
+          <div class="trap-card">
+            <div class="trap-lbl bad">✗ WRONG</div>
+            <div class="trap-code">employee <span class="sk">(</span>firstName<span class="sk">)</span><br><span class="hi-m">missing @</span><br><br>fname: x<span class="sk">;</span> lname: y<br><span class="hi-m">semicolon ≠ comma</span><br><br>employee @(...): <span class="sk">""</span><br><span class="hi-m">value must be null</span></div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--muted);padding:4px 4px 0;line-height:1.6">Wrapper: <span class="hi-a">@()</span> · Separator: <span class="hi-t">comma</span> · Value: <span class="hi-b">null</span></div>
+      </div>
+
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;color:var(--muted);margin-bottom:8px;text-transform:uppercase">Type Coercion &amp; Custom Types</div>
+        <div class="trap-row">
+          <div class="trap-card">
+            <div class="trap-lbl ok">✓ CORRECT</div>
+            <div class="trap-code">42 <span class="hi-t">as String</span><br><br>20.38 <span class="hi-t">as String</span> <span class="hi-a">{</span> format: <span class="hi-g">".##"</span> <span class="hi-a">}</span><br><span class="hi-m">// curly braces, not parens</span><br><br><span class="hi-p">type</span> DateYMD <span class="hi-a">=</span> <span class="hi-b">Date</span> <span class="hi-a">{</span> format: <span class="hi-g">"yyyy/MM/dd"</span> <span class="hi-a">}</span></div>
+          </div>
+          <div class="trap-card">
+            <div class="trap-lbl bad">✗ WRONG</div>
+            <div class="trap-code">42 <span class="sk">as string</span><br><span class="hi-m">lowercase types</span><br><br>20.38 as String <span class="sk">(format: ".##")</span><br><span class="hi-m">parens ≠ curly braces</span><br><br><span class="sk">typedef</span> DateYMD <span class="sk">:</span> Date...<br><span class="hi-m">wrong keyword + colon</span></div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--muted);padding:4px 4px 0;line-height:1.6">Types always <span class="hi-b">Capitalized</span> · Format constraints use <span class="hi-a">{}</span> not <code>()</code></div>
+      </div>
+
+    </div><!-- /syntax traps -->
+
+    <div class="sec-div" style="color:var(--teal)"><span>Operators — Return Types &amp; Chaining Order</span></div>
+    <div class="two-col mb24">
+      <div class="boundary-section">
+        <table class="op-table">
+          <thead><tr><th>Operator</th><th>Returns</th><th>Use</th></tr></thead>
+          <tbody>
+            <tr><td>map</td><td><span class="ret-arr">ARRAY</span></td><td>Transform each element of an Array</td></tr>
+            <tr><td>filter</td><td><span class="ret-arr">ARRAY</span></td><td>Keep elements matching condition</td></tr>
+            <tr><td>flatMap</td><td><span class="ret-arr">ARRAY</span></td><td>map then flatten one level</td></tr>
+            <tr><td>orderBy</td><td><span class="ret-arr">ARRAY</span></td><td>Sort Array or Object by key</td></tr>
+            <tr><td>pluck</td><td><span class="ret-arr">ARRAY</span></td><td>Transform Object entries → Array</td></tr>
+            <tr><td>groupBy</td><td><span class="ret-obj">OBJECT</span></td><td>Group Array by key — keys = group values</td></tr>
+            <tr><td>reduce</td><td><span class="ret-any">ANY</span></td><td>Accumulate Array to single value</td></tr>
+            <tr><td>++</td><td><span class="ret-any">SAME TYPE</span></td><td>Concat Strings/Arrays/Objects (types must match)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;color:var(--muted);margin-bottom:10px;text-transform:uppercase">Chaining Order — Order Matters</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <div style="background:var(--surface-hi);border:1px solid var(--teal);border-radius:6px;padding:8px 12px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px">
+            <div style="font-size:8px;color:var(--muted);margin-bottom:2px;letter-spacing:0.1em">1ST</div>
+            <div style="color:var(--teal);font-weight:600">filter</div>
+            <div style="font-size:9px;color:var(--muted);margin-top:2px">→ Array</div>
+          </div>
+          <div style="color:var(--teal);font-size:16px">→</div>
+          <div style="background:var(--surface-hi);border:1px solid var(--blue);border-radius:6px;padding:8px 12px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px">
+            <div style="font-size:8px;color:var(--muted);margin-bottom:2px;letter-spacing:0.1em">2ND</div>
+            <div style="color:var(--blue);font-weight:600">orderBy</div>
+            <div style="font-size:9px;color:var(--muted);margin-top:2px">→ Array</div>
+          </div>
+          <div style="color:var(--teal);font-size:16px">→</div>
+          <div style="background:var(--surface-hi);border:1px solid var(--purple);border-radius:6px;padding:8px 12px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px">
+            <div style="font-size:8px;color:var(--muted);margin-bottom:2px;letter-spacing:0.1em">3RD</div>
+            <div style="color:var(--purple);font-weight:600">groupBy</div>
+            <div style="font-size:9px;color:var(--muted);margin-top:2px">→ Object</div>
+          </div>
+        </div>
+        <div class="nd-box-rules" style="font-size:10px;padding:10px 12px;border-radius:6px;margin-bottom:12px">
+          payload <span class="hi-t">filter</span> $.price &lt; 500<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hi-b">orderBy</span> $.price<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hi-p">groupBy</span> $.toAirport
+        </div>
+        <div class="side-item warn">
+          <h5><span style="color:var(--red)">Order matters</span></h5>
+          <p><code>groupBy</code> first = wrong because it returns an Object, which <code>filter</code>/<code>orderBy</code> cannot process.</p>
+        </div>
+        <div class="side-item note" style="margin-top:10px">
+          <h5><code>++</code> type rule</h5>
+          <p>Concatenates Strings, Arrays, or Objects — but types must match. <code>String ++ Object</code> = type error at runtime.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-div" style="color:var(--amber)"><span>Quick-Fire Trap Table</span></div>
+    <div class="boundary-section">
+      <table class="btable">
+        <thead><tr><th>If you see…</th><th>The correct answer is…</th></tr></thead>
+        <tbody>
+          <tr><td><code>fun</code> keyword</td><td class="note-sm"><strong>fun</strong> · assignment with <strong>=</strong> · no return keyword · types always Capitalized</td></tr>
+          <tr><td>Module import path separator</td><td class="note-sm"><strong>::</strong> double colon — both in import path and call syntax (<code>modules::Utility</code>, <code>Utility::fn()</code>)</td></tr>
+          <tr><td>XML attribute wrapper</td><td class="note-sm"><strong>@()</strong> · comma between attrs · element value is <strong>null</strong>, not empty string</td></tr>
+          <tr><td>String concatenation</td><td class="note-sm"><strong>++</strong> not <code>+</code> · <code>String ++ Object</code> throws type error</td></tr>
+          <tr><td><code>groupBy</code> return type</td><td class="note-sm"><strong>Object</strong> — keys are group values, values are Arrays. Never an Array itself.</td></tr>
+          <tr><td><code>filter</code> / <code>map</code> return type</td><td class="note-sm"><strong>Array</strong> — always, both of them</td></tr>
+          <tr><td>Type coercion syntax</td><td class="note-sm"><code>as String</code> · <code>as Number</code> · always Capitalized — never <code>as string</code></td></tr>
+          <tr><td>Format constraint syntax</td><td class="note-sm">Curly braces: <code>as String <strong>{</strong> format: ".##" <strong>}</strong></code> — never parentheses</td></tr>
+          <tr><td>Operation chaining order</td><td class="note-sm"><strong>filter → orderBy → groupBy</strong> — wrong order gives wrong result or type error</td></tr>
+          <tr><td><code>typeOf()</code> on Set Payload literal</td><td class="note-sm">Always returns <strong>String</strong> regardless of what the content looks like</td></tr>
+          <tr><td>Custom type definition keyword</td><td class="note-sm"><strong>type</strong> MyName <strong>=</strong> BaseType { constraint } · not <code>typedef</code>, not colon</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /content-wrapper -->
+</div><!-- /view-dataweave -->
+
+<!-- ══════════════════════════════════════════
+     VIEW: ERROR HANDLING
+══════════════════════════════════════════ -->
+<div id="view-errors" class="view">
+  <div class="vhead">
+    <div class="badge" style="background:var(--red-a);color:var(--red);border:1px solid oklch(0.74 0.165 22/0.3)">SCMD · SECTION 10 · 10% WEIGHT · HIGH STAKES ⚑</div>
+    <h1>Handling Errors</h1>
+    <p>The most conceptually tricky section. On Error Continue does <em>not</em> resume execution after the failing processor. The global handler bypass rule catches everyone. <code>HTTP:*</code> wildcard doesn't work in the Type field.</p>
+  </div>
+  <div class="content-wrapper">
+
+    <div class="sec-div" style="color:var(--red)"><span>Resolution Hierarchy — First Match Wins</span></div>
+    <div class="eh-levels mb28">
+      <div class="eh-level" data-lv="1">
+        <div class="eh-num"><div class="eh-num-lbl">CHECKED</div><div class="eh-num-n">1st</div></div>
+        <div class="eh-body">
+          <div class="eh-title">Try Scope Handler</div>
+          <div class="eh-desc">If the error occurred inside a Try scope, that scope's error handler fires first. On Error Continue in a Try scope → flow <strong>continues after the Try scope</strong> — the only scenario where execution resumes post-error.</div>
+        </div>
+        <div class="eh-tag">TRY SCOPE</div>
+      </div>
+      <div class="eh-level" data-lv="2">
+        <div class="eh-num"><div class="eh-num-lbl">CHECKED</div><div class="eh-num-n">2nd</div></div>
+        <div class="eh-body">
+          <div class="eh-title">Flow-Level Error Handler</div>
+          <div class="eh-desc">If the flow has its own error handler and none of its scopes match the error type — the <strong>global handler is bypassed entirely</strong>. Error propagates unhandled to HTTP Listener → 500.</div>
+        </div>
+        <div class="eh-tag">FLOW LEVEL</div>
+        <div class="eh-gotcha">If a flow has ANY own error handler — even if nothing matches — the global handler is <strong>never consulted</strong>. No match = unhandled propagation, not global fallback.</div>
+      </div>
+      <div class="eh-level" data-lv="3">
+        <div class="eh-num"><div class="eh-num-lbl">CHECKED</div><div class="eh-num-n">3rd</div></div>
+        <div class="eh-body">
+          <div class="eh-title">Global Error Handler</div>
+          <div class="eh-desc">Applied <strong>only if the flow has NO error handler defined at all</strong>. Must be configured as a global element — not in pom.xml, not in properties file.</div>
+        </div>
+        <div class="eh-tag">GLOBAL</div>
+      </div>
+    </div>
+
+    <div class="sec-div" style="color:var(--red)"><span>On Error Continue vs On Error Propagate</span></div>
+    <div class="eh-compare mb28">
+      <div class="ehcc">
+        <div class="ehcc-head">
+          <span class="ehcc-name" style="color:var(--green)">On Error Continue</span>
+          <span class="ehcc-pill pill-cont">ABSORBS ERROR</span>
+        </div>
+        <div class="ehcc-body">
+          <div class="attr-r"><span class="attr-k">Flow completes normally?</span><span class="attr-v v-g">Yes — treated as success</span></div>
+          <div class="attr-r"><span class="attr-k">Processors after error point run?</span><span class="attr-v v-r">NO — skipped permanently</span></div>
+          <div class="attr-r"><span class="attr-k">What calling flow receives</span><span class="attr-v v-g">Handler's payload as result</span></div>
+          <div class="attr-r"><span class="attr-k">HTTP Listener returns</span><span class="attr-v v-g">200 + handler payload</span></div>
+          <div class="attr-r"><span class="attr-k">Calling flow sees error?</span><span class="attr-v v-g">No — transparent</span></div>
+          <div class="side-item warn" style="margin-top:8px">
+            <h5>The "Continue" trap</h5>
+            <p>"Continue" means the handler runs and the flow <em>exits normally</em>. It does NOT mean execution resumes at the processor after the failing one. Those processors never run.</p>
+          </div>
+        </div>
+      </div>
+      <div class="ehcc">
+        <div class="ehcc-head">
+          <span class="ehcc-name" style="color:var(--red)">On Error Propagate</span>
+          <span class="ehcc-pill pill-prop">RE-THROWS</span>
+        </div>
+        <div class="ehcc-body">
+          <div class="attr-r"><span class="attr-k">Flow completes normally?</span><span class="attr-v v-r">No — error re-thrown after handler</span></div>
+          <div class="attr-r"><span class="attr-k">Processors after error point run?</span><span class="attr-v v-r">NO — also skipped</span></div>
+          <div class="attr-r"><span class="attr-k">What calling flow receives</span><span class="attr-v v-r">Original error message</span></div>
+          <div class="attr-r"><span class="attr-k">HTTP Listener returns</span><span class="attr-v v-r">500 + original error message</span></div>
+          <div class="attr-r"><span class="attr-k">Calling flow sees error?</span><span class="attr-v v-r">Yes — bubbles up</span></div>
+          <div class="side-item note" style="margin-top:8px">
+            <h5>Propagate payload trap</h5>
+            <p>Even if you Set Payload inside the handler, the HTTP Listener returns the <strong>original error message</strong> — not the Set Payload value.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col mb28">
+      <div>
+        <div class="sec-div" style="color:var(--amber)"><span>Error Matching Rules</span></div>
+        <div class="boundary-section mb16">
+          <table class="btable">
+            <thead><tr><th>Type Field</th><th>When Field</th><th>What it catches</th></tr></thead>
+            <tbody>
+              <tr><td><code>HTTP:NOT_FOUND</code></td><td class="note-sm">—</td><td class="note-sm">Specific error type only</td></tr>
+              <tr><td><code>ANY</code></td><td class="note-sm">—</td><td class="note-sm">Everything — use as the last handler</td></tr>
+              <tr><td><em>(empty)</em></td><td class="note-sm"><code>#[error.errorType.namespace == "HTTP"]</code></td><td class="note-sm">All HTTP:* — the only valid wildcard pattern</td></tr>
+              <tr><td><span class="cross" style="font-size:11px">✗</span> <code style="text-decoration:line-through;color:var(--red)">HTTP:*</code></td><td class="note-sm">—</td><td class="note-sm" style="color:var(--red)">Does NOT work — wildcard invalid in Type field</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="side-item warn">
+          <h5>First-match ordering (firewall rule)</h5>
+          <p>Multiple handlers: top to bottom, first match fires, rest ignored. Put <strong>specific types first</strong>, <code>ANY</code> last.</p>
+        </div>
+        <div class="side-item note" style="margin-top:10px">
+          <h5>No handler configured at all?</h5>
+          <p>Mule default handler fires automatically — always present. Behaves like On Error Propagate: logs error, returns 500.</p>
+        </div>
+      </div>
+      <div>
+        <div class="sec-div" style="color:var(--amber)"><span>Flow Type — Error Isolation</span></div>
+        <div class="ft-grid mb16">
+          <div class="ftc" data-t="flow">
+            <div class="ftc-name" style="color:var(--blue)">Flow</div>
+            <div class="ftc-row"><span class="ftc-k">Has source?</span><span class="ftc-v v-yes">Yes</span></div>
+            <div class="ftc-row"><span class="ftc-k">Own error handler?</span><span class="ftc-v v-yes">Yes (optional)</span></div>
+            <div class="ftc-row"><span class="ftc-k">Uses caller's?</span><span class="ftc-v v-no">No</span></div>
+          </div>
+          <div class="ftc" data-t="private">
+            <div class="ftc-name" style="color:var(--amber)">Private Flow</div>
+            <div class="ftc-row"><span class="ftc-k">Has source?</span><span class="ftc-v v-no">No</span></div>
+            <div class="ftc-row"><span class="ftc-k">Own error handler?</span><span class="ftc-v v-yes">Yes (optional)</span></div>
+            <div class="ftc-row"><span class="ftc-k">Uses caller's?</span><span class="ftc-v v-always">If no own handler</span></div>
+          </div>
+          <div class="ftc" data-t="sub">
+            <div class="ftc-name" style="color:var(--purple)">Sub-flow</div>
+            <div class="ftc-row"><span class="ftc-k">Has source?</span><span class="ftc-v v-no">No</span></div>
+            <div class="ftc-row"><span class="ftc-k">Own error handler?</span><span class="ftc-v v-no">Never</span></div>
+            <div class="ftc-row"><span class="ftc-k">Uses caller's?</span><span class="ftc-v v-always">Always</span></div>
+          </div>
+        </div>
+        <div class="side-item warn">
+          <h5>Sub-flow vs Private flow</h5>
+          <p>Sub-flows <strong>always</strong> use the calling flow's error handler — they cannot have their own. Private flows <strong>can</strong> have their own. Heavily tested distinction.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-div" style="color:var(--red)"><span>APIKit Auto-Generated Error Handlers</span></div>
+    <div class="ak-grid mb24">
+      <div class="ak-chip"><div class="ak-type">APIKIT:NOT_FOUND</div><div class="ak-status">404</div><div class="ak-label">Resource not found</div></div>
+      <div class="ak-chip"><div class="ak-type">APIKIT:BAD_REQUEST</div><div class="ak-status">400</div><div class="ak-label">Invalid param / enum value</div></div>
+      <div class="ak-chip"><div class="ak-type">APIKIT:METHOD_NOT_ALLOWED</div><div class="ak-status">405</div><div class="ak-label">HTTP method not in RAML</div></div>
+      <div class="ak-chip"><div class="ak-type">APIKIT:NOT_ACCEPTABLE</div><div class="ak-status">406</div><div class="ak-label">Accept header mismatch</div></div>
+      <div class="ak-chip"><div class="ak-type">APIKIT:UNSUPPORTED_MEDIA_TYPE</div><div class="ak-status">415</div><div class="ak-label">Content-Type not supported</div></div>
+      <div class="ak-chip"><div class="ak-type">APIKIT:NOT_IMPLEMENTED</div><div class="ak-status">501</div><div class="ak-label">No flow for this resource</div></div>
+    </div>
+
+    <div class="sec-div" style="color:var(--amber)"><span>Quick-Fire Recap</span></div>
+    <div class="boundary-section">
+      <table class="btable">
+        <thead><tr><th>If you see…</th><th>The answer is…</th></tr></thead>
+        <tbody>
+          <tr><td>On Error Continue — does flow resume after error?</td><td class="note-sm"><strong>No.</strong> Handler runs, its output = flow result, flow exits normally. Subsequent processors never execute.</td></tr>
+          <tr><td>On Error Propagate — what does HTTP Listener return?</td><td class="note-sm"><strong>Original error message</strong> — even if Set Payload ran in the handler.</td></tr>
+          <tr><td>Flow has own handler but no scope matches the error</td><td class="note-sm"><strong>Global handler bypassed.</strong> Error propagates unhandled → HTTP Listener → 500.</td></tr>
+          <tr><td>No error handler configured at all</td><td class="note-sm"><strong>Mule default handler</strong> fires automatically — always present. Behaves like Propagate → 500.</td></tr>
+          <tr><td><code>HTTP:*</code> wildcard in Type field</td><td class="note-sm"><strong>Does NOT work.</strong> Use: Type = (empty) + When = <code>#[error.errorType.namespace == "HTTP"]</code></td></tr>
+          <tr><td>Child private flow — On Error Continue catches error</td><td class="note-sm">Calling flow <strong>never sees the error</strong>. Gets handler's payload as Flow Reference result. Continues normally.</td></tr>
+          <tr><td>Child private flow — On Error Propagate</td><td class="note-sm">Error <strong>bubbles up</strong> to calling flow's error handler.</td></tr>
+          <tr><td>Sub-flow error handler</td><td class="note-sm">Sub-flows <strong>never</strong> have their own. Always uses calling flow's handler.</td></tr>
+          <tr><td>Try scope — On Error Continue inside</td><td class="note-sm">Flow <strong>continues after the Try scope</strong> — the only scenario where flow continues after an error.</td></tr>
+          <tr><td>Global handler location config</td><td class="note-sm">Must be a <strong>global element</strong> — not pom.xml, not properties file.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /content-wrapper -->
+</div><!-- /view-errors -->
 
 <script>
 // ═══════════════════════
@@ -938,97 +1631,10 @@ function drawLines() {
 }
 
 // ═══════════════════════
-// BUILD FOUNDATIONS
-// ═══════════════════════
-const FOUND_DATA = [
-  { num:'01', title:'Roles & Project Lifecycle', weight:17,
-    angle:-90,
-    topics:['Integration architect, developer, ops roles','C4E structure and purpose','API-led project lifecycle stages'] },
-  { num:'02', title:'Integration Concepts & Terminology', weight:20,
-    angle:-30,
-    topics:['REST vs SOAP','Orchestration vs choreography','Sync vs async communication patterns'] },
-  { num:'03', title:'Integration Problems & Solutions', weight:17,
-    angle:30,
-    topics:['When to apply API-led connectivity','Point-to-point pitfalls','System / Process / Experience layer mapping'] },
-  { num:'04', title:'Technical Complexities & Patterns', weight:18,
-    angle:90,
-    topics:['Retry, circuit breaker, idempotency','Security: OAuth, TLS, mTLS','Pub-sub, polling, push patterns'] },
-  { num:'05', title:'Anypoint Platform for Integration', weight:18,
-    angle:150,
-    topics:['Exchange · Studio · Runtime Manager','Environments & business groups','CloudHub vs hybrid deployment'] },
-  { num:'06', title:'Anypoint Platform for API Management', weight:10,
-    angle:210,
-    topics:['API Manager: policies & SLA tiers','UAPIM · Anypoint Flex Gateway','API Gateway vs service mesh — relative weak spot (D6 75%)'] },
-];
-
-const FOUND_CONNS = [
-  [0,1,'adj'],[1,2,'adj'],[2,3,'adj'],[3,4,'adj'],[4,5,'adj'],[5,0,'adj'], // ring
-  [1,3,'rel'],[1,4,'rel'],[2,4,'rel'], // inner synergies
-];
-
-function buildFoundations() {
-  const wrap = document.getElementById('found-wrapper');
-  const svg  = document.getElementById('found-svg');
-  const W = 960, H = 620, cx = W/2, cy = 300;
-  const rx = 265, ry = 185; // ellipse: compact vertical, wider horizontal
-  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
-
-  const pos = FOUND_DATA.map(d => {
-    const rad = d.angle * Math.PI / 180;
-    return { x: cx + rx*Math.cos(rad), y: cy + ry*Math.sin(rad) };
-  });
-
-  // Draw connections
-  FOUND_CONNS.forEach(([a,b,type]) => {
-    const pa=pos[a], pb=pos[b];
-    const isRel = type==='rel';
-    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
-    let d;
-    if (isRel) {
-      d = `M${pa.x},${pa.y} Q${cx},${cy+20} ${pb.x},${pb.y}`;
-    } else {
-      d = `M${pa.x},${pa.y} L${pb.x},${pb.y}`;
-    }
-    path.setAttribute('d',d);
-    path.setAttribute('fill','none');
-    path.setAttribute('stroke', isRel ? 'oklch(0.74 0.12 185 / 0.35)' : 'oklch(0.45 0.04 185 / 0.5)');
-    path.setAttribute('stroke-width', isRel ? '1.5' : '1');
-    path.setAttribute('stroke-dasharray', isRel ? '5 4' : '3 6');
-    svg.appendChild(path);
-  });
-
-  // Center hub
-  const center = document.createElement('div');
-  center.className = 'found-center';
-  center.style.cssText = `left:${cx}px;top:${cy}px;`;
-  center.innerHTML = `<div class="center-code">MULE<br>101</div><div class="center-sub">6 domains<br>40 questions</div>`;
-  wrap.appendChild(center);
-
-  // Domain cards
-  FOUND_DATA.forEach((d,i) => {
-    const p = pos[i];
-    const card = document.createElement('div');
-    card.className = 'fcard';
-    card.style.cssText = `left:${p.x}px;top:${p.y}px;animation-delay:${i*0.07}s`;
-    const barW = Math.round((d.weight/20)*100);
-    card.innerHTML = `
-      <div class="fcard-num">DOMAIN ${d.num}</div>
-      <div class="fcard-title">${d.title}</div>
-      <div class="fcard-pct">
-        <span class="fcard-weight">${d.weight}%</span>
-        <span class="fcard-pct-label">of exam</span>
-      </div>
-      <div class="fcard-bar" style="width:${barW}%"></div>
-      <div class="fcard-topics">${d.topics.join('<br>')}</div>`;
-    wrap.appendChild(card);
-  });
-}
-
+// INIT (Foundations moved to Ecosystem file)
 // ═══════════════════════
 // TAB SWITCHING
 // ═══════════════════════
-let foundBuilt = false;
-
 document.querySelectorAll('.tab').forEach(btn => {
   btn.addEventListener('click', () => {
     const v = btn.dataset.view;
@@ -1038,7 +1644,6 @@ document.querySelectorAll('.tab').forEach(btn => {
     document.getElementById(`view-${v}`).classList.add('active');
 
     if (v === 'scmd') setTimeout(drawLines, 80);
-    if (v === 'foundations' && !foundBuilt) { buildFoundations(); foundBuilt = true; }
   });
 });
 
